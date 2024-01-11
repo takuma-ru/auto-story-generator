@@ -1,0 +1,14 @@
+{
+  "name": "@takuma-ru/auto-story-generator",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "asg": "pnpm -F \"@vumdoc/auto-story-generator\""
+  },
+  "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
+  "license": "MIT",
+  "volta": {
+    "node": "20.11.0",
+    "pnpm": "8.14.1"
+  }
+}

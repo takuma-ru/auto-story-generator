@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "📦 asg",
+      "path": "packages/auto-story-generator"
+    }
+  ],
+  "settings": {
+    "cSpell.words": ["consola", "magicast", "satoshi", "vumdoc"]
+  },
+  "extensions": {}
+}
