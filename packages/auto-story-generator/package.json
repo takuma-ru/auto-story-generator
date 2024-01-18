@@ -1,5 +1,6 @@
 {
   "name": "@takuma-ru/auto-story-generator",
+  "private": false,
   "version": "0.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -13,13 +14,27 @@
       "require": "./dist/index.cjs"
     }
   },
+  "files": [
+    "dist/*",
+    "LICENSE.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/takuma-ru/auto-story-generator"
+  },
+  "bugs": {
+    "url": "https://github.com/takuma-ru/auto-story-generator/issues",
+    "email": "kcattdev@gmail.com"
+  },
+  "homepage": "",
   "dependencies": {
     "consola": "^3.2.3",
     "magicast": "^0.3.2",
