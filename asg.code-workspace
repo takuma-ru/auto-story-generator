@@ -7,10 +7,26 @@
     {
       "name": "📦 asg",
       "path": "packages/auto-story-generator"
+    },
+    {
+      "name": "🧪 demo react",
+      "path": "demo/react"
+    },
+    {
+      "name": "🧪 demo vue",
+      "path": "demo/vue"
+    },
+    {
+      "name": "🧪 demo lit",
+      "path": "demo/lit"
+    },
+    {
+      "name": "🧪 demo svelte",
+      "path": "demo/svelte"
     }
   ],
   "settings": {
-    "cSpell.words": ["consola", "magicast", "satoshi", "vumdoc"]
+    "cSpell.words": ["consola", "magicast", "satoshi", "scule", "vumdoc"]
   },
   "extensions": {}
 }
