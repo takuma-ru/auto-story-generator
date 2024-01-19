@@ -3,7 +3,7 @@ import { loadFile } from "magicast";
 import { Project } from "ts-morph";
 import { createUnplugin } from "unplugin";
 
-import { genLitStoryFile } from "~/presets/lit/genStoryFile";
+import { genLitStoryFile } from "~/src/presets/lit/genStoryFile";
 
 export type AsgOptions = {
   dirname: string;

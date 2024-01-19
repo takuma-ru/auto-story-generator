@@ -9,8 +9,6 @@ type GenArgTypes = {
 
 /**
  *
- * @param param0
- * @returns
  */
 export const genLitPropTypes = ({ sourceFile, componentName }: GenArgTypes) => {
   const pascalComponentName = pascalCase(componentName);

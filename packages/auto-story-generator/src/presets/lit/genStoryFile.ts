@@ -4,7 +4,7 @@ import consola from "consola";
 import { kebabCase, pascalCase } from "scule";
 import { Project, SourceFile, SyntaxKind } from "ts-morph";
 
-import { genLitPropTypes } from "~/presets/lit/genPropTypes";
+import { genLitPropTypes } from "~/src/presets/lit/genPropTypes";
 
 type GenStoryFileType = {
   sourceFile: SourceFile;
@@ -25,7 +25,7 @@ export const genLitStoryFile = async ({
 
   if (!propTypes) return consola.error("Could not find argTypes");
 
-  fs.open(storiesFilePath, "r", async (err, fd) => {
+  fs.open(storiesFilePath, "r", async (err) => {
     // ファイルを開けなかったらファイルを作成する
     if (err) {
       const storyCode = `import { html } from "lit";
