@@ -4,7 +4,7 @@ import { minimatch } from "minimatch";
 import { Project } from "ts-morph";
 import { createUnplugin } from "unplugin";
 
-import { genLitStoryFile } from "~/src/presets/lit/genStoryFile";
+import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
 
 export type AsgOptions = {
   preset: "lit" | "react" | "vue" | "custom";

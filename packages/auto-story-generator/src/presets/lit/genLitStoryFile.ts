@@ -4,7 +4,7 @@ import consola from "consola";
 import { kebabCase, pascalCase } from "scule";
 import { Project, SourceFile, SyntaxKind } from "ts-morph";
 
-import { genLitPropTypes } from "~/src/presets/lit/genPropTypes";
+import { genLitPropTypes } from "~/src/presets/lit/genLitPropTypes";
 
 type GenStoryFileType = {
   sourceFile: SourceFile;
