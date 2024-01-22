@@ -1,34 +1,24 @@
-import fs from "fs";
-
-import consola from "consola";
+import { consola } from "consola";
 import { kebabCase, pascalCase } from "scule";
-import { Project, SourceFile, SyntaxKind } from "ts-morph";
 
 import { genLitPropTypes } from "~/src/presets/lit/genLitPropTypes";
-
-type GenStoryFileType = {
-  sourceFile: SourceFile;
-  componentName: string;
-  relativeSourceFilePath: string;
-  file: string;
-};
+import { GenStoryFileOptions, genStoryFile } from "~/src/utils/genStoryFile";
 
 export const genLitStoryFile = async ({
-  sourceFile,
   componentName,
+  fileName,
+  path,
+  type,
   relativeSourceFilePath,
-  file,
-}: GenStoryFileType) => {
+  sourceFile,
+}: GenStoryFileOptions["fileOptions"]) => {
   const propTypes = genLitPropTypes({ sourceFile, componentName });
   const pascalComponentName = pascalCase(componentName);
-  const storiesFilePath = file.replace(".ce.ts", ".stories.ts");
 
   if (!propTypes) return consola.error("Could not find argTypes");
 
-  fs.open(storiesFilePath, "r", async (err) => {
-    // ファイルを開けなかったらファイルを作成する
-    if (err) {
-      const storyCode = `import { html } from "lit";
+  const initialCode = `
+import { html } from "lit";
 
 import type { Meta, StoryObj } from "@storybook/web-components";
 
@@ -56,40 +46,8 @@ export type ${pascalComponentName}Story = StoryObj<${pascalComponentName}Props>;
 export const Primary: ${pascalComponentName}Story = {};
 `;
 
-      // 同期処理でファイルを作成する
-      fs.writeFileSync(storiesFilePath, storyCode);
-    }
-
-    const storiesProject = new Project();
-
-    // ファイルを読み込む
-    const storiesSourceFile =
-      storiesProject.addSourceFileAtPath(storiesFilePath);
-
-    // stories.ts内のmetaを取得する
-    const meta = storiesSourceFile.getVariableDeclaration("meta");
-
-    if (
-      !meta ||
-      !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
-    ) {
-      return consola.error(
-        `Could not find meta in file ${storiesSourceFile.getFilePath()}`,
-      );
-    }
-
-    const initializer = meta.getInitializerIfKindOrThrow(
-      SyntaxKind.ObjectLiteralExpression,
-    );
-
-    if (!initializer) return consola.error("Could not find initializer");
-
-    // metaのrenderオブジェクトを取得する
-    const renderProperty = initializer.getPropertyOrThrow("render");
-
-    // renderオブジェクトの値を書き換える
-    renderProperty.set({
-      initializer: `(args) => {
+  const renderCode = `
+(args) => {
   new ${pascalComponentName}();
 
   return html\`<${componentName}${propTypes
@@ -107,99 +65,82 @@ export const Primary: ${pascalComponentName}Story = {};
       return ` ${kebabCase(prop.name)}="\${args.${prop.name}}"`;
     })
     .join("")}>${componentName}</${componentName}>\`;
-}`,
-    });
+}`;
 
-    // metaのargsオブジェクトを取得する
-    const argsProperty = initializer.getPropertyOrThrow("args");
+  const args: GenStoryFileOptions["generateOptions"]["meta"]["args"] = {};
 
-    const args: { [key: string]: string | number | boolean | undefined } = {};
+  propTypes.forEach((prop) => {
+    if (prop.name === "styles") return;
 
-    propTypes.forEach((prop) => {
-      if (prop.name === "styles") return;
+    if (prop.isOptional) {
+      return (args[prop.name] = "undefined");
+    }
 
-      if (prop.isOptional) {
-        return (args[prop.name] = "undefined");
-      }
+    let value: string | boolean | undefined =
+      prop.value.length > 0 ? prop.value[0] : "undefined";
 
-      let value: string | boolean | undefined =
-        prop.value.length > 0 ? prop.value[0] : "undefined";
+    if (prop.type.includes("boolean")) {
+      value = true;
+    }
 
-      if (prop.type.includes("boolean")) {
-        value = true;
-      }
+    args[prop.name] = value;
+  });
 
-      args[prop.name] = value;
-    });
+  const argTypes: GenStoryFileOptions["generateOptions"]["meta"]["argTypes"] =
+    {};
 
-    const argText = Object.entries(args)
-      .map((x) => x.join(":"))
-      .join(", ");
+  propTypes.forEach((prop) => {
+    if (prop.name === "styles") return;
 
-    argsProperty.set({
-      initializer: `{ ${argText} }`,
-    });
-
-    const argTypesProperty = initializer.getPropertyOrThrow("argTypes");
-
-    const argTypes: {
-      [key: string]: {
-        control: string;
-        options?: string[];
-      };
-    } = {};
-
-    propTypes.forEach((prop) => {
-      if (prop.name === "styles") return;
-
-      if (prop.type[0] === "boolean") {
-        return (argTypes[prop.name] = {
-          control: "boolean",
-        });
-      }
-
-      if (prop.type[0] === "object") {
-        return (argTypes[prop.name] = {
-          control: "object",
-        });
-      }
-
-      if (prop.value.length > 1) {
-        return (argTypes[prop.name] = {
-          control: "select",
-          options: prop.value,
-        });
-      } else {
-        if (prop.type[0] === "string") {
-          return (argTypes[prop.name] = {
-            control: "text",
-          });
-        }
-
-        if (prop.type[0] === "number") {
-          return (argTypes[prop.name] = {
-            control: "number",
-          });
-        }
-      }
-    });
-
-    const argTypesText = JSON.stringify(argTypes, null, "");
-
-    argTypesProperty.set({
-      initializer: `${argTypesText}`,
-    });
-
-    // ファイルを保存する
-    await storiesProject
-      .save()
-      .then(() => {
-        consola.success(
-          `Successfully updated args in ${storiesSourceFile.getFilePath()}`,
-        );
-      })
-      .catch((err) => {
-        consola.error(err);
+    if (prop.type[0] === "boolean") {
+      return (argTypes[prop.name] = {
+        control: "boolean",
       });
+    }
+
+    if (prop.type[0] === "object") {
+      return (argTypes[prop.name] = {
+        control: "object",
+      });
+    }
+
+    if (prop.value.length > 1) {
+      return (argTypes[prop.name] = {
+        control: "select",
+        options: prop.value,
+      });
+    } else {
+      if (prop.type[0] === "string") {
+        return (argTypes[prop.name] = {
+          control: "text",
+        });
+      }
+
+      if (prop.type[0] === "number") {
+        return (argTypes[prop.name] = {
+          control: "number",
+        });
+      }
+    }
+  });
+
+  genStoryFile({
+    fileOptions: {
+      componentName,
+      fileName,
+      path,
+      type,
+      relativeSourceFilePath,
+      sourceFile,
+    },
+    generateOptions: {
+      fileType: ".stories.ts",
+      initialCode,
+      meta: {
+        render: renderCode,
+        args,
+        argTypes,
+      },
+    },
   });
 };
