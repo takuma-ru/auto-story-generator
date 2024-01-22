@@ -1,75 +1,97 @@
 import { consola } from "consola";
 import { loadFile } from "magicast";
+import { minimatch } from "minimatch";
 import { Project } from "ts-morph";
 import { createUnplugin } from "unplugin";
 
 import { genLitStoryFile } from "~/src/presets/lit/genStoryFile";
 
 export type AsgOptions = {
-  dirname: string;
   preset: "lit" | "react" | "vue" | "custom";
+  /**
+   * @default undefined
+   *
+   * @description
+   *
+   * The directories to watch for changes.
+   *
+   * @example
+   *
+   * `**\/src/components/*.ts`
+   * `**\/src/components/**\/*.ts`
+   */
+  imports?: string[];
 };
 
 const unplugin = createUnplugin((options: AsgOptions) => {
   return {
     name: "auto-story-generator",
-    vite: {
-      async handleHotUpdate({ file }: { file: string }) {
-        if (file.endsWith(".stories.ts")) return;
+    async watchChange(file, change) {
+      const isMatches = options.imports
+        ? options.imports.map((importDir) => {
+            return minimatch(file, importDir);
+          })
+        : [true];
 
-        consola.info(`File ${file} changed.`);
+      if (!isMatches.includes(true)) {
+        return consola.error("Not a target file for automatic generation");
+      }
 
-        const mod = await loadFile(file);
-        const project = new Project();
+      const projectRootDir = process.cwd();
+      const fileName = file.split("/").pop();
+      const fileType = fileName?.split(".").pop();
+      const componentName = fileName?.replace(`.${fileType}`, "");
+      const relativeSourceFilePath = file.replace(projectRootDir, "");
 
-        const sourceFile = project.createSourceFile(
-          file.split("/").pop()!,
-          mod.$code,
-        );
+      if (!componentName) {
+        return consola.error("Could not find component name");
+      }
 
-        switch (options.preset) {
-          case "lit": {
-            if (file.endsWith(".ce.ts")) {
-              const componentName = file
-                .split("/")
-                .pop()!
-                .replace(".ce.ts", "");
+      // consola.info(`${componentName} component has been changed`);
 
-              consola.start(
-                `Start of automatic ${componentName} story generation`,
-              );
-              await genLitStoryFile({
-                sourceFile,
-                componentName,
-                relativeSourceFilePath: file.replace(options?.dirname, ""),
-                file,
-              });
-            }
-            break;
-          }
+      const mod = await loadFile(file);
+      const project = new Project();
+      const sourceFile = project.createSourceFile(fileName || "", mod.$code);
 
-          case "react": {
-            consola.error("Not yet supported.");
-            break;
-          }
+      consola.start(`${componentName} Story file is being generated ....`);
 
-          case "vue": {
-            consola.error("Not yet supported.");
-            break;
-          }
+      switch (options.preset) {
+        case "lit": {
+          await genLitStoryFile({
+            sourceFile,
+            componentName,
+            relativeSourceFilePath,
+            file,
+          });
 
-          case "custom": {
-            consola.error("Not yet supported.");
-            break;
-          }
+          consola.success(
+            `Automatic ${componentName} story generation completed`,
+          );
 
-          default: {
-            consola.error(
-              `Preset ${options.preset} is not supported. Please use one of the following: lit, react, vue, custom`,
-            );
-          }
+          break;
         }
-      },
+
+        case "react": {
+          consola.error("Not yet supported.");
+          break;
+        }
+
+        case "vue": {
+          consola.error("Not yet supported.");
+          break;
+        }
+
+        case "custom": {
+          consola.error("Not yet supported.");
+          break;
+        }
+
+        default: {
+          consola.error(
+            `Preset ${options.preset} is not supported. Please use one of the following: lit, react, vue, custom`,
+          );
+        }
+      }
     },
   };
 });

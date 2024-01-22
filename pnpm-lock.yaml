@@ -10,9 +10,6 @@ importers:
 
   demo/react:
     dependencies:
-      '@takuma-ru/auto-story-generator':
-        specifier: workspace:^
-        version: link:../../packages/auto-story-generator
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -44,6 +41,9 @@ importers:
       '@storybook/test':
         specifier: ^7.6.9
         version: 7.6.9
+      '@takuma-ru/auto-story-generator':
+        specifier: workspace:^
+        version: link:../../packages/auto-story-generator
       '@types/react':
         specifier: ^18.2.43
         version: 18.2.48
@@ -89,6 +89,9 @@ importers:
       magicast:
         specifier: ^0.3.2
         version: 0.3.2
+      minimatch:
+        specifier: ^9.0.3
+        version: 9.0.3
       scule:
         specifier: ^1.1.1
         version: 1.2.0

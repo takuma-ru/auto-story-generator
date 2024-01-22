@@ -6,7 +6,7 @@ import { join, dirname, resolve } from "path";
 import autoStoryGenerator from "@takuma-ru/auto-story-generator";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ["../src/components/**/*.stories.ts"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
@@ -24,8 +24,8 @@ const config: StorybookConfig = {
     mergeConfig(config, {
       plugins: [
         autoStoryGenerator.vite({
-          dirname: resolve(__dirname, "../src"),
           preset: "react",
+          imports: ["**/src/components/**/*.tsx"],
         }),
       ],
 

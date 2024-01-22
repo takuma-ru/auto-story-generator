@@ -18,6 +18,14 @@ const config = {
     ],
     quotes: ["error", "double"],
 
+    "no-restricted-syntax": [
+      "warn",
+      {
+        selector: "Identifier[name='consola']",
+        message: "Logs are output on the console.",
+      },
+    ],
+
     "no-restricted-imports": [
       "error",
       {
