@@ -9,6 +9,10 @@
       "path": "packages/auto-story-generator"
     },
     {
+      "name": "📄 docs",
+      "path": "docs"
+    },
+    {
       "name": "🧪 demo react",
       "path": "demo/react"
     },
@@ -26,7 +30,14 @@
     }
   ],
   "settings": {
-    "cSpell.words": ["consola", "magicast", "satoshi", "scule", "vumdoc"]
+    "cSpell.words": [
+      "consola",
+      "magicast",
+      "satoshi",
+      "scule",
+      "vitepress",
+      "vumdoc"
+    ]
   },
   "extensions": {}
 }

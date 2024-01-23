@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "asg": "pnpm -F \"@takuma-ru/auto-story-generator\"",
+    "doc": "pnpm -F \"docs\"",
     "demo:react": "pnpm -F \"react\""
   },
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
