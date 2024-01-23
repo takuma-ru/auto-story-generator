@@ -1,32 +1,10 @@
 import fs from "fs";
 
 import { consola } from "consola";
-import { Project, SourceFile, SyntaxKind } from "ts-morph";
+import { Project, SyntaxKind } from "ts-morph";
 
-export type GenStoryFileOptions = {
-  fileOptions: {
-    componentName: string;
-    fileName: string;
-    path: string;
-    type: `.${string}`;
-    relativeSourceFilePath: string;
-    sourceFile: SourceFile;
-  };
-  generateOptions: {
-    fileType: `.stories.${string}`;
-    initialCode: string;
-    meta: {
-      render: string;
-      args: { [key: string]: string | number | boolean | undefined };
-      argTypes: {
-        [key: string]: {
-          control: string;
-          options?: string[];
-        };
-      };
-    };
-  };
-};
+import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
+
 export const genStoryFile = async ({
   fileOptions,
   generateOptions,

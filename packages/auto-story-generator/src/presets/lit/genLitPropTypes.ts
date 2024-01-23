@@ -1,16 +1,15 @@
 import consola from "consola";
 import { pascalCase } from "scule";
-import { SourceFile } from "ts-morph";
 
-type GenArgTypes = {
-  sourceFile: SourceFile;
-  componentName: string;
-};
+import {
+  GenReactPropTypesOptions,
+  GenReactPropTypesReturn,
+} from "~/src/types/GenPropTypeType";
 
-/**
- *
- */
-export const genLitPropTypes = ({ sourceFile, componentName }: GenArgTypes) => {
+export const genLitPropTypes = ({
+  sourceFile,
+  componentName,
+}: GenReactPropTypesOptions): GenReactPropTypesReturn => {
   const pascalComponentName = pascalCase(componentName);
 
   const componentClassDeclaration = sourceFile.getClass(pascalComponentName);

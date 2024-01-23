@@ -2,7 +2,8 @@ import { consola } from "consola";
 import { kebabCase, pascalCase } from "scule";
 
 import { genLitPropTypes } from "~/src/presets/lit/genLitPropTypes";
-import { GenStoryFileOptions, genStoryFile } from "~/src/utils/genStoryFile";
+import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
+import { genStoryFile } from "~/src/utils/genStoryFile";
 
 export const genLitStoryFile = async ({
   componentName,
