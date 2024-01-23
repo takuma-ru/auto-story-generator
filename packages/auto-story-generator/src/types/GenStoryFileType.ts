@@ -13,9 +13,10 @@ export type GenStoryFileOptions = {
     fileType: `.stories.${string}`;
     initialCode: string;
     meta: {
-      render: string;
-      args: { [key: string]: string | number | boolean | undefined };
-      argTypes: {
+      render?: string;
+      component?: string;
+      args?: { [key: string]: string | number | boolean | undefined };
+      argTypes?: {
         [key: string]: {
           control: string;
           options?: string[];

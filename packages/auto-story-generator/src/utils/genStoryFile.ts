@@ -45,36 +45,52 @@ export const genStoryFile = async ({
 
     if (!initializer) return consola.error("Could not find initializer");
 
-    // metaのrenderオブジェクトを取得する
-    const renderProperty = initializer.getPropertyOrThrow("render");
+    if (generateOptions.meta.render) {
+      // metaのrenderオブジェクトを取得する
+      const renderProperty = initializer.getPropertyOrThrow("render");
 
-    // renderオブジェクトの値を書き換える
-    renderProperty.set({
-      initializer: generateOptions.meta.render,
-    });
+      // renderオブジェクトの値を書き換える
+      renderProperty.set({
+        initializer: generateOptions.meta.render,
+      });
+    }
 
-    // metaのargsオブジェクトを取得する
-    const argsProperty = initializer.getPropertyOrThrow("args");
+    if (generateOptions.meta.component) {
+      // metaのcomponentオブジェクトを取得する
+      const componentProperty = initializer.getPropertyOrThrow("component");
 
-    const argText = Object.entries(generateOptions.meta.args)
-      .map((x) => x.join(":"))
-      .join(", ");
+      // componentオブジェクトの値を書き換える
+      componentProperty.set({
+        initializer: generateOptions.meta.component,
+      });
+    }
 
-    argsProperty.set({
-      initializer: `{ ${argText} }`,
-    });
+    if (generateOptions.meta.args) {
+      // metaのargsオブジェクトを取得する
+      const argsProperty = initializer.getPropertyOrThrow("args");
 
-    const argTypesProperty = initializer.getPropertyOrThrow("argTypes");
+      const argText = Object.entries(generateOptions.meta.args)
+        .map((x) => x.join(":"))
+        .join(", ");
 
-    const argTypesText = JSON.stringify(
-      generateOptions.meta.argTypes,
-      null,
-      "",
-    );
+      argsProperty.set({
+        initializer: `{ ${argText} }`,
+      });
+    }
 
-    argTypesProperty.set({
-      initializer: `${argTypesText}`,
-    });
+    if (generateOptions.meta.argTypes) {
+      const argTypesProperty = initializer.getPropertyOrThrow("argTypes");
+
+      const argTypesText = JSON.stringify(
+        generateOptions.meta.argTypes,
+        null,
+        "",
+      );
+
+      argTypesProperty.set({
+        initializer: `${argTypesText}`,
+      });
+    }
 
     // ファイルを保存する
     await storiesProject

@@ -47,8 +47,7 @@ export type ${pascalComponentName}Story = StoryObj<${pascalComponentName}Props>;
 export const Primary: ${pascalComponentName}Story = {};
 `;
 
-  const renderCode = `
-(args) => {
+  const renderCode = `(args) => {
   new ${pascalComponentName}();
 
   return html\`<${componentName}${propTypes

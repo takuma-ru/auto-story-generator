@@ -1,4 +1,3 @@
-import consola from "consola";
 import { pascalCase } from "scule";
 import { TypeFlags } from "ts-morph";
 
@@ -38,10 +37,6 @@ export const genReactPropTypes = ({
   }
 
   const propTypes = propsTypeInterface.map((prop) => {
-    /* consola.log(
-      `${prop.getName()}: ${prop.getValueDeclaration()?.getType().getText()}`,
-    ); */
-
     const propName = prop.getName();
     const propType = prop.getValueDeclaration()?.getType();
 
@@ -69,7 +64,7 @@ export const genReactPropTypes = ({
         name: propName,
         type,
         isOptional: prop.isOptional(),
-        value: unionTypes.map((union) => union.getText()),
+        value: unionTypes.map((union) => union.getText().replace(/"/g, "")),
       };
     }
 
@@ -80,8 +75,6 @@ export const genReactPropTypes = ({
       value: [],
     };
   });
-
-  consola.info(propTypes);
 
   return propTypes;
 };
