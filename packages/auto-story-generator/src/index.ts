@@ -5,7 +5,7 @@ import { Project } from "ts-morph";
 import { createUnplugin } from "unplugin";
 
 import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
-import { genStoryFile } from "~/src/utils/genStoryFile";
+import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
 
 export type AsgOptions = {
   preset: "lit" | "react" | "vue" | "custom";
@@ -73,25 +73,13 @@ const unplugin = createUnplugin((options: AsgOptions) => {
         }
 
         case "react": {
-          await genStoryFile({
-            fileOptions: {
-              componentName,
-              fileName: fileName || "",
-              path: file,
-              type: `.${fileType}`,
-              relativeSourceFilePath,
-              sourceFile,
-            },
-            generateOptions: {
-              fileType: `.stories.${fileType}`,
-              initialCode:
-                "const meta = {render: () => {}, args: {}, argTypes: {}};",
-              meta: {
-                render: "() => {}",
-                args: {},
-                argTypes: {},
-              },
-            },
+          await genReactStoryFile({
+            componentName,
+            fileName: fileName || "",
+            path: file,
+            type: `.${fileType}`,
+            relativeSourceFilePath,
+            sourceFile,
           });
 
           break;
