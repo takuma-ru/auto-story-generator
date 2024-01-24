@@ -9,6 +9,12 @@
   },
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
   "license": "MIT",
+  "packageManager": "pnpm@8.14.1",
+  "engines": {
+    "npm": "use pnpm please!",
+    "yarn": "use pnpm please!",
+    "pnpm": ">=8.14.1"
+  },
   "volta": {
     "node": "20.11.0",
     "pnpm": "8.14.1"
