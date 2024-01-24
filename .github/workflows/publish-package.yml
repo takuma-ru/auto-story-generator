@@ -1,0 +1,132 @@
+name: Release @takuma-ru/auto-story-generator package
+
+run-name: Release ${{ inputs.releaseLevel }} version
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseLevel:
+        description: "Release level"
+        required: true
+        default: "patch(0.0.X)"
+        type: choice
+        options:
+          - major(X.0.0)
+          - minor(0.X.0)
+          - patch(0.0.X)
+      isBeta:
+        description: "Is beta release (exp: X.0.0-beta.X)"
+        required: false
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      deployments: write
+      issues: write
+      packages: write
+      pull-requests: write
+      repository-projects: write
+      security-events: write
+      statuses: write
+    environment:
+      name: Publish
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NODE_OPTIONS: --max_old_space_size=8192
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+          registry-url: "https://registry.npmjs.org/"
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8.14.1
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install Node Dependencies
+        run: pnpm install
+
+      - name: Set .npmrc
+        run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > packages/core/.npmrc
+
+      - name: Create release branch
+        id: create_branch
+        run: |
+          git checkout -b release
+          git push --set-upstream origin release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Major release
+        id: major
+        run: pnpm asg publish:major
+        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'false')
+
+      - name: Major Beta release
+        id: major-beta
+        run: pnpm asg publish:major-beta
+        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'true')
+
+      - name: Minor release
+        id: minor
+        run: pnpm asg publish:minor
+        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'false')
+
+      - name: Minor Beta release
+        id: minor-beta
+        run: pnpm asg publish:minor-beta
+        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'true')
+
+      - name: Patch release
+        id: patch
+        run: pnpm asg publish:patch
+        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'false')
+
+      - name: Patch Beta release
+        id: patch-beta
+        run: pnpm asg publish:patch-beta
+        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'true')
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success'
+        with:
+          title: "Update package.json"
+          draft: false
+          base: main
+          branch: release
+          assignees: "${{ github.actor }}"
