@@ -12,6 +12,7 @@ export const genLitStoryFile = async ({
   type,
   relativeSourceFilePath,
   sourceFile,
+  prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
   const propTypes = genLitPropTypes({ sourceFile, componentName });
   const pascalComponentName = pascalCase(componentName);
@@ -132,6 +133,7 @@ export const Primary: ${pascalComponentName}Story = {};
       type,
       relativeSourceFilePath,
       sourceFile,
+      prettierConfigPath,
     },
     generateOptions: {
       fileType: ".stories.ts",

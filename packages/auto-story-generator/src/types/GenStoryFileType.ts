@@ -8,6 +8,7 @@ export type GenStoryFileOptions = {
     type: `.${string}`;
     relativeSourceFilePath: string;
     sourceFile: SourceFile;
+    prettierConfigPath?: string;
   };
   generateOptions: {
     fileType: `.stories.${string}`;
