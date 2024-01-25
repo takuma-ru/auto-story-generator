@@ -1,6 +1,7 @@
 import fs from "fs";
 
 import { consola } from "consola";
+import * as prettier from "prettier";
 import { Project, SyntaxKind } from "ts-morph";
 
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
@@ -95,10 +96,32 @@ export const genStoryFile = async ({
     // ファイルを保存する
     await storiesProject
       .save()
-      .then(() => {
+      .then(async () => {
         consola.success(
           `Successfully updated args in ${storiesSourceFile.getFilePath()}`,
         );
+
+        const fileContent = fs.readFileSync(storiesFilePath, "utf-8");
+
+        const config: prettier.Options | null = fileOptions.prettierConfigPath
+          ? await prettier.resolveConfig(fileOptions.prettierConfigPath)
+          : {
+              semi: true,
+              trailingComma: "all",
+              singleQuote: false,
+              printWidth: 80,
+              tabWidth: 2,
+              endOfLine: "lf",
+            };
+
+        // Format the content using Prettier
+        const formattedContent = await prettier.format(fileContent, {
+          ...config,
+          parser: "typescript",
+        });
+
+        // Write the formatted content back to the file
+        fs.writeFileSync(storiesFilePath, formattedContent);
       })
       .catch((err) => {
         consola.error(err);

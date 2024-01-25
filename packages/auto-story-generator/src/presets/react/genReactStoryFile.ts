@@ -12,6 +12,7 @@ export const genReactStoryFile = async ({
   type,
   relativeSourceFilePath,
   sourceFile,
+  prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
   const propTypes = genReactPropTypes({ sourceFile, componentName });
   const pascalComponentName = pascalCase(componentName);
@@ -100,6 +101,7 @@ export const Primary: Story = {};
       type,
       relativeSourceFilePath,
       sourceFile,
+      prettierConfigPath,
     },
     generateOptions: {
       fileType: ".stories.tsx",

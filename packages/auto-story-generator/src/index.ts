@@ -22,6 +22,8 @@ export type AsgOptions = {
    * `**\/src/components/**\/*.ts`
    */
   imports?: string[];
+
+  prettierConfigPath?: string;
 };
 
 const unplugin = createUnplugin((options: AsgOptions) => {
@@ -46,7 +48,7 @@ const unplugin = createUnplugin((options: AsgOptions) => {
       const componentName = fileName?.replace(`.${fileType}`, "");
       const relativeSourceFilePath = file.replace(projectRootDir, "");
 
-      if (!componentName) {
+      if (!componentName || !fileName) {
         return consola.error("Could not find component name");
       }
 
@@ -62,11 +64,12 @@ const unplugin = createUnplugin((options: AsgOptions) => {
         case "lit": {
           await genLitStoryFile({
             componentName,
-            fileName: fileName || "",
+            fileName: fileName,
             path: file,
             type: `.${fileType}`,
             relativeSourceFilePath,
             sourceFile,
+            prettierConfigPath: options.prettierConfigPath,
           });
 
           break;
@@ -75,11 +78,12 @@ const unplugin = createUnplugin((options: AsgOptions) => {
         case "react": {
           await genReactStoryFile({
             componentName,
-            fileName: fileName || "",
+            fileName: fileName,
             path: file,
             type: `.${fileType}`,
             relativeSourceFilePath,
             sourceFile,
+            prettierConfigPath: options.prettierConfigPath,
           });
 
           break;
