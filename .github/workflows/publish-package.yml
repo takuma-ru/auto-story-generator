@@ -15,7 +15,12 @@ on:
           - minor(0.X.0)
           - patch(0.0.X)
       isBeta:
-        description: "Is beta release (exp: X.0.0-beta.X)"
+        description: "Is beta release (exp: X.X.X-beta.0)"
+        required: false
+        type: boolean
+
+      isBetaVersionUp:
+        description: "Is beta version up (exp: X.0.0-beta.X <= here!!)"
         required: false
         type: boolean
 
@@ -83,13 +88,13 @@ jobs:
       - name: Set .npmrc
         run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > packages/auto-story-generator/.npmrc
 
-      - name: Create release branch
-        id: create_branch
-        run: |
-          git checkout -b release
-          git push --set-upstream origin release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- name: Create release branch
+      #  id: create_branch
+      #  run: |
+      #    git checkout -b release
+      #    git push --set-upstream origin release
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Major release
         id: major
@@ -121,12 +126,17 @@ jobs:
         run: pnpm asg publish:patch-beta
         if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'true')
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success'
-        with:
-          title: "Update package.json"
-          draft: false
-          base: main
-          branch: release
-          assignees: "${{ github.actor }}"
+      - name: Beta version up
+        id: beta-version-up
+        run: pnpm asg publish:prerelease
+        if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
+
+      #- name: Create Pull Request
+      #  uses: peter-evans/create-pull-request@v4
+      #  if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success'
+      #  with:
+      #    title: "Update package.json"
+      #    draft: false
+      #    base: main
+      #    branch: release
+      #    assignees: "${{ github.actor }}"
