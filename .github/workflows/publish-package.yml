@@ -99,32 +99,32 @@ jobs:
       - name: Major release
         id: major
         run: pnpm asg publish:major
-        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'false')
+        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Major Beta release
         id: major-beta
         run: pnpm asg publish:major-beta
-        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'true')
+        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Minor release
         id: minor
         run: pnpm asg publish:minor
-        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'false')
+        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Minor Beta release
         id: minor-beta
         run: pnpm asg publish:minor-beta
-        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'true')
+        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Patch release
         id: patch
         run: pnpm asg publish:patch
-        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'false')
+        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Patch Beta release
         id: patch-beta
         run: pnpm asg publish:patch-beta
-        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'true')
+        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Beta version up
         id: beta-version-up
