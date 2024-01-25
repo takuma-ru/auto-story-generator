@@ -51,7 +51,7 @@
     "storybook-addon-auto-story-generator"
   ],
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
-  "license": "MIT",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/takuma-ru/auto-story-generator"
