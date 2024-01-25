@@ -38,9 +38,7 @@ const unplugin = createUnplugin((options: AsgOptions) => {
           })
         : [true];
 
-      if (!isMatches.includes(true)) {
-        return consola.error("Not a target file for automatic generation");
-      }
+      if (!isMatches.includes(true)) return;
 
       const projectRootDir = process.cwd();
       const fileName = file.split("/").pop();
