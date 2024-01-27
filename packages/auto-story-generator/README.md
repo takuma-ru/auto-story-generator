@@ -38,10 +38,10 @@ export default config;
 ```
 
 ## Supported Frameworks
-> ✅: Supported
-> 🚧: Work in progress
-> ❌: Not supported
-> 📝: Not yet implemented
+> ✅: Supported<br>
+> 🚧: Work in progress<br>
+> ❌: Not supported<br>
+> 📝: Not yet implemented<br>
 
 | Framework | Supported |
 | --------- | --------- |

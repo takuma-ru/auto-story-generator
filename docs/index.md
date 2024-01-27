@@ -3,23 +3,30 @@
 layout: home
 
 hero:
-  name: "auto-story-generator"
-  text: "Automatic real-time story file generation from React, Vue, and Lit component files"
-  tagline: My great project tagline
+  name: "auto-story-generator(ASG)"
+  text: "Generate and update stories from component files in real time"
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Get Started
+      link: /introduction/getting-started
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: View on GitHub
+      link: https://github.com/takuma-ru/auto-story-generator
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - icon: ⚙️
+    title: Automatic generation
+    details: Detects changes in component files and automatically generates story files.
+  - icon: 🔄
+    title: Automatic updates
+    details: Detects changes in component files and automatically updates meta information in stories.
+  - icon:
+      dark: https://unplugin.vercel.app/logo_dark.svg
+      light: https://unplugin.vercel.app/logo_light.svg
+    title: Supports a wide variety of build tools
+    details: Supports a wide variety of build tools.
+  - icon: 🧩
+    title: Support for various front-end frameworks
+    details: Stories can be generated from "Vue", "React" and "Svelte" component files.
 ---
 

@@ -1,0 +1,79 @@
+# Get Started
+
+## Install
+::: code-group
+
+```bash [npm]
+npm i -D @takuma-ru/auto-story-generator
+```
+
+```bash [yarn]
+yarn add -D @takuma-ru/auto-story-generator
+```
+
+```bash [pnpm]
+pnpm add -D @takuma-ru/auto-story-generator
+```
+
+:::
+
+## Setup
+### 0. Setup Storybook
+Install Storybook in your project on [Storybook Docs - Install](https://storybook.js.org/docs/get-started/install).
+
+### 1. Add plugin to your config
+
+`./storybook/main.ts` or `./storybook/main.js`
+::: code-group
+
+```ts{6,13-16} [Vite]
+import type { StorybookConfig } from "@storybook/react-vite";
+
+import { mergeConfig } from "vite";
+import { dirname, resolve } from "path";
+
+import autoStoryGenerator from "@takuma-ru/auto-story-generator";
+
+const config: StorybookConfig = {
+  /* ... */
+  viteFinal: (config) =>
+    mergeConfig(config, {
+      plugins: [
+        autoStoryGenerator.vite({
+          preset: "react",
+          imports: ["**/src/components/**/*.tsx"],
+        }),
+      ],
+    }),
+};
+
+export default config;
+```
+
+```ts{5,10-13} [Webpack]
+import type { StorybookConfig } from "@storybook/react/types";
+
+import { dirname, resolve } from "path";
+
+import autoStoryGenerator from "@takuma-ru/auto-story-generator";
+
+const config: StorybookConfig = {
+  /* ... */
+  webpackFinal: (config) => {
+    config.plugins.push(
+      autoStoryGenerator.webpack({
+        preset: "react",
+        imports: ["**/src/components/**/*.tsx"],
+      })
+    );
+    return config;
+  },
+};
+
+export default config;
+```
+
+:::
+
+### 2. Done!
+Now, when you run Storybook, it will automatically generate stories from the component files.

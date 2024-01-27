@@ -20,7 +20,7 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
-  viteFinal: async (config) =>
+  viteFinal: (config) =>
     mergeConfig(config, {
       plugins: [
         autoStoryGenerator.vite({

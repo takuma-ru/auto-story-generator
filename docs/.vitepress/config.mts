@@ -2,22 +2,22 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "auto-story-generator",
-  description:
-    "Automatic real-time story file generation from React, Vue, and Lit component files",
+  title: "ASG(writing...)",
+  description: "Generate and update stories from component files in real time",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
-      { text: "Examples", link: "/markdown-examples" },
+      { text: "Getting Started", link: "/introduction/getting-started" },
     ],
 
     sidebar: [
       {
-        text: "Examples",
+        text: "Introduction",
         items: [
-          { text: "Markdown Examples", link: "/markdown-examples" },
-          { text: "Runtime API Examples", link: "/api-examples" },
+          { text: "What is This?", link: "/introduction/what" },
+          { text: "Getting Started", link: "/introduction/getting-started" },
+          { text: "Options", link: "/introduction/options" },
         ],
       },
     ],
