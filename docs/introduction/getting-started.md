@@ -77,3 +77,5 @@ export default config;
 
 ### 2. Done!
 Now, when you run Storybook, it will automatically generate stories from the component files.
+
+The story is generated at the time the component file is saved.

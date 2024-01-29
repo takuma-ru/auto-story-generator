@@ -20,6 +20,16 @@ export default defineConfig({
           { text: "Options", link: "/introduction/options" },
         ],
       },
+      {
+        text: "Use Cases",
+        items: [
+          { text: "React", link: "/useCase/react" },
+          { text: "Lit", link: "/useCase/lit" },
+          { text: "Vue", link: "/useCase/vue" },
+          { text: "Svelte", link: "/useCase/svelte" },
+          { text: "Custom", link: "/useCase/custom" },
+        ],
+      },
     ],
 
     socialLinks: [

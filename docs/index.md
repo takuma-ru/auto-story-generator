@@ -24,7 +24,7 @@ features:
       dark: https://unplugin.vercel.app/logo_dark.svg
       light: https://unplugin.vercel.app/logo_light.svg
     title: Supports a wide variety of build tools
-    details: Supports a wide variety of build tools.
+    details: Supports a wide variety of build tools by unplugin.
   - icon: 🧩
     title: Support for various front-end frameworks
     details: Stories can be generated from "Vue", "React" and "Svelte" component files.
