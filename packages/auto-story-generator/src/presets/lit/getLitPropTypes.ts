@@ -6,7 +6,7 @@ import {
   GenReactPropTypesReturn,
 } from "~/src/types/GenPropTypeType";
 
-export const genLitPropTypes = ({
+export const getLitPropTypes = ({
   sourceFile,
   componentName,
 }: GenReactPropTypesOptions): GenReactPropTypesReturn => {

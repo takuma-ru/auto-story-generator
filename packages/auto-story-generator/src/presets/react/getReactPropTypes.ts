@@ -6,7 +6,7 @@ import {
   GenReactPropTypesReturn,
 } from "~/src/types/GenPropTypeType";
 
-const getTypeFlagsName = (flags: TypeFlags): string => {
+const getTypeFlagsName = (flags: TypeFlags) => {
   // Get all the keys of TypeFlags
   const keys = Object.keys(TypeFlags) as (keyof typeof TypeFlags)[];
 
@@ -16,7 +16,7 @@ const getTypeFlagsName = (flags: TypeFlags): string => {
   return setFlags || "err";
 };
 
-export const genReactPropTypes = ({
+export const getReactPropTypes = ({
   sourceFile,
   componentName,
 }: GenReactPropTypesOptions): {
@@ -28,13 +28,9 @@ export const genReactPropTypes = ({
   const pascalComponentName = pascalCase(componentName);
 
   const propsType = sourceFile.getTypeAlias(`${pascalComponentName}Props`);
-
   const propsInterface = sourceFile.getInterface(`${pascalComponentName}Props`);
-
   const propsOnlyType = sourceFile.getTypeAlias("Props");
-
   const propsOnlyInterface = sourceFile.getInterface("Props");
-
   const propsInline = sourceFile
     .getVariableDeclaration(pascalComponentName)
     ?.getInitializerIfKindOrThrow(ts.SyntaxKind.ArrowFunction);
@@ -54,9 +50,7 @@ export const genReactPropTypes = ({
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   let propsProperties: Symbol[] = [];
-
   const isPropsIntersection = props.isIntersection();
-
   if (isPropsIntersection) {
     propsProperties = [];
 
@@ -65,7 +59,7 @@ export const genReactPropTypes = ({
     intersectionTypes.forEach((intersectionType) => {
       const intersectionTypeText = intersectionType.getText();
 
-      if (intersectionTypeText.includes("HTMLAttributes<")) {
+      if (intersectionTypeText.includes("HTMLAttributes")) {
         return;
       }
 

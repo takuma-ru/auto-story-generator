@@ -1,7 +1,7 @@
 import { consola } from "consola";
 import { pascalCase } from "scule";
 
-import { genReactPropTypes } from "~/src/presets/react/genReactPropTypes";
+import { getReactPropTypes } from "~/src/presets/react/getReactPropTypes";
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { genStoryFile } from "~/src/utils/genStoryFile";
 
@@ -14,7 +14,7 @@ export const genReactStoryFile = async ({
   sourceFile,
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
-  const { propTypes } = genReactPropTypes({
+  const { propTypes } = getReactPropTypes({
     sourceFile,
     componentName,
   });
@@ -25,7 +25,7 @@ export const genReactStoryFile = async ({
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ${pascalComponentName} } from "./${pascalComponentName}";
+import { ${pascalComponentName} } from "./${fileName}";
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",

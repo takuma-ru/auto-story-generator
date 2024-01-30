@@ -1,7 +1,7 @@
 import { consola } from "consola";
 import { kebabCase, pascalCase } from "scule";
 
-import { genLitPropTypes } from "~/src/presets/lit/genLitPropTypes";
+import { getLitPropTypes } from "~/src/presets/lit/getLitPropTypes";
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { genStoryFile } from "~/src/utils/genStoryFile";
 
@@ -14,7 +14,7 @@ export const genLitStoryFile = async ({
   sourceFile,
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
-  const propTypes = genLitPropTypes({ sourceFile, componentName });
+  const propTypes = getLitPropTypes({ sourceFile, componentName });
   const pascalComponentName = pascalCase(componentName);
 
   if (!propTypes) return consola.error("Could not find argTypes");

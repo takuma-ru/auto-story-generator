@@ -43,7 +43,10 @@ const unplugin = createUnplugin((options: AsgOptions) => {
       const projectRootDir = process.cwd();
       const fileName = file.split("/").pop();
       const fileType = fileName?.split(".").slice(1).join(".");
-      const componentName = fileName?.replace(`.${fileType}`, "");
+      const componentName =
+        fileName?.replace(`.${fileType}`, "") === "index"
+          ? file.split("/").slice(-2)[0]
+          : fileName?.replace(`.${fileType}`, "");
       const relativeSourceFilePath = file.replace(projectRootDir, "");
 
       if (!componentName || !fileName) {
