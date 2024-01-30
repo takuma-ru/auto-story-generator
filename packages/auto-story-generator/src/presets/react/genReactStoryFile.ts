@@ -14,7 +14,10 @@ export const genReactStoryFile = async ({
   sourceFile,
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
-  const propTypes = genReactPropTypes({ sourceFile, componentName });
+  const { propTypes } = genReactPropTypes({
+    sourceFile,
+    componentName,
+  });
   const pascalComponentName = pascalCase(componentName);
 
   if (!propTypes) return consola.error("Could not find argTypes");

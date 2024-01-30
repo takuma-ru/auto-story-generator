@@ -1,5 +1,5 @@
 import { pascalCase } from "scule";
-import { TypeFlags } from "ts-morph";
+import { TypeFlags, ts, Symbol } from "ts-morph";
 
 import {
   GenReactPropTypesOptions,
@@ -19,24 +19,71 @@ const getTypeFlagsName = (flags: TypeFlags): string => {
 export const genReactPropTypes = ({
   sourceFile,
   componentName,
-}: GenReactPropTypesOptions): GenReactPropTypesReturn => {
+}: GenReactPropTypesOptions): {
+  propsPattern?: "component-props" | "props" | "inline";
+  propTypes: GenReactPropTypesReturn;
+} => {
+  let propsPattern: "component-props" | "props" | "inline" = "component-props";
+
   const pascalComponentName = pascalCase(componentName);
 
-  const props = sourceFile.getTypeAlias(`${pascalComponentName}Props`);
+  const propsType = sourceFile.getTypeAlias(`${pascalComponentName}Props`);
 
-  const propTypesInterface = sourceFile.getInterface(
-    `${pascalComponentName}Props`,
-  );
+  const propsInterface = sourceFile.getInterface(`${pascalComponentName}Props`);
 
-  const propsTypeInterface =
-    props?.getType().getProperties() ||
-    propTypesInterface?.getType().getProperties();
+  const propsOnlyType = sourceFile.getTypeAlias("Props");
 
-  if (!propsTypeInterface) {
-    return;
+  const propsOnlyInterface = sourceFile.getInterface("Props");
+
+  const propsInline = sourceFile
+    .getVariableDeclaration(pascalComponentName)
+    ?.getInitializerIfKindOrThrow(ts.SyntaxKind.ArrowFunction);
+
+  const props =
+    propsType?.getType() ||
+    propsInterface?.getType() ||
+    propsOnlyType?.getType() ||
+    propsOnlyInterface?.getType() ||
+    propsInline?.getParameters()[0].getType();
+
+  if (!props) {
+    return {
+      propTypes: undefined,
+    };
   }
 
-  const propTypes = propsTypeInterface.map((prop) => {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  let propsProperties: Symbol[] = [];
+
+  const isPropsIntersection = props.isIntersection();
+
+  if (isPropsIntersection) {
+    propsProperties = [];
+
+    const intersectionTypes = props.getIntersectionTypes();
+
+    intersectionTypes.forEach((intersectionType) => {
+      const intersectionTypeText = intersectionType.getText();
+
+      if (intersectionTypeText.includes("HTMLAttributes<")) {
+        return;
+      }
+
+      return propsProperties.push(...intersectionType.getProperties());
+    });
+  } else {
+    propsProperties = props.getProperties();
+  }
+
+  if (propsOnlyType || propsOnlyInterface) {
+    propsPattern = "props";
+  }
+
+  if (propsInline) {
+    propsPattern = "inline";
+  }
+
+  const propTypes = propsProperties.map((prop) => {
     const propName = prop.getName();
     const propType = prop.getValueDeclaration()?.getType();
 
@@ -76,5 +123,8 @@ export const genReactPropTypes = ({
     };
   });
 
-  return propTypes;
+  return {
+    propsPattern,
+    propTypes,
+  };
 };
