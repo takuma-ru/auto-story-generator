@@ -82,27 +82,21 @@ Example of defining Props type with `{ComponentName}Props`.
   ```
 
   ```tsx [story]
-  import type { Meta, StoryObj } from '@storybook/react'
+  import type { Meta, StoryObj } from "@storybook/react";
 
-  import { XXXX } from './XXXX'
+  import { XXXX } from "./XXXX.tsx";
 
   const meta: Meta<typeof XXXX> = {
-    title: 'components/XXXX',
+    title: "components/XXXX",
     component: XXXX,
-    tags: ['autodocs'],
-    args: {
-      propA: undefined,
-      propB: undefined,
-    },
-    argTypes: {
-      propA: {control: 'text' },
-      propB: {control: 'boolean' },
-    },
-  }
+    tags: ["autodocs"],
+    args: { propA: undefined, propB: undefined },
+    argTypes: { propA: { control: "text" }, propB: { control: "boolean" } },
+  };
 
-  export default meta
-  type Story = StoryObj<typeof meta>
+  export default meta;
+  type Story = StoryObj<typeof meta>;
 
-  export const Primary: Story = {}
+  export const Primary: Story = {};
   ```
   :::
