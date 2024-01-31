@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "ASG(writing...)",
+  title: "ASG",
   description: "Generate and update stories from component files in real time",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
