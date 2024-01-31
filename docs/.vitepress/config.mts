@@ -9,6 +9,7 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Getting Started", link: "/introduction/getting-started" },
+      { text: "FAQ", link: "/faq" },
     ],
 
     sidebar: [
@@ -29,6 +30,10 @@ export default defineConfig({
           { text: "Svelte", link: "/useCase/svelte" },
           { text: "Custom", link: "/useCase/custom" },
         ],
+      },
+      {
+        text: "FAQ",
+        link: "/faq",
       },
     ],
 
