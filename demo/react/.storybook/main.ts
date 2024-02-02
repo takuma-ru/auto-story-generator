@@ -1,40 +1,40 @@
-import type { StorybookConfig } from "@storybook/react-vite";
+import type { StorybookConfig } from '@storybook/react-vite'
 
-import { mergeConfig } from "vite";
-import { join, dirname, resolve } from "path";
+import { mergeConfig } from 'vite'
+import { join, dirname, resolve } from 'path'
 
-import autoStoryGenerator from "@takuma-ru/auto-story-generator";
+import autoStoryGenerator from '@takuma-ru/auto-story-generator'
 
 const config: StorybookConfig = {
-  stories: ["../src/components/**/*.stories.ts"],
+  stories: ['../src/components/**/*.stories.ts'],
   addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-onboarding",
-    "@storybook/addon-interactions",
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-onboarding',
+    '@storybook/addon-interactions',
   ],
   framework: {
-    name: "@storybook/react-vite",
+    name: '@storybook/react-vite',
     options: {},
   },
   docs: {
-    autodocs: "tag",
+    autodocs: 'tag',
   },
   viteFinal: (config) =>
     mergeConfig(config, {
       plugins: [
         autoStoryGenerator.vite({
-          preset: "react",
-          imports: ["**/src/components/**/*.tsx"],
-          prettierConfigPath: resolve(__dirname, "../.prettierrc"),
+          preset: 'react',
+          imports: ['**/src/components/**/*.tsx'],
+          prettierConfigPath: resolve(__dirname, '../.prettierrc'),
         }),
       ],
 
       resolve: {
         alias: {
-          "~": resolve(__dirname, "../src"),
+          '~': resolve(__dirname, '../src'),
         },
       },
     }),
-};
-export default config;
+}
+export default config

@@ -3,11 +3,11 @@
  */
 const config = {
   printWidth: 80,
-  tabWidth: 4,
+  tabWidth: 2,
   semi: false,
   singleQuote: true,
   bracketSameLine: false,
   singleAttributePerLine: true,
-};
+}
 
-module.exports = config;
+module.exports = config

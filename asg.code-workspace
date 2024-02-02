@@ -13,19 +13,19 @@
       "path": "docs"
     },
     {
-      "name": "🧪 demo react",
+      "name": "🧪 react",
       "path": "demo/react"
     },
     {
-      "name": "🧪 demo vue",
+      "name": "🧪 vue",
       "path": "demo/vue"
     },
     {
-      "name": "🧪 demo lit",
+      "name": "🧪 lit",
       "path": "demo/lit"
     },
     {
-      "name": "🧪 demo svelte",
+      "name": "🧪 svelte",
       "path": "demo/svelte"
     }
   ],
