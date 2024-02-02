@@ -6,10 +6,11 @@
     "asg": "pnpm -F \"@takuma-ru/auto-story-generator\"",
     "doc": "pnpm -F \"docs\"",
     "d:react": "pnpm -F \"react\"",
-    "d:next": "pnpm -F \"next\""
+    "d:next": "pnpm -F \"next\"",
+    "d:lit": "pnpm -F \"lit\""
   },
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
-  "license": "MIT",
+  "license": "ISC",
   "packageManager": "pnpm@8.14.1",
   "engines": {
     "npm": "use pnpm please!",
