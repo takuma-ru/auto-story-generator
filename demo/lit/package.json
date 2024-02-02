@@ -1,0 +1,29 @@
+{
+  "name": "lit",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "sb:dev": "storybook dev -p 6006 --no-open",
+    "sb:build": "storybook build"
+  },
+  "dependencies": {
+    "@takuma-ru/auto-story-generator": "workspace:^",
+    "lit": "^3.1.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.12",
+    "@storybook/addon-links": "^7.6.12",
+    "@storybook/blocks": "^7.6.12",
+    "@storybook/web-components": "^7.6.12",
+    "@storybook/web-components-vite": "^7.6.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.6.12",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  }
+}
