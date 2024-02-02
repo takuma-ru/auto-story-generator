@@ -6,7 +6,7 @@ import { join, dirname, resolve } from 'path'
 import autoStoryGenerator from '@takuma-ru/auto-story-generator'
 
 const config: StorybookConfig = {
-  stories: ['../src/components/**/*.stories.ts'],
+  stories: ['../src/components/**/*.stories.tsx'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',

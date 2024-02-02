@@ -2,32 +2,36 @@
   "folders": [
     {
       "name": "root",
-      "path": "."
+      "path": ".",
     },
     {
       "name": "📦 asg",
-      "path": "packages/auto-story-generator"
+      "path": "packages/auto-story-generator",
     },
     {
       "name": "📄 docs",
-      "path": "docs"
+      "path": "docs",
     },
     {
       "name": "🧪 react",
-      "path": "demo/react"
+      "path": "demo/react",
+    },
+    {
+      "name": "🧪 next",
+      "path": "demo/next",
     },
     {
       "name": "🧪 vue",
-      "path": "demo/vue"
+      "path": "demo/vue",
     },
     {
       "name": "🧪 lit",
-      "path": "demo/lit"
+      "path": "demo/lit",
     },
     {
       "name": "🧪 svelte",
-      "path": "demo/svelte"
-    }
+      "path": "demo/svelte",
+    },
   ],
   "settings": {
     "cSpell.words": [
@@ -36,8 +40,8 @@
       "satoshi",
       "scule",
       "vitepress",
-      "vumdoc"
-    ]
+      "vumdoc",
+    ],
   },
-  "extensions": {}
+  "extensions": {},
 }

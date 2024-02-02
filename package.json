@@ -5,7 +5,8 @@
   "scripts": {
     "asg": "pnpm -F \"@takuma-ru/auto-story-generator\"",
     "doc": "pnpm -F \"docs\"",
-    "demo:react": "pnpm -F \"react\""
+    "d:react": "pnpm -F \"react\"",
+    "d:next": "pnpm -F \"next\""
   },
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
   "license": "MIT",
