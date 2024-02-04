@@ -3,7 +3,7 @@
 ![asg-thumbnail](https://github.com/takuma-ru/auto-story-generator/assets/49429291/dca65c2c-3384-45c0-a761-e85276cb2393)
 
 ## Description
-Automatic real-time story file generation from React, Vue, and Lit component files
+Automatic real-time story file generation from React, Vue, Lit and Angular component files
 
 ## Getting Started
 ### 1. Install the package
@@ -37,6 +37,51 @@ const config: StorybookConfig = {
 export default config;
 ```
 
+> [!WARNING]  
+> Don't run this plugin(Angular part) on your apps right away. Test it on a sample Application or create a new Angular app.
+
+> [!NOTE]
+> Angular feature is a WIP. Only a basic story can be created at this point of time. Modify the created stories as required. Will try to improve story creation.
+
+For `Angular` [a link] (https://storybook.js.org/docs/builders/webpack#extending-storybooks-webpack-config)
+
+```ts
+import type { StorybookConfig } from "@storybook/angular";
+
+import autoStoryGenerator from "@takuma-ru/auto-story-generator";
+
+const customConfig = {
+  webpackFinal: async (config) => {
+    let plugin = autoStoryGenerator.webpack({
+      preset: "angular",
+      imports: ["**/src/**/*.component.ts"],
+    });
+    config.plugins.push(plugin);
+    return config;
+  }
+}
+
+const primeConfig: StorybookConfig = {
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  addons: [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
+  ],
+  framework: {
+    name: "@storybook/angular",
+    options: {},
+  },
+  // spread the object here instead of mergeConfig(avaialable for vite) 
+  ...customConfig,
+  docs: {
+    autodocs: "tag",
+  },
+};
+
+export default primeConfig;
+```
+
 ## Supported Frameworks
 > ✅: Supported
 > 🚧: Work in progress
@@ -48,5 +93,5 @@ export default config;
 | React     | ✅         |
 | Vue       | 🚧         |
 | Lit       | ✅         |
-| Angular   | ❌         |
+| Angular   | 🚧         |
 | Svelte    | 📝         |
