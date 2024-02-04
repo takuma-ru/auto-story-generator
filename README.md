@@ -1,3 +1,7 @@
+
+> [!NOTE]
+> This is a fork of @takuma-ru/auto-story-generator(which doesn't support Angular). This is meant to extend @takuma-ru/auto-story-generator and support Angular. 
+
 # @takuma-ru/auto-story-generator
 
 ![asg-thumbnail](https://github.com/takuma-ru/auto-story-generator/assets/49429291/dca65c2c-3384-45c0-a761-e85276cb2393)
