@@ -43,7 +43,7 @@ export default config;
 > [!NOTE]
 > Angular feature is a WIP. Only a basic story can be created at this point of time. Modify the created stories as required. Will try to improve story creation.
 
-For `Angular` [a link] (https://storybook.js.org/docs/builders/webpack#extending-storybooks-webpack-config)
+For `Angular` [Webpack custom config](https://storybook.js.org/docs/builders/webpack#working-with-webpack-plugins)
 
 ```ts
 import type { StorybookConfig } from "@storybook/angular";
@@ -81,6 +81,10 @@ const primeConfig: StorybookConfig = {
 
 export default primeConfig;
 ```
+> [!NOTE]
+> In Angular, for first time story creation, a run tme error occurs, can ignore it. 
+
+
 
 ## Supported Frameworks
 > ✅: Supported
