@@ -6,9 +6,10 @@ import { createUnplugin } from "unplugin";
 
 import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
 import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
+import { genAngularStoryFile } from "~/src/presets/angular/genAngularStoryFile";
 
 export type AsgOptions = {
-  preset: "lit" | "react" | "vue" | "custom";
+  preset: "lit" | "react" | "vue" | "custom" | "angular";
   /**
    * @default undefined
    *
@@ -41,7 +42,10 @@ const unplugin = createUnplugin((options: AsgOptions) => {
       if (!isMatches.includes(true)) return;
 
       const projectRootDir = process.cwd();
-      const fileName = file.split("/").pop();
+      
+      // split for either forward or backward slash
+      const fileName = file.split(/[\\\/]/).pop();
+      
       const fileType = fileName?.split(".").slice(1).join(".");
       const componentName =
         fileName?.replace(`.${fileType}`, "") === "index"
@@ -78,6 +82,20 @@ const unplugin = createUnplugin((options: AsgOptions) => {
 
         case "react": {
           await genReactStoryFile({
+            componentName,
+            fileName: fileName,
+            path: file,
+            type: `.${fileType}`,
+            relativeSourceFilePath,
+            sourceFile,
+            prettierConfigPath: options.prettierConfigPath,
+          });
+
+          break;
+        }
+
+        case "angular": {
+          await genAngularStoryFile({
             componentName,
             fileName: fileName,
             path: file,
