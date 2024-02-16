@@ -9,13 +9,14 @@ Specify the name of the framework.
 At this time, some special naming and writing is required for story generation. (This will be improved in future updates.)
 :::
 
-| Preset   | Support Status |
-| -------- | -------------- |
-| `react`  | ✅              |
-| `vue`    | 🚧              |
-| `lit`    | ✅              |
-| `svelte` | 📝              |
-| `custom` | 📝              |
+| Preset    | Support Status |
+| --------- | -------------- |
+| `react`   | ✅              |
+| `vue`     | 🚧              |
+| `lit`     | ✅              |
+| `svelte`  | 📝              |
+| `angular` | 🚧              |
+| `custom`  | 📝              |
 > ✅: Supported<br>
 > 🚧: Work in progress<br>
 > ❌: Not supported<br>
@@ -34,7 +35,7 @@ Specify the directory(s) where the component(s) for which you wish to generate a
 ### Example
 ```ts
 autoStoryGenerator.vite({
-  imports: ["**/src/components/**/*.tsx"],
+  imports: ["src/components/**/*.tsx"],
 })
 ```
 

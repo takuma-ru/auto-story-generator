@@ -1,5 +1,5 @@
 # Svelte
 
 ::: warning
-Not yet supported...
+📝 Not yet supported...
 :::

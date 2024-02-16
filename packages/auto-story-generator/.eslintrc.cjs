@@ -21,7 +21,7 @@ const config = {
     "no-restricted-syntax": [
       "warn",
       {
-        selector: "Identifier[name='consola']",
+        selector: "Identifier[name='consola.log']",
         message: "Logs are output on the console.",
       },
     ],

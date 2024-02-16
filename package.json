@@ -7,7 +7,8 @@
     "doc": "pnpm -F \"docs\"",
     "d:react": "pnpm -F \"react\"",
     "d:next": "pnpm -F \"next\"",
-    "d:lit": "pnpm -F \"lit\""
+    "d:lit": "pnpm -F \"lit\"",
+    "d:remix": "pnpm -F \"remix\""
   },
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
   "license": "ISC",

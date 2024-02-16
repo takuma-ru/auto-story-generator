@@ -41,7 +41,7 @@ const config: StorybookConfig = {
       plugins: [
         autoStoryGenerator.vite({
           preset: "react",
-          imports: ["**/src/components/**/*.tsx"],
+          imports: ["src/components/**/*.tsx"],
         }),
       ],
     }),
@@ -63,7 +63,7 @@ const config: StorybookConfig = {
     config.plugins.push(
       autoStoryGenerator.webpack({
         preset: "react",
-        imports: ["**/src/components/**/*.tsx"],
+        imports: ["src/components/**/*.tsx"],
       })
     );
     return config;

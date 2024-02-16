@@ -7,14 +7,14 @@
   ```ts [Vite]
   autoStoryGenerator.vite({
     preset: "react",
-    imports: ["**/src/components/**/*.tsx"],
+    imports: ["src/components/**/*.tsx"],
   })
   ```
 
   ```ts [Webpack]
   autoStoryGenerator.webpack({
     preset: "react",
-    imports: ["**/src/components/**/*.tsx"],
+    imports: ["src/components/**/*.tsx"],
   })
   ```
   :::

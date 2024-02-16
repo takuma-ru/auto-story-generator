@@ -28,7 +28,7 @@ const config: StorybookConfig = {
       plugins: [
         autoStoryGenerator.vite({
           preset: "react",
-          imports: ["**/src/components/**/*.tsx"],
+          imports: ["src/components/**/*.tsx"],
         }),
       ],
     }),
@@ -38,15 +38,16 @@ export default config;
 ```
 
 ## Supported Frameworks
-> ✅: Supported
-> 🚧: Work in progress
-> ❌: Not supported
-> 📝: Not yet implemented
+> ✅: Supported<br>
+> 🚧: Work in progress<br>
+> ❌: Not supported<br>
+> 📝: Not yet implemented<br>
 
 | Framework | Supported |
 | --------- | --------- |
 | React     | ✅         |
 | Vue       | 🚧         |
 | Lit       | ✅         |
-| Angular   | ❌         |
+| Angular   | 🚧         |
 | Svelte    | 📝         |
+| Custom    | 📝         |

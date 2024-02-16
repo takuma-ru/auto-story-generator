@@ -1,9 +1,12 @@
-import type { StorybookConfig } from "@storybook/nextjs";
+import type { StorybookConfig } from "@storybook/react-webpack5";
 
 import autoStoryGenerator from "@takuma-ru/auto-story-generator";
 
 const config: StorybookConfig = {
-  stories: ["../src/components/**/*.stories.tsx"],
+  stories: [
+    "../components/**/*.stories.@(jsx|tsx)",
+    "../components/TestA/TestA.tsx",
+  ],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
@@ -11,8 +14,12 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
   ],
   framework: {
-    name: "@storybook/nextjs",
-    options: {},
+    name: "@storybook/react-webpack5",
+    options: {
+      builder: {
+        useSWC: true,
+      },
+    },
   },
   docs: {
     autodocs: "tag",
@@ -21,7 +28,7 @@ const config: StorybookConfig = {
     config.plugins?.push(
       autoStoryGenerator.webpack({
         preset: "react",
-        imports: ["src/components/**/*.tsx"],
+        imports: ["components/**/*.tsx"],
       })
     );
 
