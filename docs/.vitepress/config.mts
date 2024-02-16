@@ -28,6 +28,7 @@ export default defineConfig({
           { text: "Lit", link: "/useCase/lit" },
           { text: "Vue", link: "/useCase/vue" },
           { text: "Svelte", link: "/useCase/svelte" },
+          { text: "Angular", link: "/useCase/angular" },
           { text: "Custom", link: "/useCase/custom" },
         ],
       },
