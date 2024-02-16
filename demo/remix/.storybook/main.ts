@@ -28,7 +28,7 @@ const config: StorybookConfig = {
     config.plugins?.push(
       autoStoryGenerator.webpack({
         preset: "react",
-        imports: ["**/components/**/*.tsx"],
+        imports: ["components/**/*.tsx"],
       })
     );
 
