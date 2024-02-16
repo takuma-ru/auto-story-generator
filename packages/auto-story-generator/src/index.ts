@@ -1,3 +1,5 @@
+import path from "path";
+
 import { consola } from "consola";
 import { loadFile } from "magicast";
 import { minimatch } from "minimatch";
@@ -6,6 +8,8 @@ import { createUnplugin } from "unplugin";
 
 import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
 import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
+import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
+import { getComponentInfo } from "~/src/utils/getComponentInfo";
 
 export type AsgOptions = {
   preset: "lit" | "react" | "vue" | "custom";
@@ -16,38 +20,50 @@ export type AsgOptions = {
    *
    * The directories to watch for changes.
    *
+   * ※ The directory designation should be written from the project root.
+   *
    * @example
    *
-   * `**\/src/components/*.ts`
-   * `**\/src/components/**\/*.ts`
+   * `src/components/*.ts`
+   * `src/components/**\/*.ts`
    */
   imports?: string[];
 
   prettierConfigPath?: string;
 };
 
-const unplugin = createUnplugin((options: AsgOptions) => {
+const PLUGIN_NAME = "auto-story-generator";
+
+const unplugin = createUnplugin((options: AsgOptions, meta) => {
+  consola.info("ASG is running in", meta.framework);
+
+  const projectRootDir = process.cwd();
+
   return {
-    name: "auto-story-generator",
-    async watchChange(file, change) {
-      if (file.includes(".stories")) return;
+    name: PLUGIN_NAME,
+
+    async watchChange(this, id, change) {
+      if (change.event === "delete") return;
+      if (id.includes(".stories")) return;
+
+      // consola.info(`File ${id} has been ${change.event}`);
 
       const isMatches = options.imports
         ? options.imports.map((importDir) => {
-            return minimatch(file, importDir);
+            const relativeSourceFilePath = id
+              .replace(projectRootDir, "")
+              .startsWith("/")
+              ? id.replace(projectRootDir, "").slice(1)
+              : id.replace(projectRootDir, "");
+
+            return minimatch(relativeSourceFilePath, importDir);
           })
         : [true];
 
       if (!isMatches.includes(true)) return;
 
-      const projectRootDir = process.cwd();
-      const fileName = file.split("/").pop();
-      const fileType = fileName?.split(".").slice(1).join(".");
-      const componentName =
-        fileName?.replace(`.${fileType}`, "") === "index"
-          ? file.split("/").slice(-2)[0]
-          : fileName?.replace(`.${fileType}`, "");
-      const relativeSourceFilePath = file.replace(projectRootDir, "");
+      const { fileName, fileType, componentName, relativeSourceFilePath } =
+        getComponentInfo(id);
 
       if (!componentName || !fileName) {
         return consola.error("Could not find component name");
@@ -55,7 +71,7 @@ const unplugin = createUnplugin((options: AsgOptions) => {
 
       // consola.info(`${componentName} component has been changed`);
 
-      const mod = await loadFile(file);
+      const mod = await loadFile(id);
       const project = new Project();
       const sourceFile = project.createSourceFile(fileName || "", mod.$code);
 
@@ -65,9 +81,9 @@ const unplugin = createUnplugin((options: AsgOptions) => {
         case "lit": {
           await genLitStoryFile({
             componentName,
-            fileName: fileName,
-            path: file,
-            type: `.${fileType}`,
+            fileName,
+            path: id,
+            type: fileType,
             relativeSourceFilePath,
             sourceFile,
             prettierConfigPath: options.prettierConfigPath,
@@ -79,9 +95,9 @@ const unplugin = createUnplugin((options: AsgOptions) => {
         case "react": {
           await genReactStoryFile({
             componentName,
-            fileName: fileName,
-            path: file,
-            type: `.${fileType}`,
+            fileName,
+            path: id,
+            type: fileType,
             relativeSourceFilePath,
             sourceFile,
             prettierConfigPath: options.prettierConfigPath,
@@ -106,6 +122,23 @@ const unplugin = createUnplugin((options: AsgOptions) => {
           );
         }
       }
+    },
+    webpack: (compiler) => {
+      compiler.hooks.afterCompile.tapAsync(PLUGIN_NAME, (_, callback) => {
+        compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
+          options.imports?.forEach((importDir) => {
+            const allFilePaths = getAllFilePaths(importDir, importDir);
+
+            allFilePaths.forEach((filePath) => {
+              compilation.fileDependencies.add(
+                path.join(projectRootDir, filePath),
+              );
+            });
+          });
+        });
+
+        callback();
+      });
     },
   };
 });
