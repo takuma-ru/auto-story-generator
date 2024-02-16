@@ -21,6 +21,10 @@
       "path": "demo/next",
     },
     {
+      "name": "🧪 remix",
+      "path": "demo/remix",
+    },
+    {
       "name": "🧪 vue",
       "path": "demo/vue",
     },
