@@ -12,7 +12,7 @@ import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
 import { getComponentInfo } from "~/src/utils/getComponentInfo";
 
 export type AsgOptions = {
-  preset: "lit" | "react" | "vue" | "custom";
+  preset: "lit" | "react" | "vue" | "angular" | "custom";
   /**
    * @default undefined
    *
@@ -107,6 +107,11 @@ const unplugin = createUnplugin((options: AsgOptions, meta) => {
         }
 
         case "vue": {
+          consola.error("Not yet supported.");
+          break;
+        }
+
+        case "angular": {
           consola.error("Not yet supported.");
           break;
         }
