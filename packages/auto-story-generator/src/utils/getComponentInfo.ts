@@ -18,16 +18,19 @@ export const getComponentInfo = (
       ? fileParseInfo.dir.split("/").pop()
       : fileParseInfo.name;
 
-  const relativeSourceFilePath = componentDir
-    .replace(projectRootDir, "")
-    .startsWith("/")
-    ? componentDir.replace(projectRootDir, "").slice(1)
-    : componentDir.replace(projectRootDir, "");
+  let relativeSourceFilePath = componentDir.replace(projectRootDir, "");
+
+  if (
+    relativeSourceFilePath.startsWith("/") ||
+    relativeSourceFilePath.startsWith("\\")
+  ) {
+    relativeSourceFilePath = componentDir.replace(projectRootDir, "").slice(1);
+  }
 
   return {
     fileName: fileParseInfo.base,
     fileType: fileParseInfo.ext as unknown as `.${path.ParsedPath["ext"]}`,
     componentName,
     relativeSourceFilePath,
-  };
+  } as const;
 };
