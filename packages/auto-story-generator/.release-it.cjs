@@ -2,9 +2,9 @@ module.exports = {
   npm: {
     publish: true,
   },
-  github: {
+  /* github: {
     release: true,
-  },
+  }, */
   git: {
     requireCleanWorkingDir: false,
     addFiles: ["package.json"],

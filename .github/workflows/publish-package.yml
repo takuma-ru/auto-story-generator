@@ -52,8 +52,8 @@ jobs:
 
       - name: Set git config
         run: |
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -88,13 +88,19 @@ jobs:
       - name: Set .npmrc
         run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > packages/auto-story-generator/.npmrc
 
-      #- name: Create release branch
-      #  id: create_branch
-      #  run: |
-      #    git checkout -b release
-      #    git push --set-upstream origin release
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set current datetime as env variable
+        id: set-current-datetime
+        env:
+          TZ: "Asia/Tokyo"
+        run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+
+      - name: Create release branch
+        id: create_branch
+        run: |
+          git switch -c release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          git push -u origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Major release
         id: major
@@ -131,12 +137,64 @@ jobs:
         run: pnpm asg publish:prerelease
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
 
-      #- name: Create Pull Request
-      #  uses: peter-evans/create-pull-request@v4
-      #  if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success'
-      #  with:
-      #    title: "Update package.json"
-      #    draft: false
-      #    base: main
-      #    branch: release
-      #    assignees: "${{ github.actor }}"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success'
+        with:
+          title: ":bookmark: Update package.json"
+          draft: false
+          base: main
+          branch: release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          assignees: "${{ github.actor }}"
+
+  create-github-release:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    environment:
+      name: Publish
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+          registry-url: "https://registry.npmjs.org/"
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8.14.1
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Get Current package info
+        id: get-package-info
+        run: |
+          echo "PACKAGE_VERSION=$(node -e \"console.log(require('./packages/auto-story-generator/package.json').version)\")" >> $GITHUB_OUTPUT
+          echo "PACKAGE_NAME=$(node -e \"console.log(require('./packages/auto-story-generator/package.json').name)\")" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: create-release
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ steps.get-package-info.outputs.PACKAGE_VERSION }}
+          prerelease: ${{ contains(steps.get-package-info.outputs.PACKAGE_VERSION, '-beta') }}
