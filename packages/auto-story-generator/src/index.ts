@@ -50,11 +50,14 @@ const unplugin = createUnplugin((options: AsgOptions, meta) => {
 
       const isMatches = options.imports
         ? options.imports.map((importDir) => {
-            const relativeSourceFilePath = id
-              .replace(projectRootDir, "")
-              .startsWith("/")
-              ? id.replace(projectRootDir, "").slice(1)
-              : id.replace(projectRootDir, "");
+            let relativeSourceFilePath = id.replace(projectRootDir, "");
+
+            if (
+              relativeSourceFilePath.startsWith("/") ||
+              relativeSourceFilePath.startsWith("\\")
+            ) {
+              relativeSourceFilePath = id.replace(projectRootDir, "").slice(1);
+            }
 
             return minimatch(relativeSourceFilePath, importDir);
           })
@@ -123,7 +126,7 @@ const unplugin = createUnplugin((options: AsgOptions, meta) => {
 
         default: {
           consola.error(
-            `Preset ${options.preset} is not supported. Please use one of the following: lit, react, vue, custom`,
+            `Preset ${options.preset} is not supported. Please use one of the following: lit, react, vue, angular, custom`,
           );
         }
       }
