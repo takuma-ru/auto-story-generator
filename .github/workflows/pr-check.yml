@@ -127,7 +127,7 @@ jobs:
         run: |
           echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
           echo "PACKAGE_NAME=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
-        working-directory: ./packages/auto-story-generator
+        working-directory: packages/auto-story-generator
 
       - name: Success
         run: echo "${{ steps.get-package-info.outputs.PACKAGE_NAME }}@${{ steps.get-package-info.outputs.PACKAGE_VERSION }} is ready to be published! 🚀"
