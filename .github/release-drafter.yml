@@ -1,0 +1,80 @@
+name-template: "Release $RESOLVED_VERSION"
+tag-template: "$RESOLVED_VERSION"
+
+categories:
+  - title: "✨ Features"
+    labels:
+      - "✨ feature"
+  - title: "🛠️ Enhancement"
+    labels:
+      - "🛠️ enhancement"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "🐛 bug"
+  - title: "🧰 Maintenance"
+    label: "chore"
+  - title: "📝 Update Documentation"
+    labels:
+      - "📝 documentation"
+  - title: "♻️ Refactoring"
+    labels:
+      - "♻️ refactor"
+
+change-template: "- $TITLE @$AUTHOR ([#$NUMBER]($URL))"
+
+change-title-escapes: '\<*_&'
+
+template: |
+  ## Changes
+
+  $CHANGES
+
+autolabeler:
+  - label: ✨ feature
+    branch:
+      - "/^feat(ure)?[/-].+/"
+  - label: 🐛 bug
+    branch:
+      - "/^fix[/-].+/"
+  - label: ♻️ refactor
+    branch:
+      - "/(refactor|refactoring)[/-].+/"
+  - label: 📝 documentation
+    branch:
+      - "/doc(umentation)[/-].+/"
+    files:
+      - "*.md"
+  - label: 🛠️ enhancement
+    branch:
+      - "/(enhancement|improve)[/-].+/"
+  - label: 🚀 release
+    branch:
+      - "/^release[/-].+/"
+  - label: 📦 core
+    files:
+      - "packages/auto-story-generator/**/*.ts"
+  - label: 📦 lit
+    files:
+      - "packages/auto-story-generator/src/presets/lit/**/*.ts"
+      - "demo/lit/*"
+      - "demo/lit/**/*"
+  - label: 📦 react
+    files:
+      - "packages/auto-story-generator/src/presets/react/**/*.ts"
+      - "demo/react/*"
+      - "demo/react/**/*"
+  - label: 📦 vue
+    files:
+      - "packages/auto-story-generator/src/presets/vue/**/*.ts"
+      - "demo/vue/*"
+      - "demo/vue/**/*"
+  - label: 📦 angular
+    files:
+      - "packages/auto-story-generator/src/presets/angular/**/*.ts"
+      - "demo/angular/*"
+      - "demo/angular/**/*"
+  - label: 📦 svelte
+    files:
+      - "packages/auto-story-generator/src/presets/svelte/**/*.ts"
+      - "demo/svelte/*"
+      - "demo/svelte/**/*"
