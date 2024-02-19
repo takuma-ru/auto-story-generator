@@ -122,12 +122,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: [type-check, eslint-check, build-check, publish-check]
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v2
+      - uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-store-${{ needs.init.outputs.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: Get Current package info
         id: get-package-info
         run: |
-          echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-          echo "PACKAGE_NAME=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
-        working-directory: packages/auto-story-generator
+          echo "ls"
+          echo "PACKAGE_VERSION=$(node -p "require('./packages/auto-story-generator/package.json').version")" >> $GITHUB_OUTPUT
+          echo "PACKAGE_NAME=$(node -p "require('./packages/auto-story-generator/package.json').name")" >> $GITHUB_OUTPUT
 
       - name: Success
         run: echo "${{ steps.get-package-info.outputs.PACKAGE_NAME }}@${{ steps.get-package-info.outputs.PACKAGE_VERSION }} is ready to be published! 🚀"
