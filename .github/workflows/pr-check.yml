@@ -132,7 +132,6 @@ jobs:
       - name: Get Current package info
         id: get-package-info
         run: |
-          echo "ls"
           echo "PACKAGE_VERSION=$(node -p "require('./packages/auto-story-generator/package.json').version")" >> $GITHUB_OUTPUT
           echo "PACKAGE_NAME=$(node -p "require('./packages/auto-story-generator/package.json').name")" >> $GITHUB_OUTPUT
 
