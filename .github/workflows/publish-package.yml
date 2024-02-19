@@ -181,14 +181,22 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: Install jq
-        run: sudo apt-get install jq
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install Node Dependencies
+        run: pnpm install
 
       - name: Get Current package info
         id: get-package-info
         run: |
-          echo "PACKAGE_VERSION=$(node -e \"console.log(require('./packages/auto-story-generator/package.json').version)\")" >> $GITHUB_OUTPUT
-          echo "PACKAGE_NAME=$(node -e \"console.log(require('./packages/auto-story-generator/package.json').name)\")" >> $GITHUB_OUTPUT
+          echo "PACKAGE_VERSION=$(node -p "require('./packages/auto-story-generator/package.json').version")" >> $GITHUB_OUTPUT
+          echo "PACKAGE_NAME=$(node -p "require('./packages/auto-story-generator/package.json').name")" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create-release
