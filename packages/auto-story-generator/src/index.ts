@@ -8,33 +8,13 @@ import { createUnplugin } from "unplugin";
 
 import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
 import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
+import { Options } from "~/src/types/Options";
 import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
 import { getComponentInfo } from "~/src/utils/getComponentInfo";
 
-export type AsgOptions = {
-  preset: "lit" | "react" | "vue" | "angular" | "custom";
-  /**
-   * @default undefined
-   *
-   * @description
-   *
-   * The directories to watch for changes.
-   *
-   * ※ The directory designation should be written from the project root.
-   *
-   * @example
-   *
-   * `src/components/*.ts`
-   * `src/components/**\/*.ts`
-   */
-  imports?: string[];
-
-  prettierConfigPath?: string;
-};
-
 const PLUGIN_NAME = "auto-story-generator";
 
-const unplugin = createUnplugin((options: AsgOptions, meta) => {
+const unplugin = createUnplugin((options: Options, meta) => {
   consola.info("ASG is running in", meta.framework);
 
   const projectRootDir = process.cwd();
@@ -65,10 +45,15 @@ const unplugin = createUnplugin((options: AsgOptions, meta) => {
 
       if (!isMatches.includes(true)) return;
 
-      const { fileName, fileType, componentName, relativeSourceFilePath } =
-        getComponentInfo(id);
+      const {
+        fileBase,
+        fileName,
+        fileExt,
+        componentName,
+        relativeSourceFilePath,
+      } = getComponentInfo(id);
 
-      if (!componentName || !fileName) {
+      if (!componentName || !fileBase) {
         return consola.error("Could not find component name");
       }
 
@@ -76,19 +61,20 @@ const unplugin = createUnplugin((options: AsgOptions, meta) => {
 
       const mod = await loadFile(id);
       const project = new Project();
-      const sourceFile = project.createSourceFile(fileName || "", mod.$code);
+      const sourceFile = project.createSourceFile(fileBase || "", mod.$code);
 
       consola.start(`${componentName} Story file is being generated ....`);
 
       switch (options.preset) {
         case "lit": {
           await genLitStoryFile({
-            componentName,
-            fileName,
+            componentName: componentName,
+            fileBase: fileBase,
+            fileName: fileName,
             path: id,
-            type: fileType,
-            relativeSourceFilePath,
-            sourceFile,
+            fileExt: fileExt,
+            relativeSourceFilePath: relativeSourceFilePath,
+            sourceFile: sourceFile,
             prettierConfigPath: options.prettierConfigPath,
           });
 
@@ -97,12 +83,13 @@ const unplugin = createUnplugin((options: AsgOptions, meta) => {
 
         case "react": {
           await genReactStoryFile({
-            componentName,
-            fileName,
+            componentName: componentName,
+            fileBase: fileBase,
+            fileName: fileName,
             path: id,
-            type: fileType,
-            relativeSourceFilePath,
-            sourceFile,
+            fileExt: fileExt,
+            relativeSourceFilePath: relativeSourceFilePath,
+            sourceFile: sourceFile,
             prettierConfigPath: options.prettierConfigPath,
           });
 

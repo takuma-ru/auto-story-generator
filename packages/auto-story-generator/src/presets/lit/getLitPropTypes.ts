@@ -10,6 +10,10 @@ export const getLitPropTypes = ({
   sourceFile,
   componentName,
 }: GenReactPropTypesOptions): GenReactPropTypesReturn => {
+  if (!componentName) {
+    return;
+  }
+
   const pascalComponentName = pascalCase(componentName);
 
   const componentClassDeclaration = sourceFile.getClass(pascalComponentName);

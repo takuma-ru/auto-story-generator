@@ -23,6 +23,12 @@ export const getReactPropTypes = ({
   propsPattern?: "component-props" | "props" | "inline";
   propTypes: GenReactPropTypesReturn;
 } => {
+  if (!componentName) {
+    return {
+      propTypes: undefined,
+    };
+  }
+
   let propsPattern: "component-props" | "props" | "inline" = "component-props";
 
   const pascalComponentName = pascalCase(componentName);

@@ -7,13 +7,18 @@ import { genStoryFile } from "~/src/utils/genStoryFile";
 
 export const genLitStoryFile = async ({
   componentName,
+  fileBase,
   fileName,
   path,
-  type,
+  fileExt,
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
+  if (!componentName || !fileBase) {
+    return consola.error("Could not find component name");
+  }
+
   const propTypes = getLitPropTypes({ sourceFile, componentName });
   const pascalComponentName = pascalCase(componentName);
 
@@ -128,15 +133,16 @@ export const Primary: ${pascalComponentName}Story = {};
   genStoryFile({
     fileOptions: {
       componentName,
+      fileBase,
       fileName,
       path,
-      type,
+      fileExt,
       relativeSourceFilePath,
       sourceFile,
       prettierConfigPath,
     },
     generateOptions: {
-      fileType: ".stories.ts",
+      fileExt: ".stories.ts",
       initialCode,
       meta: {
         render: renderCode,

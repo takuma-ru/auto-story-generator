@@ -1,17 +1,21 @@
 import { SourceFile } from "ts-morph";
 
+import { GetComponentInfoReturnType } from "~/src/types/GetComponentInfo";
+import { Options } from "~/src/types/Options";
+
 export type GenStoryFileOptions = {
   fileOptions: {
-    componentName: string;
-    fileName: string;
+    componentName: GetComponentInfoReturnType["componentName"];
+    fileBase: GetComponentInfoReturnType["fileBase"];
+    fileName: GetComponentInfoReturnType["fileName"];
+    fileExt: GetComponentInfoReturnType["fileExt"];
+    relativeSourceFilePath: GetComponentInfoReturnType["relativeSourceFilePath"];
     path: string;
-    type: `.${string}`;
-    relativeSourceFilePath: string;
     sourceFile: SourceFile;
-    prettierConfigPath?: string;
+    prettierConfigPath?: Options["prettierConfigPath"];
   };
   generateOptions: {
-    fileType: `.stories.${string}`;
+    fileExt: `.stories.${string}`;
     initialCode: string;
     meta: {
       render?: string;

@@ -28,8 +28,9 @@ export const getComponentInfo = (
   }
 
   return {
-    fileName: fileParseInfo.base,
-    fileType: fileParseInfo.ext as unknown as `.${path.ParsedPath["ext"]}`,
+    fileBase: fileParseInfo.base,
+    fileExt: fileParseInfo.ext as unknown as `.${path.ParsedPath["ext"]}`,
+    fileName: fileParseInfo.name,
     componentName,
     relativeSourceFilePath,
   } as const;

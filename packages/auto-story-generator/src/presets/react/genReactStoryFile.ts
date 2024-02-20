@@ -7,13 +7,18 @@ import { genStoryFile } from "~/src/utils/genStoryFile";
 
 export const genReactStoryFile = async ({
   componentName,
+  fileBase,
   fileName,
   path,
-  type,
+  fileExt,
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
+  if (!componentName || !fileBase) {
+    return consola.error("Could not find component name");
+  }
+
   const { propTypes } = getReactPropTypes({
     sourceFile,
     componentName,
@@ -99,15 +104,16 @@ export const Primary: Story = {};
   genStoryFile({
     fileOptions: {
       componentName,
+      fileBase,
       fileName,
       path,
-      type,
+      fileExt,
       relativeSourceFilePath,
       sourceFile,
       prettierConfigPath,
     },
     generateOptions: {
-      fileType: ".stories.tsx",
+      fileExt: ".stories.tsx",
       initialCode,
       meta: {
         component: componentCode,

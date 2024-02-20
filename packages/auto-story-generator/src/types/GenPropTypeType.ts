@@ -1,8 +1,8 @@
-import { SourceFile } from "ts-morph";
+import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 
 export type GenReactPropTypesOptions = {
-  sourceFile: SourceFile;
-  componentName: string;
+  sourceFile: GenStoryFileOptions["fileOptions"]["sourceFile"];
+  componentName: GenStoryFileOptions["fileOptions"]["componentName"];
 };
 
 export type GenReactPropTypesReturn =
