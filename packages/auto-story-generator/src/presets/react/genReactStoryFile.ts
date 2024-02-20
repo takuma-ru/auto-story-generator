@@ -7,13 +7,17 @@ import { genStoryFile } from "~/src/utils/genStoryFile";
 
 export const genReactStoryFile = async ({
   componentName,
-  fileName,
+  fileBase,
   path,
   type,
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
+  if (!componentName || !fileBase) {
+    return consola.error("Could not find component name");
+  }
+
   const { propTypes } = getReactPropTypes({
     sourceFile,
     componentName,
@@ -25,7 +29,7 @@ export const genReactStoryFile = async ({
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ${pascalComponentName} } from "./${fileName}";
+import { ${pascalComponentName} } from "./${fileBase}";
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",
@@ -99,7 +103,7 @@ export const Primary: Story = {};
   genStoryFile({
     fileOptions: {
       componentName,
-      fileName,
+      fileBase,
       path,
       type,
       relativeSourceFilePath,
