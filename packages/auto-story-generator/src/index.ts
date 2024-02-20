@@ -45,8 +45,13 @@ const unplugin = createUnplugin((options: Options, meta) => {
 
       if (!isMatches.includes(true)) return;
 
-      const { fileBase, fileExt, componentName, relativeSourceFilePath } =
-        getComponentInfo(id);
+      const {
+        fileBase,
+        fileName,
+        fileExt,
+        componentName,
+        relativeSourceFilePath,
+      } = getComponentInfo(id);
 
       if (!componentName || !fileBase) {
         return consola.error("Could not find component name");
@@ -63,12 +68,13 @@ const unplugin = createUnplugin((options: Options, meta) => {
       switch (options.preset) {
         case "lit": {
           await genLitStoryFile({
-            componentName,
-            fileBase,
+            componentName: componentName,
+            fileBase: fileBase,
+            fileName: fileName,
             path: id,
-            type: fileExt,
-            relativeSourceFilePath,
-            sourceFile,
+            fileExt: fileExt,
+            relativeSourceFilePath: relativeSourceFilePath,
+            sourceFile: sourceFile,
             prettierConfigPath: options.prettierConfigPath,
           });
 
@@ -77,12 +83,13 @@ const unplugin = createUnplugin((options: Options, meta) => {
 
         case "react": {
           await genReactStoryFile({
-            componentName,
-            fileBase,
+            componentName: componentName,
+            fileBase: fileBase,
+            fileName: fileName,
             path: id,
-            type: fileExt,
-            relativeSourceFilePath,
-            sourceFile,
+            fileExt: fileExt,
+            relativeSourceFilePath: relativeSourceFilePath,
+            sourceFile: sourceFile,
             prettierConfigPath: options.prettierConfigPath,
           });
 

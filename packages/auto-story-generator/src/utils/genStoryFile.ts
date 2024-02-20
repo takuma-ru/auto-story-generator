@@ -11,8 +11,8 @@ export const genStoryFile = async ({
   generateOptions,
 }: GenStoryFileOptions) => {
   const storiesFilePath = fileOptions.path.replace(
-    fileOptions.type,
-    generateOptions.fileType,
+    fileOptions.fileExt,
+    generateOptions.fileExt,
   );
 
   fs.open(storiesFilePath, "r", async (err) => {

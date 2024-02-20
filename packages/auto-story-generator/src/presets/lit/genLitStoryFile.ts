@@ -8,8 +8,9 @@ import { genStoryFile } from "~/src/utils/genStoryFile";
 export const genLitStoryFile = async ({
   componentName,
   fileBase,
+  fileName,
   path,
-  type,
+  fileExt,
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
@@ -133,14 +134,15 @@ export const Primary: ${pascalComponentName}Story = {};
     fileOptions: {
       componentName,
       fileBase,
+      fileName,
       path,
-      type,
+      fileExt,
       relativeSourceFilePath,
       sourceFile,
       prettierConfigPath,
     },
     generateOptions: {
-      fileType: ".stories.ts",
+      fileExt: ".stories.ts",
       initialCode,
       meta: {
         render: renderCode,

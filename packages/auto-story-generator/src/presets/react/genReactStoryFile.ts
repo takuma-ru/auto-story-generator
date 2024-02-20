@@ -8,8 +8,9 @@ import { genStoryFile } from "~/src/utils/genStoryFile";
 export const genReactStoryFile = async ({
   componentName,
   fileBase,
+  fileName,
   path,
-  type,
+  fileExt,
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
@@ -29,7 +30,7 @@ export const genReactStoryFile = async ({
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ${pascalComponentName} } from "./${fileBase}";
+import { ${pascalComponentName} } from "./${fileName}";
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",
@@ -104,14 +105,15 @@ export const Primary: Story = {};
     fileOptions: {
       componentName,
       fileBase,
+      fileName,
       path,
-      type,
+      fileExt,
       relativeSourceFilePath,
       sourceFile,
       prettierConfigPath,
     },
     generateOptions: {
-      fileType: ".stories.tsx",
+      fileExt: ".stories.tsx",
       initialCode,
       meta: {
         component: componentCode,
