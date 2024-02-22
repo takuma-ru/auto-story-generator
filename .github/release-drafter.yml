@@ -4,21 +4,21 @@ tag-template: "$RESOLVED_VERSION"
 categories:
   - title: "✨ Features"
     labels:
-      - "✨ feature"
+      - ":sparkles: feature"
   - title: "🛠️ Enhancement"
     labels:
-      - "🛠️ enhancement"
+      - ":hammer_and_wrench: enhancement"
   - title: "🐛 Bug Fixes"
     labels:
-      - "🐛 bug"
+      - ":bug: bug"
   - title: "🧰 Maintenance"
     label: "chore"
   - title: "📝 Update Documentation"
     labels:
-      - "📝 documentation"
+      - ":memo: documentation"
   - title: "♻️ Refactoring"
     labels:
-      - "♻️ refactor"
+      - ":recycle: refactor"
 
 change-template: "- $TITLE @$AUTHOR ([#$NUMBER]($URL))"
 
@@ -30,50 +30,50 @@ template: |
   $CHANGES
 
 autolabeler:
-  - label: ✨ feature
+  - label: ":sparkles: feature"
     branch:
       - "/^feat(ure)?[/-].+/"
-  - label: 🐛 bug
+  - label: ":bug: bug"
     branch:
       - "/^fix[/-].+/"
-  - label: ♻️ refactor
+  - label: ":recycle: refactor"
     branch:
       - "/(refactor|refactoring)[/-].+/"
-  - label: 📝 documentation
+  - label: ":memo: documentation"
     branch:
       - "/doc(umentation)[/-].+/"
     files:
       - "*.md"
-  - label: 🛠️ enhancement
+  - label: ":hammer_and_wrench: enhancement"
     branch:
       - "/(enhancement|improve)[/-].+/"
-  - label: 🚀 release
+  - label: ":rocket: release"
     branch:
       - "/^release[/-].+/"
-  - label: 📦 core
+  - label: ":package: core feature"
     files:
       - "packages/auto-story-generator/**/*.ts"
-  - label: 📦 lit
+  - label: ":package: lit"
     files:
       - "packages/auto-story-generator/src/presets/lit/**/*.ts"
       - "demo/lit/*"
       - "demo/lit/**/*"
-  - label: 📦 react
+  - label: ":package: react"
     files:
       - "packages/auto-story-generator/src/presets/react/**/*.ts"
       - "demo/react/*"
       - "demo/react/**/*"
-  - label: 📦 vue
+  - label: ":package: vue"
     files:
       - "packages/auto-story-generator/src/presets/vue/**/*.ts"
       - "demo/vue/*"
       - "demo/vue/**/*"
-  - label: 📦 angular
+  - label: ":package: angular"
     files:
       - "packages/auto-story-generator/src/presets/angular/**/*.ts"
       - "demo/angular/*"
       - "demo/angular/**/*"
-  - label: 📦 svelte
+  - label: ":package: svelte"
     files:
       - "packages/auto-story-generator/src/presets/svelte/**/*.ts"
       - "demo/svelte/*"

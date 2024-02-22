@@ -27,10 +27,21 @@ export const genReactStoryFile = async ({
 
   if (!propTypes) return consola.error("Could not find argTypes");
 
+  const defaultExportDeclaration = sourceFile.getExportedDeclarations();
+
+  let isDefaultExportComponent: boolean = false;
+  defaultExportDeclaration.forEach((declaration, exportName) => {
+    if (exportName === "default") {
+      const defaultExportName = declaration[0].getSymbol()?.getName();
+      isDefaultExportComponent = defaultExportName === pascalComponentName;
+      return;
+    }
+  });
+
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ${pascalComponentName} } from "./${fileName}";
+${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}";` : `import { ${pascalComponentName} } from "./${fileName}";`}
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",

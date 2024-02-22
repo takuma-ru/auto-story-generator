@@ -137,6 +137,12 @@ jobs:
         run: pnpm asg publish:prerelease
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
 
+      - name: Commit and Push
+        run: |
+          git add .
+          git commit -m "update packages/auto-story-generator/package.json"
+          git push origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success'
@@ -195,8 +201,7 @@ jobs:
       - name: Get Current package info
         id: get-package-info
         run: |
-          echo "PACKAGE_VERSION=$(node -p "require('./packages/auto-story-generator/package.json').version")" >> $GITHUB_OUTPUT
-          echo "PACKAGE_NAME=$(node -p "require('./packages/auto-story-generator/package.json').name")" >> $GITHUB_OUTPUT
+          echo "PACKAGE_VERSION=$(pnpm view @takuma-ru/auto-story-generator version)" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create-release
