@@ -11,7 +11,9 @@ export const genStoryFile = async ({
   generateOptions,
 }: GenStoryFileOptions) => {
   const storiesFilePath = fileOptions.path.replace(
-    fileOptions.fileExt,
+    fileOptions.filePrefixExt
+      ? fileOptions.filePrefixExt
+      : "" + fileOptions.fileExt,
     generateOptions.fileExt,
   );
 

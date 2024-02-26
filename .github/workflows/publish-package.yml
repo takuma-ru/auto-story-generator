@@ -137,11 +137,11 @@ jobs:
         run: pnpm asg publish:prerelease
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
 
-      - name: Commit and Push
-        run: |
-          git add .
-          git commit -m "update packages/auto-story-generator/package.json"
-          git push origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+      # - name: Commit and Push
+      #   run: |
+      #     git add .
+      #     git commit -m "update packages/auto-story-generator/package.json"
+      #     git push origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6

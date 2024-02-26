@@ -9,6 +9,7 @@ export type GenStoryFileOptions = {
     fileBase: GetComponentInfoReturnType["fileBase"];
     fileName: GetComponentInfoReturnType["fileName"];
     fileExt: GetComponentInfoReturnType["fileExt"];
+    filePrefixExt: GetComponentInfoReturnType["filePrefixExt"];
     relativeSourceFilePath: GetComponentInfoReturnType["relativeSourceFilePath"];
     path: string;
     sourceFile: SourceFile;
