@@ -49,6 +49,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
         fileBase,
         fileName,
         fileExt,
+        filePrefixExt,
         componentName,
         relativeSourceFilePath,
       } = getComponentInfo(id);
@@ -73,6 +74,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
             fileName: fileName,
             path: id,
             fileExt: fileExt,
+            filePrefixExt: filePrefixExt,
             relativeSourceFilePath: relativeSourceFilePath,
             sourceFile: sourceFile,
             prettierConfigPath: options.prettierConfigPath,
@@ -88,6 +90,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
             fileName: fileName,
             path: id,
             fileExt: fileExt,
+            filePrefixExt: filePrefixExt,
             relativeSourceFilePath: relativeSourceFilePath,
             sourceFile: sourceFile,
             prettierConfigPath: options.prettierConfigPath,

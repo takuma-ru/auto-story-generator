@@ -5,21 +5,38 @@ export type GetComponentInfoReturnType = {
    * The name of the file
    *
    * @example
-   * `ComponentName.tsx`, `index.tsx`
+   * `ComponentName.tsx`
+   * `index.tsx`
    */
   fileBase: path.ParsedPath["base"];
   /**
    * file type
    *
    * @example
-   * `.tsx`, `.vue`
+   * `ComponentName.tsx`→`.tsx`
+   * `ComponentName.vue`→`.vue`
+   * `ComponentName.ce.ts`→`.ts`
    */
   fileExt: `.${path.ParsedPath["ext"]}`;
+
+  /**
+   * file prefix type
+   *
+   * @description
+   * The part between the filename and the extension name that begins with ".".
+   *
+   * @example
+   * `ComponentName.tsx`→ undefined
+   * `ComponentName.vue`→ undefined
+   * `ComponentName.ce.ts`→`.ce`
+   **/
+  filePrefixExt?: `.${string}`;
   /**
    * The name of the component file
    *
    * @example
-   * `ComponentName`, `index`
+   * `ComponentName`
+   * `index`
    */
   fileName: path.ParsedPath["name"];
   /**

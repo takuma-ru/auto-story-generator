@@ -9,6 +9,7 @@ export const genLitStoryFile = async ({
   componentName,
   fileBase,
   fileName,
+  filePrefixExt,
   path,
   fileExt,
   relativeSourceFilePath,
@@ -32,7 +33,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import {
   ${pascalComponentName},
   ${pascalComponentName}Props,
-} from "~/${relativeSourceFilePath.slice(1).replace(".ce.ts", ".ce")}";
+} from "./${fileName}${filePrefixExt ? filePrefixExt : ""}";
 
 const meta: Meta<${pascalComponentName}Props> = {
   title: "components/${componentName}",
@@ -135,6 +136,7 @@ export const Primary: ${pascalComponentName}Story = {};
       componentName,
       fileBase,
       fileName,
+      filePrefixExt,
       path,
       fileExt,
       relativeSourceFilePath,

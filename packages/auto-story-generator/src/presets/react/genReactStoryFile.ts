@@ -9,6 +9,7 @@ export const genReactStoryFile = async ({
   componentName,
   fileBase,
   fileName,
+  filePrefixExt,
   path,
   fileExt,
   relativeSourceFilePath,
@@ -41,7 +42,7 @@ export const genReactStoryFile = async ({
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}";` : `import { ${pascalComponentName} } from "./${fileName}";`}
+${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}${filePrefixExt ? filePrefixExt : ""}";` : `import { ${pascalComponentName} } from "./${fileName}${filePrefixExt ? filePrefixExt : ""}";`}
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",
@@ -117,6 +118,7 @@ export const Primary: Story = {};
       componentName,
       fileBase,
       fileName,
+      filePrefixExt,
       path,
       fileExt,
       relativeSourceFilePath,

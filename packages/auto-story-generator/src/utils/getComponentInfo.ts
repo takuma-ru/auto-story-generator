@@ -13,10 +13,15 @@ export const getComponentInfo = (
 
   const fileParseInfo = path.parse(componentDir);
 
+  const prefixExtRegex = new RegExp(`(\\.\\w+)+(?=\\${fileParseInfo.ext}$)`);
+  const prefixExtRegexMatch = fileParseInfo.base.match(prefixExtRegex);
+
+  const prefixExt = prefixExtRegexMatch ? prefixExtRegexMatch[0] : undefined;
+
+  const fileName = fileParseInfo.name.replace(prefixExt || "", "");
+
   const componentName =
-    fileParseInfo.name === "index"
-      ? fileParseInfo.dir.split("/").pop()
-      : fileParseInfo.name;
+    fileName === "index" ? fileParseInfo.dir.split("/").pop() : fileName;
 
   let relativeSourceFilePath = componentDir.replace(projectRootDir, "");
 
@@ -30,7 +35,8 @@ export const getComponentInfo = (
   return {
     fileBase: fileParseInfo.base,
     fileExt: fileParseInfo.ext as unknown as `.${path.ParsedPath["ext"]}`,
-    fileName: fileParseInfo.name,
+    fileName: fileName,
+    filePrefixExt: prefixExt as unknown as `.${string}` | undefined,
     componentName,
     relativeSourceFilePath,
   } as const;
