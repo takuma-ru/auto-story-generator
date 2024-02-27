@@ -1,0 +1,8 @@
+npm:
+  publish: true
+github:
+  release: false
+git:
+  requireCleanWorkingDir: false
+  addFiles: ["package.json"]
+  commitMessage: ":bookmark: release @takuma-ru/auto-story-generator@${version}"

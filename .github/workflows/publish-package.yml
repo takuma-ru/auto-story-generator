@@ -104,37 +104,37 @@ jobs:
 
       - name: Major release
         id: major
-        run: pnpm asg publish:major
+        run: pnpm asg publish:major --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
         if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Major Beta release
         id: major-beta
-        run: pnpm asg publish:major-beta
+        run: pnpm asg publish:major-beta --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
         if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Minor release
         id: minor
-        run: pnpm asg publish:minor
+        run: pnpm asg publish:minor --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
         if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Minor Beta release
         id: minor-beta
-        run: pnpm asg publish:minor-beta
+        run: pnpm asg publish:minor-beta --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
         if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Patch release
         id: patch
-        run: pnpm asg publish:patch
+        run: pnpm asg publish:patch --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
         if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Patch Beta release
         id: patch-beta
-        run: pnpm asg publish:patch-beta
+        run: pnpm asg publish:patch-beta --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
         if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
 
       - name: Beta version up
         id: beta-version-up
-        run: pnpm asg publish:prerelease
+        run: pnpm asg publish:prerelease --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
 
       # - name: Commit and Push
