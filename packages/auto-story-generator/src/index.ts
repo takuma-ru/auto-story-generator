@@ -11,6 +11,7 @@ import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
 import { Options } from "~/src/types/Options";
 import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
 import { getComponentInfo } from "~/src/utils/getComponentInfo";
+import { throwErr } from "~/src/utils/throwError";
 
 const PLUGIN_NAME = "auto-story-generator";
 
@@ -54,10 +55,6 @@ const unplugin = createUnplugin((options: Options, meta) => {
         relativeSourceFilePath,
       } = getComponentInfo(id);
 
-      if (!componentName || !fileBase) {
-        return consola.error("Could not find component name");
-      }
-
       // consola.info(`${componentName} component has been changed`);
 
       const mod = await loadFile(id);
@@ -100,24 +97,34 @@ const unplugin = createUnplugin((options: Options, meta) => {
         }
 
         case "vue": {
-          consola.error("Not yet supported.");
+          throwErr({
+            errorCode: "EC01",
+          });
+
           break;
         }
 
         case "angular": {
-          consola.error("Not yet supported.");
+          throwErr({
+            errorCode: "EC01",
+          });
+
           break;
         }
 
         case "custom": {
-          consola.error("Not yet supported.");
+          throwErr({
+            errorCode: "EC01",
+          });
+
           break;
         }
 
         default: {
-          consola.error(
-            `Preset ${options.preset} is not supported. Please use one of the following: lit, react, vue, angular, custom`,
-          );
+          throwErr({
+            errorCode: "EC02",
+            detail: `Preset ${options.preset} is not supported. Please use one of the following: lit, react, vue, angular, custom`,
+          });
         }
       }
     },

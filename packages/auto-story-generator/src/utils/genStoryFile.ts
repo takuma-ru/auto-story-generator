@@ -5,6 +5,7 @@ import * as prettier from "prettier";
 import { Project, SyntaxKind } from "ts-morph";
 
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
+import { throwErr } from "~/src/utils/throwError";
 
 export const genStoryFile = async ({
   fileOptions,
@@ -37,16 +38,25 @@ export const genStoryFile = async ({
       !meta ||
       !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
     ) {
-      return consola.error(
-        `Could not find meta in file ${storiesSourceFile.getFilePath()}`,
-      );
+      throwErr({
+        errorCode: "EC05",
+        detail: `Could not find meta in file ${storiesSourceFile.getFilePath()}`,
+      });
+
+      return;
     }
 
     const initializer = meta.getInitializerIfKindOrThrow(
       SyntaxKind.ObjectLiteralExpression,
     );
 
-    if (!initializer) return consola.error("Could not find initializer");
+    if (!initializer) {
+      throwErr({
+        errorCode: "EC06",
+      });
+
+      return;
+    }
 
     if (generateOptions.meta.render) {
       // metaのrenderオブジェクトを取得する
@@ -126,7 +136,10 @@ export const genStoryFile = async ({
         fs.writeFileSync(storiesFilePath, formattedContent);
       })
       .catch((err) => {
-        consola.error(err);
+        throwErr({
+          errorCode: "EC07",
+          detail: err,
+        });
       });
   });
 };

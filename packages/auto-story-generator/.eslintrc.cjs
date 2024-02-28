@@ -18,18 +18,20 @@ const config = {
     ],
     quotes: ["error", "double"],
 
-    "no-restricted-syntax": [
-      "warn",
-      {
-        selector: "Identifier[name='consola.log']",
-        message: "Logs are output on the console.",
-      },
-    ],
-
     "no-restricted-imports": [
       "error",
       {
         patterns: ["./", "../"],
+      },
+    ],
+
+    "no-restricted-syntax": [
+      "error",
+      {
+        selector:
+          // eslint-disable-next-line quotes
+          'CallExpression[callee.object.name="consola"][callee.property.name="error"]',
+        message: "consola.error is not allowed. Use throwErr() instead.",
       },
     ],
 

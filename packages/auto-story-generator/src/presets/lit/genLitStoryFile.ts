@@ -1,9 +1,9 @@
-import { consola } from "consola";
 import { kebabCase, pascalCase } from "scule";
 
 import { getLitPropTypes } from "~/src/presets/lit/getLitPropTypes";
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { genStoryFile } from "~/src/utils/genStoryFile";
+import { throwErr } from "~/src/utils/throwError";
 
 export const genLitStoryFile = async ({
   componentName,
@@ -17,13 +17,23 @@ export const genLitStoryFile = async ({
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
   if (!componentName || !fileBase) {
-    return consola.error("Could not find component name");
+    throwErr({
+      errorCode: "EC03",
+    });
+
+    return;
   }
 
   const propTypes = getLitPropTypes({ sourceFile, componentName });
   const pascalComponentName = pascalCase(componentName);
 
-  if (!propTypes) return consola.error("Could not find argTypes");
+  if (!propTypes) {
+    throwErr({
+      errorCode: "EC04",
+    });
+
+    return;
+  }
 
   const initialCode = `
 import { html } from "lit";
