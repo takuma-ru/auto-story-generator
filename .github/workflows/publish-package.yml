@@ -88,19 +88,11 @@ jobs:
       - name: Set .npmrc
         run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > packages/auto-story-generator/.npmrc
 
-      - name: Set current datetime as env variable
-        id: set-current-datetime
-        env:
-          TZ: "Asia/Tokyo"
-        run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
-
-      - name: Create release branch
-        id: create_branch
-        run: |
-          git switch -c release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
-          git push -u origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Set current datetime as env variable
+      #   id: set-current-datetime
+      #   env:
+      #     TZ: "Asia/Tokyo"
+      #   run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
       - name: Major release
         id: major
@@ -137,11 +129,10 @@ jobs:
         run: pnpm asg publish:prerelease
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
 
-      # - name: Commit and Push
-      #   run: |
-      #     git add .
-      #     git commit -m "update packages/auto-story-generator/package.json"
-      #     git push origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+      - name: Get Current package info
+        id: get-package-info
+        run: |
+          echo "PACKAGE_VERSION=$(pnpm view @takuma-ru/auto-story-generator version)" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -150,7 +141,7 @@ jobs:
           title: ":bookmark: Update package.json"
           draft: false
           base: main
-          branch: release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          branch: release/${{ steps.get-package-info.outputs.PACKAGE_VERSION }}
           assignees: "${{ github.actor }}"
 
   create-github-release:
