@@ -5,11 +5,12 @@ module.exports = {
   /* github: {
     release: true,
   }, */
-  /* git: {
+  git: {
+    tag: false,
     requireCleanWorkingDir: false,
-    addFiles: ["package.json"],
     commitMessage:
       ":bookmark: release @takuma-ru/auto-story-generator@${version}",
-  }, */
+    pushRepo: "origin/release/${version}",
+  },
   plugins: {},
 };
