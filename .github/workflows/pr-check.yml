@@ -149,7 +149,7 @@ jobs:
           TZ: "Asia/Tokyo"
         run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       - name: Publish check
-          run: pnpm run publish:pr-check --filter @takuma-ru/auto-story-generator -- --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+        run: pnpm run publish:pr-check --filter @takuma-ru/auto-story-generator -- --git.pushRepo=release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
 
   # success-check:
   #   runs-on: ubuntu-latest
