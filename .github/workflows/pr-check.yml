@@ -105,6 +105,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [init, build-check]
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -113,6 +115,8 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-pnpm-store-${{ needs.init.outputs.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Set .npmrc
+        run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
       - name: Build check
         run: pnpm asg build
       - name: Set current datetime as env variable
