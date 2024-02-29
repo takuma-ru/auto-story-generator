@@ -1,9 +1,9 @@
-import { consola } from "consola";
 import { pascalCase } from "scule";
 
 import { getReactPropTypes } from "~/src/presets/react/getReactPropTypes";
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { genStoryFile } from "~/src/utils/genStoryFile";
+import { throwErr } from "~/src/utils/throwError";
 
 export const genReactStoryFile = async ({
   componentName,
@@ -17,7 +17,11 @@ export const genReactStoryFile = async ({
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]) => {
   if (!componentName || !fileBase) {
-    return consola.error("Could not find component name");
+    throwErr({
+      errorCode: "EC03",
+    });
+
+    return;
   }
 
   const { propTypes } = getReactPropTypes({
@@ -26,7 +30,13 @@ export const genReactStoryFile = async ({
   });
   const pascalComponentName = pascalCase(componentName);
 
-  if (!propTypes) return consola.error("Could not find argTypes");
+  if (!propTypes) {
+    throwErr({
+      errorCode: "EC04",
+    });
+
+    return;
+  }
 
   const defaultExportDeclaration = sourceFile.getExportedDeclarations();
 

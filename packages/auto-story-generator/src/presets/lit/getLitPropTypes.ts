@@ -1,10 +1,10 @@
-import consola from "consola";
 import { pascalCase } from "scule";
 
 import {
   GenReactPropTypesOptions,
   GenReactPropTypesReturn,
 } from "~/src/types/GenPropTypeType";
+import { throwErr } from "~/src/utils/throwError";
 
 export const getLitPropTypes = ({
   sourceFile,
@@ -19,9 +19,10 @@ export const getLitPropTypes = ({
   const componentClassDeclaration = sourceFile.getClass(pascalComponentName);
 
   if (!componentClassDeclaration) {
-    consola.error(
-      `Could not find class ${pascalComponentName} in file ${sourceFile.getFilePath()}`,
-    );
+    throwErr({
+      errorCode: "EL01",
+      detail: `Could not find class ${pascalComponentName} in file ${sourceFile.getFilePath()}`,
+    });
 
     return;
   }
