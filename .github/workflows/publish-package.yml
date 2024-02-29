@@ -88,11 +88,18 @@ jobs:
       - name: Set .npmrc
         run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > packages/auto-story-generator/.npmrc
 
-      # - name: Set current datetime as env variable
-      #   id: set-current-datetime
-      #   env:
-      #     TZ: "Asia/Tokyo"
-      #   run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+
+      - name: Set current datetime as env variable
+        id: set-current-datetime
+        env:
+          TZ: "Asia/Tokyo"
+        run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+
+      - name: Create release branch
+        id: create_branch
+        run: |
+          git checkout -b release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          git push --set-upstream origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
 
       - name: Major release
         id: major
@@ -128,6 +135,16 @@ jobs:
         id: beta-version-up
         run: pnpm asg publish:prerelease
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success'
+        with:
+          title: ":bookmark: Update package.json"
+          draft: false
+          base: main
+          branch: release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          assignees: "${{ github.actor }}"
 
   create-github-release:
     needs: release
@@ -187,12 +204,3 @@ jobs:
         with:
           version: ${{ steps.get-package-info.outputs.PACKAGE_VERSION }}
           prerelease: ${{ contains(steps.get-package-info.outputs.PACKAGE_VERSION, '-beta') }}
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          title: ":bookmark: Update package.json"
-          draft: false
-          base: main
-          branch: release/${{ steps.get-package-info.outputs.PACKAGE_VERSION }}
-          assignees: "${{ github.actor }}"
