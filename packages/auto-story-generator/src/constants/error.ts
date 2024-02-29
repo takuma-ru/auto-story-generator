@@ -4,7 +4,7 @@ export const errorDefinition = {
   EC01: {
     title: "Not yet supported",
     detail:
-      "Included in the preset but not yet supported. Please wait for support.",
+      "This preset name is included in the preset bust not yet supported. Please wait for support.",
     isCustomDetail: false,
   },
   EC02: {

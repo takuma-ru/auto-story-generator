@@ -13,17 +13,12 @@ export const throwErr: <K extends keyof ThrowErrType>(
 ) => void = (params) => {
   const { errorCode, detail } = params;
 
-  if (errorDefinition[errorCode].isCustomDetail) {
-    // eslint-disable-next-line no-restricted-syntax
-    consola.error(
-      `\x1b[41m ${errorCode} \x1b[0m\nTitle: ${errorDefinition[errorCode].title}\nDetail: ${detail}`,
-    );
-  } else {
-    // eslint-disable-next-line no-restricted-syntax
-    consola.error(
-      `\x1b[41m ${errorCode} \x1b[0m\nTitle: ${errorDefinition[errorCode].title}\nDetail: ${
-        (errorDefinition[errorCode] as { detail: string }).detail
-      }`,
-    );
-  }
+  const detailText = errorDefinition[errorCode].isCustomDetail
+    ? detail
+    : (errorDefinition[errorCode] as { detail: string }).detail;
+
+  // eslint-disable-next-line no-restricted-syntax
+  consola.error(
+    `\x1b[41m ${errorCode} \x1b[0m\n${errorDefinition[errorCode].title}\n\x1b[90m${detailText}\x1b[0m`,
+  );
 };
