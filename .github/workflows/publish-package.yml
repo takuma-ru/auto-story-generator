@@ -99,6 +99,7 @@ jobs:
         id: create-draft-branch
         run: |
           git checkout -b release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          git push --set-upstream origin release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
 
       - name: Major release
         id: major
@@ -150,6 +151,7 @@ jobs:
         run: |
           git checkout -b release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }} ${{ steps.latest-tag.outputs.LATEST_TAG }}
           git push origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          git push origin --delete release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
