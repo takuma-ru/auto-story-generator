@@ -95,11 +95,10 @@ jobs:
           TZ: "Asia/Tokyo"
         run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
-      - name: Create release branch
-        id: create_branch
+      - name: Create release draft branch
+        id: create-draft-branch
         run: |
-          git checkout -b release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
-          git push --set-upstream origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          git checkout -b release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
 
       - name: Major release
         id: major
@@ -136,9 +135,25 @@ jobs:
         run: pnpm asg publish:prerelease
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
 
+      - name: Fetch all tags
+        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success'
+        run: git fetch --tags
+
+      - name: Get latest tag
+        id: latest-tag
+        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success'
+        run: echo "::set-output name=LATEST_TAG::$(git describe --tags `git rev-list --tags --max-count=1`)"
+
+      - name: Create release branch
+        id: create-release-branch
+        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success'
+        run: |
+          git checkout -b release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }} ${{ steps.latest-tag.outputs.LATEST_TAG }}
+          git push origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
-        if: steps.major.conclusion == 'success' || steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success'
+        if: steps.major.conclusion == 'success' ||steps.minor.conclusion == 'success' || steps.patch.conclusion == 'success' || steps.major-beta.conclusion == 'success' || steps.minor-beta.conclusion == 'success' || steps.patch-beta.conclusion == 'success' || steps.beta-version-up.conclusion == 'success' || steps.create-release-branch.conclusion == 'success'
         with:
           title: ":bookmark: Update package.json"
           draft: false
