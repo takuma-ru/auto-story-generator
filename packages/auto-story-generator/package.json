@@ -2,7 +2,7 @@
   "name": "@takuma-ru/auto-story-generator",
   "description": "Automatic real-time story file generation from React, Vue, Angular and Lit component files",
   "private": false,
-  "version": "0.2.5-beta.0",
+  "version": "0.2.5",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "type": "module",
