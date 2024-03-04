@@ -1,5 +1,6 @@
 export type Options = {
   preset: "lit" | "react" | "vue" | "angular" | "custom";
+
   /**
    * @default undefined
    *

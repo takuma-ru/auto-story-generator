@@ -1,6 +1,8 @@
 export type ErrorType = {
-  [key: `E${"C" | "R" | "L" | "V" | "A"}${number}`]:
-    | {
+  [
+    key: `E${"C" | "R" | "L" | "V" | "A"}${number}`
+  ]: // C = Common, R = React, L = Lit, V = Vue, A = Angular
+  | {
         title: string;
         detail: string;
         isCustomDetail: false;

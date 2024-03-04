@@ -50,7 +50,7 @@ export const getReactPropTypes = ({
 
   if (!props) {
     return {
-      propTypes: undefined,
+      propTypes: [],
     };
   }
 
