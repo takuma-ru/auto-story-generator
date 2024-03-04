@@ -3,6 +3,8 @@ import path from "path";
 
 import { minimatch } from "minimatch";
 
+import { throwErr } from "~/src/utils/throwError";
+
 /**
  *  Get all file paths in a directory
  * @param dirPath
@@ -23,6 +25,14 @@ export const getAllFilePaths = (
     dirPathToAsterisk = dirPath.substring(0, asteriskIndex);
   } else {
     dirPathToAsterisk = dirPath;
+  }
+
+  if (!fs.existsSync(dirPathToAsterisk)) {
+    throwErr({
+      errorCode: "EC08",
+      detail: `Directory does not exist: ${dirPathToAsterisk}`,
+    });
+    return [];
   }
 
   const entries = fs.readdirSync(dirPathToAsterisk, { withFileTypes: true });

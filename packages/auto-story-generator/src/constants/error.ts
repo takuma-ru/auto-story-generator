@@ -1,6 +1,7 @@
 import { ErrorType } from "~/src/types/error";
 
 export const errorDefinition = {
+  // Common
   EC01: {
     title: "Not yet supported",
     detail:
@@ -34,6 +35,16 @@ export const errorDefinition = {
     title: "Could not find component",
     isCustomDetail: true,
   },
+  EC08: {
+    title: "Could not scan directory",
+    isCustomDetail: true,
+  },
+  EC09: {
+    title: "Reading directory failed",
+    isCustomDetail: true,
+  },
+
+  // Lit
   EL01: {
     title: "Failed to save file",
     isCustomDetail: true,
