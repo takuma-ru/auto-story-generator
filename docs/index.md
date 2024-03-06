@@ -12,6 +12,10 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/takuma-ru/auto-story-generator
+  image:
+    dark: /asg-dark.png
+    light: /asg-light.png
+    alt: asg
 
 features:
   - icon: ⚙️

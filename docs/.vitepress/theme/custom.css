@@ -3,4 +3,31 @@
   --vp-c-brand-2: #fc521f;
 
   --vp-button-brand-bg: var(--vp-c-brand-1);
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    135deg,
+    rgba(255, 71, 133, 1) 20%,
+    rgba(30, 167, 253, 1) 80%
+  );
+
+  --vp-home-hero-image-background-image: linear-gradient(
+    135deg,
+    rgba(255, 71, 133, 1) 20%,
+    rgba(252, 82, 31, 1) 50%,
+    rgba(30, 167, 253, 1) 80%
+  );
+  --vp-home-hero-image-filter: blur(24px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(68px);
+  }
 }

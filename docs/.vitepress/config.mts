@@ -3,8 +3,45 @@ import { defineConfig } from "vitepress";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "ASG",
-  description: "Generate and update stories from component files in real time",
+  description:
+    "Automatic real-time story file generation from React, Vue, Angular and Lit component files",
+  head: [
+    /* ["link", { rel: "icon", type: "image/svg+xml", href: "/asg-light.svg" }], */
+    ["link", { rel: "icon", type: "image/png", href: "/asg-light.png" }],
+    ["meta", { name: "theme-color", content: "#ff4785" }],
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:locale", content: "en" }],
+    [
+      "meta",
+      {
+        property: "og:title",
+        content:
+          "ASG | Automatic real-time story file generation from React, Vue, Angular and Lit component files",
+      },
+    ],
+    ["meta", { property: "og:site_name", content: "ASG" }],
+    [
+      "meta",
+      {
+        property: "og:image",
+        content:
+          "https://auto-story-generator.takumaru.dev/asg-thumbnail-radius.png",
+      },
+    ],
+    [
+      "meta",
+      {
+        property: "og:url",
+        content: "https://auto-story-generator.takumaru.dev/",
+      },
+    ],
+  ],
   themeConfig: {
+    logo: {
+      dark: "/asg-dark.png",
+      light: "/asg-light.png",
+    },
+
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
