@@ -42,6 +42,10 @@ export default defineConfig({
       light: "/asg-light.png",
     },
 
+    search: {
+      provider: "local",
+    },
+
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
