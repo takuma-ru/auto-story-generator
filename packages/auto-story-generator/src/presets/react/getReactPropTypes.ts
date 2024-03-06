@@ -46,7 +46,7 @@ export const getReactPropTypes = ({
     propsInterface?.getType() ||
     propsOnlyType?.getType() ||
     propsOnlyInterface?.getType() ||
-    propsInline?.getParameters()[0].getType();
+    propsInline?.getParameters()[0]?.getType();
 
   if (!props) {
     return {
