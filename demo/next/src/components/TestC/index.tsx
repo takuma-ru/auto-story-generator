@@ -1,13 +1,9 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes } from "react";
 
-type Props = {
-  test: boolean
-} & HTMLAttributes<HTMLDivElement>
-
-export const TestC: FC<Props> = (props) => {
+export const TestC: FC = () => {
   return (
     <>
-      <div {...props}>TestB</div>
+      <div>TestC</div>
     </>
-  )
-}
+  );
+};
