@@ -3,7 +3,7 @@
 
 
 ## Issue
-- [ ] #xx
+- #xx
 
 ## TODO
 <!-- Please describe any issues that have not yet been resolved or that need to be addressed in the future. -->
