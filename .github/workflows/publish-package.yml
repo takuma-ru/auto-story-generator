@@ -74,13 +74,13 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+      # - uses: actions/cache@v3
+      #   name: Setup pnpm cache
+      #   with:
+      #     path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pnpm-store-
 
       - name: Install Node Dependencies
         run: pnpm install
@@ -185,13 +185,13 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+      # - uses: actions/cache@v3
+      #   name: Setup pnpm cache
+      #   with:
+      #     path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pnpm-store-
 
       - name: Install Node Dependencies
         run: pnpm install
@@ -209,32 +209,3 @@ jobs:
         with:
           version: ${{ steps.get-package-info.outputs.PACKAGE_VERSION }}
           prerelease: ${{ contains(steps.get-package-info.outputs.PACKAGE_VERSION, '-beta') }}
-
-      # - name: Set current datetime as env variable
-      #   id: set-current-datetime
-      #   env:
-      #     TZ: "Asia/Tokyo"
-      #   run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
-
-      # - name: Fetch all tags
-      #   run: git fetch --tags
-
-      # - name: Get latest tag
-      #   id: latest-tag
-      #   run: echo "::set-output name=LATEST_TAG::$(git describe --tags `git rev-list --tags --max-count=1`)"
-
-      # - name: Create release branch
-      #   id: create-release-branch
-      #   run: |
-      #     git checkout -b release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }} ${{ steps.latest-tag.outputs.LATEST_TAG }}
-      #     git push --set-upstream origin release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
-      #     GITHUB_TOKEN: ${{ github.token }}
-
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v6
-      #   with:
-      #     title: ":bookmark: Update package.json"
-      #    draft: false
-      #    base: main
-      #    branch: release/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
-      #    assignees: "${{ github.actor }}"
