@@ -60,7 +60,25 @@ export const genStoryFile = async ({
 
     if (generateOptions.meta.render) {
       // metaのrenderオブジェクトを取得する
-      const renderProperty = initializer.getPropertyOrThrow("render");
+      let renderProperty = initializer.getProperty("render");
+
+      while (!renderProperty) {
+        initializer.addPropertyAssignment({
+          name: "render",
+          initializer: "() => {}",
+        });
+
+        renderProperty = initializer.getProperty("render");
+      }
+
+      if (!renderProperty) {
+        throwErr({
+          errorCode: "EC10",
+          detail: `Could not find render in file ${storiesSourceFile.getFilePath()}`,
+        });
+
+        return;
+      }
 
       // renderオブジェクトの値を書き換える
       renderProperty.set({
@@ -70,7 +88,25 @@ export const genStoryFile = async ({
 
     if (generateOptions.meta.component) {
       // metaのcomponentオブジェクトを取得する
-      const componentProperty = initializer.getPropertyOrThrow("component");
+      let componentProperty = initializer.getProperty("component");
+
+      while (!componentProperty) {
+        initializer.addPropertyAssignment({
+          name: "component",
+          initializer: "null",
+        });
+
+        componentProperty = initializer.getProperty("component");
+      }
+
+      if (!componentProperty) {
+        throwErr({
+          errorCode: "EC10",
+          detail: `Could not find component in file ${storiesSourceFile.getFilePath()}`,
+        });
+
+        return;
+      }
 
       // componentオブジェクトの値を書き換える
       componentProperty.set({
@@ -80,7 +116,25 @@ export const genStoryFile = async ({
 
     if (generateOptions.meta.args) {
       // metaのargsオブジェクトを取得する
-      const argsProperty = initializer.getPropertyOrThrow("args");
+      let argsProperty = initializer.getProperty("args");
+
+      while (!argsProperty) {
+        initializer.addPropertyAssignment({
+          name: "args",
+          initializer: "{}",
+        });
+
+        argsProperty = initializer.getProperty("args");
+      }
+
+      if (!argsProperty) {
+        throwErr({
+          errorCode: "EC10",
+          detail: `Could not find args in file ${storiesSourceFile.getFilePath()}`,
+        });
+
+        return;
+      }
 
       const argText = Object.entries(generateOptions.meta.args)
         .map((x) => x.join(":"))
@@ -92,7 +146,25 @@ export const genStoryFile = async ({
     }
 
     if (generateOptions.meta.argTypes) {
-      const argTypesProperty = initializer.getPropertyOrThrow("argTypes");
+      let argTypesProperty = initializer.getProperty("argTypes");
+
+      while (!argTypesProperty) {
+        initializer.addPropertyAssignment({
+          name: "argTypes",
+          initializer: "{}",
+        });
+
+        argTypesProperty = initializer.getProperty("argTypes");
+      }
+
+      if (!argTypesProperty) {
+        throwErr({
+          errorCode: "EC10",
+          detail: `Could not find argTypes in file ${storiesSourceFile.getFilePath()}`,
+        });
+
+        return;
+      }
 
       const argTypesText = JSON.stringify(
         generateOptions.meta.argTypes,

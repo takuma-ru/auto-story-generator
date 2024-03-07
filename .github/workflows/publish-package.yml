@@ -136,6 +136,9 @@ jobs:
         run: pnpm asg publish:prerelease
         if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
 
+      # - name: Push
+      #   run: git push origin release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         if: steps.major.outcome == 'success' || steps.major-beta.outcome == 'success' || steps.minor.outcome == 'success' || steps.minor-beta.outcome == 'success' || steps.patch.outcome == 'success' || steps.patch-beta.outcome == 'success' || steps.beta-version-up.outcome == 'success'

@@ -43,6 +43,10 @@ export const errorDefinition = {
     title: "Reading directory failed",
     isCustomDetail: true,
   },
+  EC10: {
+    title: "Could not get property from stories",
+    isCustomDetail: true,
+  },
 
   // Lit
   EL01: {
