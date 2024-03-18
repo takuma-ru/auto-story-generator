@@ -96,8 +96,9 @@ jobs:
       - name: Release
         id: release
         run: |
-          OUTPUT=$(tail -n 1 ./.scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
-          echo "::set-output name=branchName::$OUTPUT"
+          OUTPUT=$(node ./.scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
+          LAST_LINE=$(echo "$OUTPUT" | tail -n 1)
+          echo "::set-output name=branchName::$LAST_LINE"
         shell: bash
 
       - name: Create Pull Request
