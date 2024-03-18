@@ -96,7 +96,7 @@ jobs:
       - name: Release
         id: release
         run: |
-          OUTPUT=$(node ./scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
+          OUTPUT=$(node ./.scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
           echo "::set-output name=branchName::$OUTPUT"
         shell: bash
 
