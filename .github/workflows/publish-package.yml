@@ -98,7 +98,7 @@ jobs:
         run: |
           OUTPUT=$(node ./.scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
           LAST_LINE=$(echo "$OUTPUT" | tail -n 1)
-          echo "branchName=LAST_LINE" >> $GITHUB_OUTPUT
+          echo "branchName=$LAST_LINE" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Create Pull Request
