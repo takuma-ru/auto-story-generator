@@ -8,19 +8,15 @@ on:
       releaseLevel:
         description: "Release level"
         required: true
-        default: "patch(0.0.X)"
+        default: patch
         type: choice
         options:
-          - major(X.0.0)
-          - minor(0.X.0)
-          - patch(0.0.X)
+          - major
+          - minor
+          - patch
+          - prerelease
       isBeta:
         description: "Is beta release (exp: X.X.X-beta.0)"
-        required: false
-        type: boolean
-
-      isBetaVersionUp:
-        description: "Is beta version up (exp: X.0.0-beta.X <= here!!)"
         required: false
         type: boolean
 
@@ -88,65 +84,29 @@ jobs:
       - name: Set .npmrc
         run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > packages/auto-story-generator/.npmrc
 
-
-      - name: Set current datetime as env variable
-        id: set-current-datetime
-        env:
-          TZ: "Asia/Tokyo"
-        run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
-
-      - name: Create release draft branch
-        id: create-draft-branch
+      - name: Set beta value
+        id: beta
         run: |
-          git checkout -b release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
-          git push --set-upstream origin release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          if [[ "${{ inputs.isBeta }}" == "true" ]]; then
+            echo "::set-output name=beta::beta"
+          else
+            echo "::set-output name=beta::"
+          fi
 
-      - name: Major release
-        id: major
-        run: pnpm asg publish:major
-        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
-
-      - name: Major Beta release
-        id: major-beta
-        run: pnpm asg publish:major-beta
-        if: contains(inputs.releaseLevel, 'major(X.0.0)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
-
-      - name: Minor release
-        id: minor
-        run: pnpm asg publish:minor
-        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
-
-      - name: Minor Beta release
-        id: minor-beta
-        run: pnpm asg publish:minor-beta
-        if: contains(inputs.releaseLevel, 'minor(0.X.0)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
-
-      - name: Patch release
-        id: patch
-        run: pnpm asg publish:patch
-        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'false')
-
-      - name: Patch Beta release
-        id: patch-beta
-        run: pnpm asg publish:patch-beta
-        if: contains(inputs.releaseLevel, 'patch(0.0.X)') && contains(inputs.isBeta, 'true') && contains(inputs.isBetaVersionUp, 'false')
-
-      - name: Beta version up
-        id: beta-version-up
-        run: pnpm asg publish:prerelease
-        if: contains(inputs.isBeta, 'false') && contains(inputs.isBetaVersionUp, 'true')
-
-      # - name: Push
-      #   run: git push origin release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+      - name: Release
+        id: release
+        run: |
+          OUTPUT=$(tail -n 1 ./.scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
+          echo "::set-output name=branchName::$OUTPUT"
+        shell: bash
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
-        if: steps.major.outcome == 'success' || steps.major-beta.outcome == 'success' || steps.minor.outcome == 'success' || steps.minor-beta.outcome == 'success' || steps.patch.outcome == 'success' || steps.patch-beta.outcome == 'success' || steps.beta-version-up.outcome == 'success'
         with:
           title: ":bookmark: Update package.json"
           draft: false
           base: main
-          branch: release/draft/${{ steps.set-current-datetime.outputs.CURRENT_DATETIME }}
+          branch: release/draft/${{ steps.release.outputs.branchName }}
           assignees: "${{ github.actor }}"
 
   create-github-release:
