@@ -88,9 +88,9 @@ jobs:
         id: beta
         run: |
           if [[ "${{ inputs.isBeta }}" == "true" ]]; then
-            echo "::set-output name=beta::beta"
+            echo "beta=beta" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=beta::"
+            echo "beta=" >> $GITHUB_OUTPUT
           fi
 
       - name: Release
@@ -98,7 +98,7 @@ jobs:
         run: |
           OUTPUT=$(node ./.scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
           LAST_LINE=$(echo "$OUTPUT" | tail -n 1)
-          echo "::set-output name=branchName::$LAST_LINE"
+          echo "branchName=LAST_LINE" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Create Pull Request
