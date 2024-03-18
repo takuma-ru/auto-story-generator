@@ -6,7 +6,7 @@ const semver = require("semver");
 // Specify the path to the package.json file
 const packageJsonPath = path.join(
   __dirname,
-  "project-root",
+  "..",
   "packages",
   "auto-story-generator",
   "package.json"
@@ -21,11 +21,27 @@ try {
     encoding: "utf8",
   }).trim();
 
+  const isBeta = () => {
+    // process.argv[0] is the node executable
+    // process.argv[1] is the path of the script being run
+    // process.argv[2] and onwards are the command line arguments
+    const arg = process.argv[3];
+
+    // Check if the argument is "beta"
+    if (arg === "beta") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  console.log(isBeta());
+
   // Increment the version number based on the release type
   const newVersion = semver.inc(
     npmVersion,
     process.argv[2],
-    process.argv[3] === "beta" ? "beta" : undefined
+    isBeta() ? "beta" : undefined
   );
 
   // Update the version in the package.json file
@@ -40,15 +56,17 @@ try {
   execSync(`git push --set-upstream origin ${branchName}`);
 
   // Build the package
-  execSync("pnpm run build", { stdio: "inherit" });
-
-  // Publish the package
-  execSync("pnpm publish", { stdio: "inherit" });
+  execSync("pnpm asg build", { stdio: "inherit" });
 
   // Commit and push the changes
-  execSync("git add .");
+  execSync("git add ");
   execSync(`git commit -m "Release version ${newVersion}"`);
   execSync("git push origin HEAD");
+
+  // Publish the package
+  execSync("pnpm publish --filter @takuma-ru/auto-story-generator", {
+    stdio: "inherit",
+  });
 
   // Output the branch name
   console.log(branchName);
