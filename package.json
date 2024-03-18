@@ -21,5 +21,8 @@
   "volta": {
     "node": "20.11.0",
     "pnpm": "8.14.1"
+  },
+  "devDependencies": {
+    "semver": "^7.6.0"
   }
 }
