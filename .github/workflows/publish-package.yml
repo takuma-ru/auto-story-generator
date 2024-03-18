@@ -108,7 +108,7 @@ jobs:
           title: ":bookmark: Update package.json"
           draft: false
           base: main
-          branch: release/draft/${{ steps.release.outputs.branchName }}
+          branch: release/${{ steps.release.outputs.branchName }}
           assignees: "${{ github.actor }}"
 
   create-github-release:
