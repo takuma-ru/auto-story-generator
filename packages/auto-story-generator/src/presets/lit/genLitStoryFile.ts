@@ -94,7 +94,7 @@ export const Primary: ${pascalComponentName}Story = {};
     }
 
     let value: string | boolean | undefined =
-      prop.value.length > 0 ? prop.value[0] : "undefined";
+      prop.value.length > 0 ? `"${prop.value[0]}"` : "undefined";
 
     if (prop.type.includes("boolean")) {
       value = true;

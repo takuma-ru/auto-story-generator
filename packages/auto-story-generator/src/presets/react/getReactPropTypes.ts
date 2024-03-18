@@ -5,6 +5,7 @@ import {
   GenReactPropTypesOptions,
   GenReactPropTypesReturn,
 } from "~/src/types/GenPropTypeType";
+import { removeQuotesAndWrapWithDoubleQuotes } from "~/src/utils/removeQuotesAndWrapWithDoubleQuotes";
 
 const getTypeFlagsName = (flags: TypeFlags) => {
   // Get all the keys of TypeFlags
@@ -111,7 +112,9 @@ export const getReactPropTypes = ({
         name: propName,
         type,
         isOptional: prop.isOptional(),
-        value: unionTypes.map((union) => union.getText().replace(/"/g, "")),
+        value: unionTypes.map((union) =>
+          removeQuotesAndWrapWithDoubleQuotes(union.getText()),
+        ),
       };
     }
 

@@ -4,6 +4,7 @@ import {
   GenReactPropTypesOptions,
   GenReactPropTypesReturn,
 } from "~/src/types/GenPropTypeType";
+import { removeQuotesAndWrapWithDoubleQuotes } from "~/src/utils/removeQuotesAndWrapWithDoubleQuotes";
 import { throwErr } from "~/src/utils/throwError";
 
 export const getLitPropTypes = ({
@@ -97,7 +98,7 @@ export const getLitPropTypes = ({
           name: prop.getName(),
           type: ["string"],
           isOptional,
-          value: [propTypeText.replace(/"/g, "")],
+          value: [removeQuotesAndWrapWithDoubleQuotes(propTypeText)],
         };
       }
       // NumberLiteral
@@ -106,7 +107,7 @@ export const getLitPropTypes = ({
           name: prop.getName(),
           type: ["number"],
           isOptional,
-          value: [propTypeText.replace(/"/g, "")],
+          value: [removeQuotesAndWrapWithDoubleQuotes(propTypeText)],
         };
       }
       // BooleanLiteral
@@ -115,7 +116,7 @@ export const getLitPropTypes = ({
           name: prop.getName(),
           type: ["boolean"],
           isOptional,
-          value: [propTypeText.replace(/"/g, "")],
+          value: [removeQuotesAndWrapWithDoubleQuotes(propTypeText)],
         };
       }
       // EnumLiteral
@@ -175,69 +176,69 @@ export const getLitPropTypes = ({
             case 4: {
               return {
                 type: "string",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // Number
             case 8: {
               return {
                 type: "number",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // Boolean
             case 16: {
               return {
                 type: "boolean",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // StringLiteral
             case 128: {
               return {
                 type: "string",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // NumberLiteral
             case 256: {
               return {
                 type: "number",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // BooleanLiteral
             case 512: {
               return {
                 type: "boolean",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // Undefined
             case 32768: {
               return {
                 type: "undefined",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // Null
             case 65536: {
               return {
                 type: "null",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             // Never
             case 131072: {
               return {
                 type: "never",
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
             default: {
               return {
                 type: unionText,
-                value: unionText.replace(/"/g, ""),
+                value: removeQuotesAndWrapWithDoubleQuotes(unionText),
               };
             }
           }
