@@ -62,9 +62,12 @@ try {
   execSync("git push origin HEAD");
 
   // Publish the package
-  execSync("pnpm publish --filter @takuma-ru/auto-story-generator", {
-    stdio: "inherit",
-  });
+  execSync(
+    "pnpm publish --filter @takuma-ru/auto-story-generator --no-git-checks",
+    {
+      stdio: "inherit",
+    }
+  );
 
   // Output the branch name
   console.log(branchName);

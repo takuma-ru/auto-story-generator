@@ -103,6 +103,7 @@ jobs:
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
+        if: steps.release.outcome == 'success'
         with:
           title: ":bookmark: Update package.json"
           draft: false
