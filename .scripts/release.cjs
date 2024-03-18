@@ -35,8 +35,6 @@ try {
     }
   };
 
-  console.log(isBeta());
-
   // Increment the version number based on the release type
   const newVersion = semver.inc(
     npmVersion,
@@ -59,7 +57,7 @@ try {
   execSync("pnpm asg build", { stdio: "inherit" });
 
   // Commit and push the changes
-  execSync("git add ");
+  execSync("git add packages/auto-story-generator/package.json");
   execSync(`git commit -m "Release version ${newVersion}"`);
   execSync("git push origin HEAD");
 
