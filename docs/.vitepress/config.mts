@@ -77,6 +77,10 @@ export default defineConfig({
         text: "FAQ",
         link: "/faq",
       },
+      {
+        text: "Error Codes",
+        link: "/errors",
+      },
     ],
 
     socialLinks: [
