@@ -63,7 +63,7 @@ try {
 
   // Publish the package
   execSync(
-    "pnpm publish --filter @takuma-ru/auto-story-generator --no-git-checks --provenance",
+    `pnpm publish --filter ${packageJson.name} --no-git-checks --provenance`,
     {
       stdio: "inherit",
     }

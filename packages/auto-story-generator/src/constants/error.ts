@@ -2,6 +2,10 @@ import { ErrorType } from "~/src/types/error";
 
 export const errorDefinition = {
   // Common
+  EC00: {
+    title: "Unknown error",
+    isCustomDetail: true,
+  },
   EC01: {
     title: "Not yet supported",
     detail:
@@ -46,6 +50,12 @@ export const errorDefinition = {
   EC10: {
     title: "Could not get property from stories",
     isCustomDetail: true,
+  },
+  EC11: {
+    title: "File is defective.",
+    detail:
+      "An error occurred during abstract syntax tree parsing.\nPlease check your file for problems.",
+    isCustomDetail: false,
   },
 
   // Lit

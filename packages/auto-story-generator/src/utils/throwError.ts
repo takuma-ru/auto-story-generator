@@ -19,6 +19,6 @@ export const throwErr: <K extends keyof ThrowErrType>(
 
   // eslint-disable-next-line no-restricted-syntax
   consola.error(
-    `\x1b[41m ${errorCode} \x1b[0m\n${errorDefinition[errorCode].title}\n\x1b[90m${detailText}\x1b[0m`,
+    `\x1b[41m ASG:${errorCode} \x1b[0m\n${errorDefinition[errorCode].title}\n\x1b[90m${detailText}\n\nDetail: https://auto-story-generator.takumaru.dev/errors.html \x1b[0m`,
   );
 };
