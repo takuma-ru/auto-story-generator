@@ -63,9 +63,11 @@
   "homepage": "https://auto-story-generator.takumaru.dev",
   "dependencies": {
     "consola": "^3.2.3",
+    "glob": "^10.3.10",
     "magicast": "^0.3.2",
     "minimatch": "^9.0.3",
     "prettier": "^3.2.4",
+    "rxjs": "^7.8.1",
     "scule": "^1.1.1",
     "ts-morph": "^21.0.1",
     "unplugin": "^1.5.1"
