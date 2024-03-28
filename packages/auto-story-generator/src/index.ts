@@ -23,6 +23,12 @@ const unplugin = createUnplugin((options: Options, meta) => {
 
     buildStart() {
       if (!isExecuted) {
+        if (!options.isGenerateStoriesFileOAtStartup) {
+          isExecuted = true;
+
+          return;
+        }
+
         const allFiles = glob.sync(path.join(process.cwd(), "**"));
 
         from(allFiles)
