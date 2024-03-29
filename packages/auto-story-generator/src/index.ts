@@ -34,7 +34,6 @@ const unplugin = createUnplugin((options: Options, meta) => {
         from(allFiles)
           .pipe(
             mergeMap(async (filePath) => {
-              consola.info("Generating stories for", filePath);
               await runGenStoryFile({
                 options,
                 id: filePath,
