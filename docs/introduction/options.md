@@ -2,6 +2,8 @@
 
 ## `preset`
 
+### default
+`undefined`
 
 ### Support Status
 Specify the name of the framework.
@@ -32,6 +34,9 @@ autoStoryGenerator.vite({
 ## `imports`
 Specify the directory(s) where the component(s) for which you wish to generate a Story are located.
 
+### default
+`undefined`
+
 ### Example
 ```ts
 autoStoryGenerator.vite({
@@ -39,13 +44,42 @@ autoStoryGenerator.vite({
 })
 ```
 
+## `ignores`
+The directories to ignore.
+
+### default
+`undefined`
+
+### Example
+```ts
+autoStoryGenerator.vite({
+  ignores: ["src/components/IgnoreComponent/IgnoredComponent.tsx"],
+})
+```
+
 ## `prettierConfigPath`
 prettier is executed when stories are generated and when stories are updated.
 You can have that set up.
+
+### default
+`undefined`
 
 ### Example
 ```ts
 autoStoryGenerator.vite({
   prettierConfigPath: resolve(__dirname, "../.prettierrc"),
+})
+```
+
+## `isGenerateStoriesFileAtBuild`
+Automatic generation for all component files only once at build time (`run dev`, `run build`)
+
+### default
+`false`
+
+### Example
+```ts
+autoStoryGenerator.vite({
+  isGenerateStoriesFileAtBuild: true,
 })
 ```

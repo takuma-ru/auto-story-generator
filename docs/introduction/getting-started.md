@@ -26,11 +26,10 @@ Install Storybook in your project on [Storybook Docs - Install](https://storyboo
 `./storybook/main.ts` or `./storybook/main.js`
 ::: code-group
 
-```ts{6,13-16} [Vite]
+```ts{5,12-15} [Vite]
 import type { StorybookConfig } from "@storybook/react-vite";
 
 import { mergeConfig } from "vite";
-import { dirname, resolve } from "path";
 
 import autoStoryGenerator from "@takuma-ru/auto-story-generator";
 
@@ -50,10 +49,8 @@ const config: StorybookConfig = {
 export default config;
 ```
 
-```ts{5,10-13} [Webpack]
+```ts{4,10-13} [Webpack]
 import type { StorybookConfig } from "@storybook/react/types";
-
-import { dirname, resolve } from "path";
 
 import autoStoryGenerator from "@takuma-ru/auto-story-generator";
 
@@ -78,4 +75,17 @@ export default config;
 ### 2. Done!
 Now, when you run Storybook, it will automatically generate stories from the component files.
 
-The story is generated at the time the component file is saved.
+The story is generated at the time the component file is **saved**.
+
+#### Use cases in each framework
+
+- [React](/useCase/react)
+- [Vue](/useCase/vue)
+- [Svelte](/useCase/svelte)
+- [Angular](/useCase/angular)
+- [Lit](/useCase/lit)
+- [Custom](/useCase/custom)
+
+
+### 3. Make more advanced settings
+See [Generate Options](/introduction/options).
