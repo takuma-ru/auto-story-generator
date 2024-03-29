@@ -13,33 +13,40 @@ import { throwErr } from "~/src/utils/throwError";
 export const runGenStoryFile = async ({
   options,
   id,
-  change,
   projectRootDir,
 }: {
   options: Options;
   id: Parameters<NonNullable<UnpluginOptions["watchChange"]>>[0];
-  change: Parameters<NonNullable<UnpluginOptions["watchChange"]>>[1];
   projectRootDir: ReturnType<typeof process.cwd>;
 }) => {
-  if (change.event === "delete") return;
   if (id.includes(".stories")) return;
 
-  const isMatches = options.imports
-    ? options.imports.map((importDir) => {
-        let relativeSourceFilePath = id.replace(projectRootDir, "");
+  const isGenFile = () => {
+    let relativeSourceFilePath = id.replace(projectRootDir, "");
 
-        if (
-          relativeSourceFilePath.startsWith("/") ||
-          relativeSourceFilePath.startsWith("\\")
-        ) {
-          relativeSourceFilePath = id.replace(projectRootDir, "").slice(1);
-        }
+    if (
+      relativeSourceFilePath.startsWith("/") ||
+      relativeSourceFilePath.startsWith("\\")
+    ) {
+      relativeSourceFilePath = id.replace(projectRootDir, "").slice(1);
+    }
 
-        return minimatch(relativeSourceFilePath, importDir);
-      })
-    : [true];
+    const isMatchImports = options.imports
+      ? options.imports.some((importDir) =>
+          minimatch(relativeSourceFilePath, importDir),
+        )
+      : true;
 
-  if (!isMatches.includes(true)) return;
+    const isMatchIgnores = options.ignores
+      ? options.ignores.some((ignorePath) =>
+          minimatch(relativeSourceFilePath, ignorePath),
+        )
+      : false;
+
+    return isMatchImports && !isMatchIgnores;
+  };
+
+  if (!isGenFile()) return;
 
   const {
     fileBase,

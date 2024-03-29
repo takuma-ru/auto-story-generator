@@ -25,7 +25,8 @@ const config: StorybookConfig = {
       plugins: [
         autoStoryGenerator.vite({
           preset: 'react',
-          imports: ['**/src/components/**/*.tsx'],
+          imports: ['src/components/**/*.tsx'],
+          // ignores: ['src/components/Test/Test.tsx'],
           isGenerateStoriesFileAtBuild: true,
           prettierConfigPath: resolve(__dirname, '../.prettierrc'),
         }),
