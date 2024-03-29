@@ -37,7 +37,6 @@ const unplugin = createUnplugin((options: Options, meta) => {
               await runGenStoryFile({
                 options,
                 id: filePath,
-                change: { event: "update" },
                 projectRootDir,
               });
             }),
@@ -49,7 +48,9 @@ const unplugin = createUnplugin((options: Options, meta) => {
     },
 
     async watchChange(this, id, change) {
-      await runGenStoryFile({ options, id, change, projectRootDir });
+      if (change.event === "delete") return;
+
+      await runGenStoryFile({ options, id, projectRootDir });
     },
 
     webpack: (compiler) => {

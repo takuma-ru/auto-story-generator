@@ -22,6 +22,21 @@ export type Options = {
    *
    * @description
    *
+   * The directories to ignore.
+   *
+   * ※ The directory designation should be written from the project root.
+   *
+   * @example
+   *
+   * `src/components/IgnoreComponent/IgnoreComponent.ts`
+   */
+  ignores?: string[];
+
+  /**
+   * @default undefined
+   *
+   * @description
+   *
    * Run prettier when generating Stories file.
    *
    * When doing so, you can specify the `.prettierrc` path to format the file according to the rules.
