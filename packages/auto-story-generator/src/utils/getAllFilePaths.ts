@@ -1,55 +1,26 @@
-import fs from "fs";
 import path from "path";
 
-import { minimatch } from "minimatch";
-
-import { throwErr } from "~/src/utils/throwError";
+import { glob } from "glob";
 
 /**
  *  Get all file paths in a directory
- * @param dirPath
+ * @param pattern - options.imports
+ * @param projectRootDir - process.cwd()
  * @returns all file paths
  */
-export const getAllFilePaths = (
-  dirPath: string,
-  importDirGlob: string,
-): string[] => {
-  const isDefined = <T>(value: T | undefined): value is T => {
-    return value !== undefined;
-  };
+export const getAllFilePaths = ({
+  pattern,
+  projectRootDir,
+}: {
+  pattern: string;
+  projectRootDir: ReturnType<typeof process.cwd>;
+}): string[] => {
+  // process.cwd()は現在の作業ディレクトリを返します。
+  // path.joinを使用して、現在の作業ディレクトリとパターンを結合します。
+  const fullPathPattern = path.join(projectRootDir, pattern);
 
-  const asteriskIndex = dirPath.indexOf("*");
-  let dirPathToAsterisk: string;
+  // glob.syncを使用して、パターンに一致する全てのファイルパスを取得します。
+  const filePaths = glob.sync(fullPathPattern);
 
-  if (asteriskIndex !== -1) {
-    dirPathToAsterisk = dirPath.substring(0, asteriskIndex);
-  } else {
-    dirPathToAsterisk = dirPath;
-  }
-
-  if (!fs.existsSync(dirPathToAsterisk)) {
-    throwErr({
-      errorCode: "EC08",
-      detail: `Directory does not exist: ${dirPathToAsterisk}`,
-    });
-    return [];
-  }
-
-  const entries = fs.readdirSync(dirPathToAsterisk, { withFileTypes: true });
-
-  const filePaths = entries
-    .filter((entry) => entry.isFile())
-    .map((entry) => {
-      const filePath = path.join(dirPathToAsterisk, entry.name);
-      return minimatch(filePath, importDirGlob) ? filePath : undefined;
-    })
-    .filter(isDefined);
-
-  const dirPaths = entries
-    .filter((entry) => entry.isDirectory())
-    .map((entry) =>
-      getAllFilePaths(path.join(dirPathToAsterisk, entry.name), importDirGlob),
-    ); // Recursively get file paths in subdirectories
-
-  return filePaths.concat(...dirPaths);
+  return filePaths;
 };
