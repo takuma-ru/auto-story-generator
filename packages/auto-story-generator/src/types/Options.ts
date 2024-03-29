@@ -33,7 +33,7 @@ export type Options = {
    *
    * @description
    *
-   * Flag value whether to generate stories for all component files only once at startup.
+   * Automatic generation for all component files only once at build time (`run dev`, `run build`)
    */
-  isGenerateStoriesFileOAtStartup?: boolean;
+  isGenerateStoriesFileAtBuild?: boolean;
 };

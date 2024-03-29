@@ -23,7 +23,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
 
     buildStart() {
       if (!isExecuted) {
-        if (!options.isGenerateStoriesFileOAtStartup) {
+        if (!options.isGenerateStoriesFileAtBuild) {
           isExecuted = true;
 
           return;
