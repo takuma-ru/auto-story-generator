@@ -25,8 +25,8 @@ features:
     title: Automatic updates
     details: Detects changes in component files and automatically updates meta information in stories.
   - icon:
-      dark: https://unplugin.vercel.app/logo_dark.svg
-      light: https://unplugin.vercel.app/logo_light.svg
+      dark: https://unplugin.unjs.io/logo_dark.svg
+      light: https://unplugin.unjs.io/logo_light.svg
     title: Supports a wide variety of build tools
     details: Supports a wide variety of build tools by unplugin.
   - icon: 🧩

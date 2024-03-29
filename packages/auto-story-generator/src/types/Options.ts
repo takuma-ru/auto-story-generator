@@ -17,5 +17,23 @@ export type Options = {
    */
   imports?: string[];
 
+  /**
+   * @default undefined
+   *
+   * @description
+   *
+   * Run prettier when generating Stories file.
+   *
+   * When doing so, you can specify the `.prettierrc` path to format the file according to the rules.
+   */
   prettierConfigPath?: string;
+
+  /**
+   * @default false
+   *
+   * @description
+   *
+   * Automatic generation for all component files only once at build time (`run dev`, `run build`)
+   */
+  isGenerateStoriesFileAtBuild?: boolean;
 };

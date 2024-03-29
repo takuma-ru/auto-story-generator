@@ -1,8 +1,8 @@
 import { pascalCase } from "scule";
 
+import { genStoryFile } from "~/src/core/genStoryFile";
 import { getReactPropTypes } from "~/src/presets/react/getReactPropTypes";
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
-import { genStoryFile } from "~/src/utils/genStoryFile";
 import { throwErr } from "~/src/utils/throwError";
 
 export const genReactStoryFile = async ({
