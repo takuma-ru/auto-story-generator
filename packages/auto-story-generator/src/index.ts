@@ -56,12 +56,13 @@ const unplugin = createUnplugin((options: Options, meta) => {
       compiler.hooks.afterCompile.tapAsync(PLUGIN_NAME, (_, callback) => {
         compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
           options.imports?.forEach((importDir) => {
-            const allFilePaths = getAllFilePaths(importDir, importDir);
+            const allFilePaths = getAllFilePaths({
+              pattern: importDir,
+              projectRootDir,
+            });
 
             allFilePaths.forEach((filePath) => {
-              compilation.fileDependencies.add(
-                path.join(projectRootDir, filePath),
-              );
+              compilation.fileDependencies.add(path.join(filePath));
             });
           });
         });
