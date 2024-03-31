@@ -1,7 +1,7 @@
 import path from "path";
 
 import { consola } from "consola";
-import glob from "glob";
+import { sync } from "glob";
 import { from, mergeMap } from "rxjs";
 import { createUnplugin } from "unplugin";
 
@@ -29,7 +29,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
           return;
         }
 
-        const allFiles = glob.sync(path.join(process.cwd(), "**"));
+        const allFiles = sync(path.join(process.cwd(), "**"));
 
         from(allFiles)
           .pipe(
