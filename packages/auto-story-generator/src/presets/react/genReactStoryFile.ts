@@ -1,6 +1,5 @@
 import { pascalCase } from "scule";
 
-import { genStoryFile } from "~/src/core/genStoryFile";
 import { getReactPropTypes } from "~/src/presets/react/getReactPropTypes";
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { throwErr } from "~/src/utils/throwError";
@@ -15,7 +14,9 @@ export const genReactStoryFile = async ({
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
-}: GenStoryFileOptions["fileOptions"]) => {
+}: GenStoryFileOptions["fileOptions"]): Promise<
+  GenStoryFileOptions | undefined
+> => {
   if (!componentName || !fileBase) {
     throwErr({
       errorCode: "EC03",
@@ -123,7 +124,7 @@ export const Primary: Story = {};
     }
   });
 
-  genStoryFile({
+  return {
     fileOptions: {
       componentName,
       fileBase,
@@ -144,5 +145,5 @@ export const Primary: Story = {};
         argTypes,
       },
     },
-  });
+  };
 };

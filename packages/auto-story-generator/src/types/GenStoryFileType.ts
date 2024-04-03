@@ -5,16 +5,10 @@ import { Options } from "~/src/types/Options";
 
 export type GenStoryFileOptions = {
   fileOptions: {
-    componentName: GetComponentInfoReturnType["componentName"];
-    fileBase: GetComponentInfoReturnType["fileBase"];
-    fileName: GetComponentInfoReturnType["fileName"];
-    fileExt: GetComponentInfoReturnType["fileExt"];
-    filePrefixExt: GetComponentInfoReturnType["filePrefixExt"];
-    relativeSourceFilePath: GetComponentInfoReturnType["relativeSourceFilePath"];
     path: string;
     sourceFile: SourceFile;
     prettierConfigPath?: Options["prettierConfigPath"];
-  };
+  } & GetComponentInfoReturnType;
   generateOptions: {
     fileExt: `.stories.${string}`;
     initialCode: string;

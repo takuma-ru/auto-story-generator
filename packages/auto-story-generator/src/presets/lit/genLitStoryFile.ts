@@ -1,6 +1,5 @@
 import { kebabCase, pascalCase } from "scule";
 
-import { genStoryFile } from "~/src/core/genStoryFile";
 import { getLitPropTypes } from "~/src/presets/lit/getLitPropTypes";
 import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { throwErr } from "~/src/utils/throwError";
@@ -15,7 +14,9 @@ export const genLitStoryFile = async ({
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
-}: GenStoryFileOptions["fileOptions"]) => {
+}: GenStoryFileOptions["fileOptions"]): Promise<
+  GenStoryFileOptions | undefined
+> => {
   if (!componentName || !fileBase) {
     throwErr({
       errorCode: "EC03",
@@ -141,7 +142,7 @@ export const Primary: ${pascalComponentName}Story = {};
     }
   });
 
-  genStoryFile({
+  return {
     fileOptions: {
       componentName,
       fileBase,
@@ -162,5 +163,5 @@ export const Primary: ${pascalComponentName}Story = {};
         argTypes,
       },
     },
-  });
+  };
 };
