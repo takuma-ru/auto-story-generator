@@ -30,14 +30,7 @@
     "lint:fix": "eslint --ext .ts,.js . --fix",
     "lint:type-check": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "publish:major": "pnpm build && pnpm dlx release-it major --ci -VV",
-    "publish:minor": "pnpm build && pnpm dlx release-it minor --ci -VV",
-    "publish:patch": "pnpm build && pnpm dlx release-it patch --ci -VV",
-    "publish:major-beta": "pnpm build && pnpm dlx release-it major --preRelease=beta --ci -VV",
-    "publish:minor-beta": "pnpm build && pnpm dlx release-it minor --preRelease=beta --ci -VV",
-    "publish:patch-beta": "pnpm build && pnpm dlx release-it patch --preRelease=beta --ci -VV",
-    "publish:prerelease": "pnpm build && pnpm dlx release-it --preRelease --ci -VV"
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "storybook",

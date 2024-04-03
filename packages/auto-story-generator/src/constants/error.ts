@@ -1,4 +1,4 @@
-import { ErrorType } from "~/src/types/error";
+import { ErrorType } from "~/src/types/ErrorType";
 
 export const errorDefinition = {
   // Common

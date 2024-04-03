@@ -5,7 +5,7 @@ import { sync } from "glob";
 import { from, mergeMap } from "rxjs";
 import { createUnplugin } from "unplugin";
 
-import { runGenStoryFile } from "~/src/core/runGenStoryFile";
+import { genStoryFile } from "~/src/core/genStoryFile";
 import { Options } from "~/src/types/Options";
 import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
 
@@ -34,7 +34,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
         from(allFiles)
           .pipe(
             mergeMap(async (filePath) => {
-              await runGenStoryFile({
+              await genStoryFile({
                 options,
                 id: filePath,
                 projectRootDir,
@@ -50,7 +50,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
     async watchChange(this, id, change) {
       if (change.event === "delete") return;
 
-      await runGenStoryFile({ options, id, projectRootDir });
+      await genStoryFile({ options, id, projectRootDir });
     },
 
     webpack: (compiler) => {

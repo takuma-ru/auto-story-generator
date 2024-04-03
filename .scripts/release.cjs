@@ -13,6 +13,11 @@ const packageJsonPath = path.join(
 );
 
 try {
+  // Create a new branch and push it to origin
+  const branchName = `release/${new Date().toISOString().replace(/[-:.]/g, "")}`;
+  execSync(`git checkout -b ${branchName}`);
+  execSync(`git push --set-upstream origin ${branchName}`);
+
   // Read the package.json file
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
 
@@ -47,11 +52,6 @@ try {
 
   // Write the updated package.json back to file
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-
-  // Create a new branch and push it to origin
-  const branchName = `release/${new Date().toISOString().replace(/[-:.]/g, "")}`;
-  execSync(`git checkout -b ${branchName}`);
-  execSync(`git push --set-upstream origin ${branchName}`);
 
   // Build the package
   execSync("pnpm asg build", { stdio: "inherit" });
