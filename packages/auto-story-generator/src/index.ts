@@ -1,7 +1,7 @@
 import path from "path";
 
 import { consola } from "consola";
-import { sync } from "glob";
+import { globSync } from "glob";
 import { from, mergeMap } from "rxjs";
 import { createUnplugin } from "unplugin";
 
@@ -16,7 +16,7 @@ let isExecuted: boolean = false;
 const unplugin = createUnplugin((options: Options, meta) => {
   consola.info("ASG is running in", meta.framework);
 
-  const projectRootDir = process.cwd();
+  const projectRootDir = process.cwd().replace(/\\/g, "/");
 
   return {
     name: PLUGIN_NAME,
@@ -29,14 +29,16 @@ const unplugin = createUnplugin((options: Options, meta) => {
           return;
         }
 
-        const allFiles = sync(path.join(process.cwd(), "**"));
+        const allFiles = globSync(
+          path.join(process.cwd(), "**").replace(/\\/g, "/"),
+        );
 
         from(allFiles)
           .pipe(
             mergeMap(async (filePath) => {
               await genStoryFile({
                 options,
-                id: filePath,
+                id: filePath.replace(/\\/g, "/"),
                 projectRootDir,
               });
             }),

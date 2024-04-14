@@ -51,6 +51,8 @@ export const genStoryFile = async ({
   };
   const isGenFile = hasGenFile();
 
+  consola.info(`isGenFile: ${isGenFile}`);
+
   if (!isGenFile) return;
 
   const {
