@@ -39,22 +39,62 @@
   ],
   "settings": {
     "cSpell.words": [
+      "antfu",
       "consola",
       "magicast",
       "satoshi",
       "scule",
       "vitepress",
-      "vumdoc",
+      "vumdoc"
     ],
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    // Enable the ESlint flat config support
+    "eslint.experimental.useFlatConfig": true,
+
+    // Disable the default formatter, use eslint instead
+    "prettier.enable": false,
     "editor.tabSize": 2,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit",
-      "source.addMissingImports": "explicit",
-    },
+    "editor.formatOnSave": false,
     "files.eol": "\n",
     "typescript.preferences.importModuleSpecifier": "non-relative",
+
+    // Auto fix
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "never",
+      "source.addMissingImports": "explicit",
+    },
+
+    // Silent the stylistic rules in you IDE, but still auto fix them
+    "eslint.rules.customizations": [
+      { "rule": "style/*", "severity": "off" },
+      { "rule": "format/*", "severity": "off" },
+      { "rule": "*-indent", "severity": "off" },
+      { "rule": "*-spacing", "severity": "off" },
+      { "rule": "*-spaces", "severity": "off" },
+      { "rule": "*-order", "severity": "off" },
+      { "rule": "*-dangle", "severity": "off" },
+      { "rule": "*-newline", "severity": "off" },
+      { "rule": "*quotes", "severity": "off" },
+      { "rule": "*semi", "severity": "off" },
+    ],
+
+    // Enable eslint for all supported languages
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "vue",
+      "html",
+      "markdown",
+      "json",
+      "jsonc",
+      "yaml",
+      "toml",
+      "gql",
+      "graphql",
+    ],
   },
   "extensions": {},
 }
