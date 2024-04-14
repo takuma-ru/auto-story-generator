@@ -1,4 +1,32 @@
-/** @type {import('eslint/lib/shared/types').ConfigData} */
+import antfu from '@antfu/eslint-config'
+
+export default antfu({
+  rules: {
+    'no-console': [
+      'error',
+      {
+        allow: ['error', 'warn'],
+      },
+    ],
+
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: ['./', '../'],
+      },
+    ],
+
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'CallExpression[callee.object.name="consola"][callee.property.name="error"]',
+        message: 'consola.error is not allowed. Use throwErr() instead.',
+      },
+    ],
+  },
+})
+/*
+// MEMO: old config
 const config = {
   env: {
     browser: true,
@@ -59,3 +87,4 @@ const config = {
 };
 
 module.exports = config;
+*/

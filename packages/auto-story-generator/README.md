@@ -16,25 +16,25 @@ Add settings to main.ts in Storybook (`./storybook/main.ts`)
 
 For `React`, `Vite`
 ```ts
-import type { StorybookConfig } from "@storybook/react-vite";
+import type { StorybookConfig } from '@storybook/react-vite'
 
-import { mergeConfig } from "vite";
+import { mergeConfig } from 'vite'
 
-import autoStoryGenerator from "@takuma-ru/auto-story-generator";
+import autoStoryGenerator from '@takuma-ru/auto-story-generator'
 
 const config: StorybookConfig = {
-  viteFinal: async (config) =>
+  viteFinal: async config =>
     mergeConfig(config, {
       plugins: [
         autoStoryGenerator.vite({
-          preset: "react",
-          imports: ["src/components/**/*.tsx"],
+          preset: 'react',
+          imports: ['src/components/**/*.tsx'],
         }),
       ],
     }),
-};
+}
 
-export default config;
+export default config
 ```
 
 ## Supported Frameworks

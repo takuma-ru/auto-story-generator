@@ -4,14 +4,14 @@
     "lib": ["esnext", "DOM"],
     "module": "esnext",
     "moduleResolution": "node",
+    "paths": {
+      "~/*": ["./*"]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "paths": {
-      "~/*": ["./*"]
-    }
+    "skipLibCheck": true
   },
   "ts-node": {
     "esm": true,

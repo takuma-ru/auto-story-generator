@@ -1,5 +1,5 @@
-export type Options = {
-  preset: "lit" | "react" | "vue" | "angular" | "custom";
+export interface Options {
+  preset: 'lit' | 'react' | 'vue' | 'angular' | 'custom'
 
   /**
    * @default undefined
@@ -15,7 +15,7 @@ export type Options = {
    * `src/components/*.ts`
    * `src/components/**\/*.ts`
    */
-  imports?: string[];
+  imports?: string[]
 
   /**
    * @default undefined
@@ -30,7 +30,7 @@ export type Options = {
    *
    * `src/components/IgnoreComponent/IgnoreComponent.ts`
    */
-  ignores?: string[];
+  ignores?: string[]
 
   /**
    * @default undefined
@@ -41,7 +41,7 @@ export type Options = {
    *
    * When doing so, you can specify the `.prettierrc` path to format the file according to the rules.
    */
-  prettierConfigPath?: string;
+  prettierConfigPath?: string
 
   /**
    * @default false
@@ -50,5 +50,5 @@ export type Options = {
    *
    * Automatic generation for all component files only once at build time (`run dev`, `run build`)
    */
-  isGenerateStoriesFileAtBuild?: boolean;
-};
+  isGenerateStoriesFileAtBuild?: boolean
+}

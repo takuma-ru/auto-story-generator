@@ -1,6 +1,6 @@
-import path from "path";
+import type path from 'node:path'
 
-export type GetComponentInfoReturnType = {
+export interface GetComponentInfoReturnType {
   /**
    * The name of the file
    *
@@ -8,7 +8,7 @@ export type GetComponentInfoReturnType = {
    * `ComponentName.tsx`
    * `index.tsx`
    */
-  fileBase: path.ParsedPath["base"];
+  fileBase: path.ParsedPath['base']
   /**
    * file type
    *
@@ -17,7 +17,7 @@ export type GetComponentInfoReturnType = {
    * `ComponentName.vue`→`.vue`
    * `ComponentName.ce.ts`→`.ts`
    */
-  fileExt: `.${path.ParsedPath["ext"]}`;
+  fileExt: `.${path.ParsedPath['ext']}`
 
   /**
    * file prefix type
@@ -29,8 +29,8 @@ export type GetComponentInfoReturnType = {
    * `ComponentName.tsx`→ undefined
    * `ComponentName.vue`→ undefined
    * `ComponentName.ce.ts`→`.ce`
-   **/
-  filePrefixExt?: `.${string}`;
+   */
+  filePrefixExt?: `.${string}`
   /**
    * The name of the component file
    *
@@ -38,7 +38,7 @@ export type GetComponentInfoReturnType = {
    * `ComponentName`
    * `index`
    */
-  fileName: path.ParsedPath["name"];
+  fileName: path.ParsedPath['name']
   /**
    * The name of the component
    *
@@ -46,12 +46,12 @@ export type GetComponentInfoReturnType = {
    * @example
    * `ComponentName`
    */
-  componentName: string | undefined;
+  componentName: string | undefined
   /**
    * The relative path to the source file
    *
    * @example
    * `src/components/ComponentName/ComponentName.tsx`
    */
-  relativeSourceFilePath: string;
-};
+  relativeSourceFilePath: string
+}
