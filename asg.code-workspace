@@ -9,6 +9,10 @@
       "path": "packages/auto-story-generator",
     },
     {
+      "name": "🤖 dev-runtime",
+      "path": "packages/dev-runtime",
+    },
+    {
       "name": "📄 docs",
       "path": "docs",
     },
