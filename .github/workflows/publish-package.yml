@@ -55,7 +55,7 @@ jobs:
       - name: Build
         run: pnpm p:core build
 
-      - name: Relase
+      - name: Release
         run: |
           if [ "${{ github.event.inputs.pre }}" == "true" ]; then
             pnpm p:core release --level ${{ github.event.inputs.level }} --pre
@@ -65,3 +65,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Get Current package info
+        id: get-package-info
+        run: |
+          echo "PACKAGE_VERSION=$(pnpm view @takuma-ru/auto-story-generator version)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: create-release
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ steps.get-package-info.outputs.PACKAGE_VERSION }}
+          prerelease: ${{ contains(steps.get-package-info.outputs.PACKAGE_VERSION, '-beta') }}
