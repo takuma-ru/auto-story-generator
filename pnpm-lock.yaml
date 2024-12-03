@@ -74,8 +74,8 @@ importers:
         specifier: workspace:*
         version: link:../../config
       '@takuma-ru/rlse':
-        specifier: 0.0.1-beta.4
-        version: 0.0.1-beta.4
+        specifier: 0.0.1-beta.5
+        version: 0.0.1-beta.5
       '@types/node':
         specifier: ^20.11.5
         version: 20.11.5
@@ -3212,8 +3212,8 @@ packages:
   '@swc/types@0.1.5':
     resolution: {integrity: sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==}
 
-  '@takuma-ru/rlse@0.0.1-beta.4':
-    resolution: {integrity: sha512-h8cQ8oP7KKugTQqAifngyKD3ILryqZ4fB+0vT1g9gi5+Zgh5eroSeHDQM9B5CILgxHcgN7dz1OsdHKnyFZ1ikQ==}
+  '@takuma-ru/rlse@0.0.1-beta.5':
+    resolution: {integrity: sha512-gGexDpm7kyNuDGvDrnV1uQbeQED9JkbMokphBiFsRyJYn7sBq1PQfCIuTSPj6HBCpOCg/KCzj7tnRBYsTapGzA==}
     hasBin: true
 
   '@testing-library/dom@9.3.4':
@@ -12661,7 +12661,7 @@ snapshots:
 
   '@swc/types@0.1.5': {}
 
-  '@takuma-ru/rlse@0.0.1-beta.4':
+  '@takuma-ru/rlse@0.0.1-beta.5':
     dependencies:
       commander: 12.1.0
       consola: 3.2.3

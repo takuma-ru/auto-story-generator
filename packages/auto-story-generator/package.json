@@ -53,7 +53,7 @@
     "lint:fix": "eslint . --fix",
     "lint:type-check": "tsc --noEmit",
     "release": "rlse",
-    "release:test": "rlse -l patch -k config -k commit-changes -k create-release-branch --dry-run"
+    "release:test": "rlse -l patch -k config,commit-changes,create-release-branch --dry-run"
   },
   "dependencies": {
     "consola": "^3.2.3",
@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@asg/config": "workspace:*",
-    "@takuma-ru/rlse": "0.0.1-beta.4",
+    "@takuma-ru/rlse": "0.0.1-beta.5",
     "@types/node": "^20.11.5",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
