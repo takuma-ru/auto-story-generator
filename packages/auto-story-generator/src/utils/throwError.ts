@@ -1,6 +1,6 @@
 import { consola } from "consola";
 
-import { errorDefinition } from "../constants/error";
+import { errorDefinition } from "~/src/constants/error";
 
 type ThrowErrType = {
   [K in keyof typeof errorDefinition]: (typeof errorDefinition)[K]["isCustomDetail"] extends true
