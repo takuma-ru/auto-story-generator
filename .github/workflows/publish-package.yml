@@ -1,177 +1,67 @@
-name: Release @takuma-ru/auto-story-generator package
-
-run-name: Release ${{ inputs.releaseLevel }} version
+name: Publish Package
 
 on:
   workflow_dispatch:
     inputs:
-      releaseLevel:
-        description: "Release level"
+      pre:
+        description: 'Is this a NEW pre-release?'
+        required: false
+        default: false
+        type: boolean
+      level:
+        description: 'Release level'
         required: true
-        default: patch
+        default: 'patch'
         type: choice
         options:
-          - major
-          - minor
           - patch
-          - prerelease
-      isBeta:
-        description: "Is beta release (exp: X.X.X-beta.0)"
-        required: false
-        type: boolean
+          - minor
+          - major
+          - preup
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
+      contents: write
+      packages: write
       actions: write
       checks: write
-      contents: write
       deployments: write
-      issues: write
-      packages: write
       pull-requests: write
       repository-projects: write
       security-events: write
       statuses: write
       id-token: write
-    environment:
-      name: Publish
-    env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      NODE_OPTIONS: --max_old_space_size=8192
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.head_ref }}
 
-      - name: Set git config
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Setup node
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: "package.json"
-          registry-url: "https://registry.npmjs.org/"
+          node-version-file: package.json
+          registry-url: 'https://registry.npmjs.org'
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 8.14.1
-          run_install: false
+      - uses: pnpm/action-setup@v4
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Build
+        run: pnpm p:core build
+
+      - name: Relase
         run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      # - uses: actions/cache@v3
-      #   name: Setup pnpm cache
-      #   with:
-      #     path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pnpm-store-
-
-      - name: Install Node Dependencies
-        run: pnpm install
-
-      - name: Set .npmrc
-        run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > packages/auto-story-generator/.npmrc
-
-      - name: Set beta value
-        id: beta
-        run: |
-          if [[ "${{ inputs.isBeta }}" == "true" ]]; then
-            echo "beta=beta" >> $GITHUB_OUTPUT
+          if [ "${{ github.event.inputs.pre }}" == "true" ]; then
+            pnpm p:core release --level ${{ github.event.inputs.level }} --pre
           else
-            echo "beta=" >> $GITHUB_OUTPUT
+            pnpm p:core release --level ${{ github.event.inputs.level }}
           fi
-
-      - name: Release
-        id: release
-        run: |
-          OUTPUT=$(node ./.scripts/release.cjs ${{ inputs.releaseLevel }} ${{ steps.beta.outputs.beta }})
-          LAST_LINE=$(echo "$OUTPUT" | tail -n 1)
-          echo "branchName=$LAST_LINE" >> $GITHUB_OUTPUT
-        shell: bash
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        if: steps.release.outcome == 'success'
-        with:
-          title: ":bookmark: Update package.json"
-          draft: false
-          base: main
-          branch: ${{ steps.release.outputs.branchName }}
-          assignees: "${{ github.actor }}"
-
-  create-github-release:
-    needs: release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-
-    environment:
-      name: Publish
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set git config
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: "package.json"
-          registry-url: "https://registry.npmjs.org/"
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 8.14.1
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      # - uses: actions/cache@v3
-      #   name: Setup pnpm cache
-      #   with:
-      #     path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pnpm-store-
-
-      - name: Install Node Dependencies
-        run: pnpm install
-
-      - name: Get Current package info
-        id: get-package-info
-        run: |
-          echo "PACKAGE_VERSION=$(pnpm view @takuma-ru/auto-story-generator version)" >> $GITHUB_OUTPUT
-
-      - name: Create GitHub Release
-        id: create-release
-        uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          version: ${{ steps.get-package-info.outputs.PACKAGE_VERSION }}
-          prerelease: ${{ contains(steps.get-package-info.outputs.PACKAGE_VERSION, '-beta') }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

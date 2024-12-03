@@ -73,6 +73,9 @@ importers:
       '@asg/config':
         specifier: workspace:*
         version: link:../../config
+      '@takuma-ru/rlse':
+        specifier: 0.0.1-beta.2
+        version: 0.0.1-beta.2
       '@types/node':
         specifier: ^20.11.5
         version: 20.11.5
@@ -3209,6 +3212,10 @@ packages:
   '@swc/types@0.1.5':
     resolution: {integrity: sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==}
 
+  '@takuma-ru/rlse@0.0.1-beta.2':
+    resolution: {integrity: sha512-D7g46GgsPhdS1/pY4tK0kXm32UqXoyweqEQRfNPWx3cdbCXFje4vq1BspPFi/kLDMnfBycFxvRvUWYkTW1c0GA==}
+    hasBin: true
+
   '@testing-library/dom@9.3.4':
     resolution: {integrity: sha512-FlS4ZWlp97iiNWig0Muq8p+3rVDjRiYE+YKGbAqXOu9nwJFFOdL00kFpz42M+4huzYi86vAK1sOOfyOG45muIQ==}
     engines: {node: '>=14'}
@@ -4422,6 +4429,10 @@ packages:
 
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
+
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -8819,6 +8830,9 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
 
+  zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -10520,7 +10534,7 @@ snapshots:
 
   '@npmcli/fs@3.1.0':
     dependencies:
-      semver: 7.6.0
+      semver: 7.6.3
 
   '@npmcli/git@4.1.0':
     dependencies:
@@ -10530,7 +10544,7 @@ snapshots:
       proc-log: 3.0.0
       promise-inflight: 1.0.1
       promise-retry: 2.0.1
-      semver: 7.6.0
+      semver: 7.6.3
       which: 3.0.1
     transitivePeerDependencies:
       - bluebird
@@ -10543,7 +10557,7 @@ snapshots:
       json-parse-even-better-errors: 3.0.1
       normalize-package-data: 5.0.0
       proc-log: 3.0.0
-      semver: 7.6.0
+      semver: 7.6.3
     transitivePeerDependencies:
       - bluebird
 
@@ -11498,7 +11512,7 @@ snapshots:
       magic-string: 0.30.8
       path-browserify: 1.0.1
       process: 0.11.10
-      semver: 7.6.0
+      semver: 7.6.3
       style-loader: 3.3.4(webpack@5.91.0(@swc/core@1.3.107(@swc/helpers@0.5.2))(esbuild@0.17.6))
       swc-loader: 0.2.4(@swc/core@1.3.107(@swc/helpers@0.5.2))(webpack@5.91.0(@swc/core@1.3.107(@swc/helpers@0.5.2))(esbuild@0.17.6))
       terser-webpack-plugin: 5.3.10(@swc/core@1.3.107(@swc/helpers@0.5.2))(esbuild@0.17.6)(webpack@5.91.0(@swc/core@1.3.107(@swc/helpers@0.5.2))(esbuild@0.17.6))
@@ -11843,7 +11857,7 @@ snapshots:
       pretty-hrtime: 1.0.3
       prompts: 2.4.2
       read-pkg-up: 7.0.1
-      semver: 7.6.0
+      semver: 7.6.3
       telejson: 7.2.0
       tiny-invariant: 1.3.1
       ts-dedent: 2.2.0
@@ -12184,7 +12198,7 @@ snapshots:
       react-docgen: 7.0.3
       react-dom: 18.2.0(react@18.2.0)
       react-refresh: 0.14.0
-      semver: 7.6.0
+      semver: 7.6.3
       webpack: 5.91.0(@swc/core@1.3.107(@swc/helpers@0.5.2))(esbuild@0.17.6)
     optionalDependencies:
       '@babel/core': 7.24.3
@@ -12647,6 +12661,13 @@ snapshots:
 
   '@swc/types@0.1.5': {}
 
+  '@takuma-ru/rlse@0.0.1-beta.2':
+    dependencies:
+      commander: 12.1.0
+      consola: 3.2.3
+      semver: 7.6.3
+      zod: 3.23.8
+
   '@testing-library/dom@9.3.4':
     dependencies:
       '@babel/code-frame': 7.24.2
@@ -13070,7 +13091,7 @@ snapshots:
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.6.0
+      semver: 7.6.3
       tsutils: 3.21.0(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
@@ -13085,7 +13106,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
-      semver: 7.6.0
+      semver: 7.6.3
       ts-api-utils: 1.3.0(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
@@ -13100,7 +13121,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
-      semver: 7.6.0
+      semver: 7.6.3
       ts-api-utils: 1.3.0(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
@@ -13115,7 +13136,7 @@ snapshots:
       fast-glob: 3.3.2
       is-glob: 4.0.3
       minimatch: 9.0.4
-      semver: 7.6.0
+      semver: 7.6.3
       ts-api-utils: 1.3.0(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
@@ -13945,7 +13966,7 @@ snapshots:
 
   builtins@5.0.1:
     dependencies:
-      semver: 7.6.0
+      semver: 7.6.3
 
   bundle-require@4.0.2(esbuild@0.19.11):
     dependencies:
@@ -14140,6 +14161,8 @@ snapshots:
       delayed-stream: 1.0.0
 
   comma-separated-tokens@2.0.3: {}
+
+  commander@12.1.0: {}
 
   commander@2.20.3: {}
 
@@ -14826,7 +14849,7 @@ snapshots:
   eslint-compat-utils@0.5.0(eslint@9.16.0(jiti@1.21.0)):
     dependencies:
       eslint: 9.16.0(jiti@1.21.0)
-      semver: 7.6.0
+      semver: 7.6.3
 
   eslint-compat-utils@0.5.1(eslint@9.16.0(jiti@1.21.0)):
     dependencies:
@@ -14836,7 +14859,7 @@ snapshots:
   eslint-compat-utils@0.6.4(eslint@9.16.0(jiti@1.21.0)):
     dependencies:
       eslint: 9.16.0(jiti@1.21.0)
-      semver: 7.6.0
+      semver: 7.6.3
 
   eslint-config-flat-gitignore@0.3.0(eslint@9.16.0(jiti@1.21.0)):
     dependencies:
@@ -15665,7 +15688,7 @@ snapshots:
       minimatch: 3.1.2
       node-abort-controller: 3.1.1
       schema-utils: 3.3.0
-      semver: 7.6.0
+      semver: 7.6.3
       tapable: 2.2.1
       typescript: 5.3.3
       webpack: 5.91.0(@swc/core@1.3.107(@swc/helpers@0.5.2))(esbuild@0.17.6)
@@ -15682,7 +15705,7 @@ snapshots:
       minimatch: 3.1.2
       node-abort-controller: 3.1.1
       schema-utils: 3.3.0
-      semver: 7.6.0
+      semver: 7.6.3
       tapable: 2.2.1
       typescript: 5.3.3
       webpack: 5.91.0(@swc/core@1.3.107(@swc/helpers@0.5.2))(esbuild@0.18.20)
@@ -17412,7 +17435,7 @@ snapshots:
 
   node-abi@3.54.0:
     dependencies:
-      semver: 7.6.0
+      semver: 7.6.3
 
   node-abort-controller@3.1.1: {}
 
@@ -17474,14 +17497,14 @@ snapshots:
     dependencies:
       hosted-git-info: 6.1.1
       is-core-module: 2.13.1
-      semver: 7.6.0
+      semver: 7.6.3
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
 
   npm-install-checks@6.3.0:
     dependencies:
-      semver: 7.6.0
+      semver: 7.6.3
 
   npm-normalize-package-bin@3.0.1: {}
 
@@ -17489,7 +17512,7 @@ snapshots:
     dependencies:
       hosted-git-info: 6.1.1
       proc-log: 3.0.0
-      semver: 7.6.0
+      semver: 7.6.3
       validate-npm-package-name: 5.0.0
 
   npm-pick-manifest@8.0.2:
@@ -17497,7 +17520,7 @@ snapshots:
       npm-install-checks: 6.3.0
       npm-normalize-package-bin: 3.0.1
       npm-package-arg: 10.1.0
-      semver: 7.6.0
+      semver: 7.6.3
 
   npm-run-path@4.0.1:
     dependencies:
@@ -19718,5 +19741,7 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yocto-queue@1.0.0: {}
+
+  zod@3.23.8: {}
 
   zwitch@2.0.4: {}

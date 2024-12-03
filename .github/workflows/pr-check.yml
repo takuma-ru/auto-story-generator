@@ -116,7 +116,5 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-pnpm-store-${{ needs.init.outputs.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - name: Build check
-        run: pnpm p:core build
       - name: Publish check
-        run: pnpm p:core publish --dry-run --no-git-checks
+        run: pnpm p:core release:test
