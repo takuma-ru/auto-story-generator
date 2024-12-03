@@ -1,7 +1,7 @@
 {
   "name": "@takuma-ru/auto-story-generator-root",
   "version": "0.0.0",
-  "description": "",
+  "description": "Extends @takuma-ru/auto-story-generator and supports creation of stories for Angular Componenets too",
   "scripts": {
     "p:core": "pnpm -C packages/auto-story-generator",
     "doc": "pnpm -C docs",
@@ -13,7 +13,7 @@
     "pg:angular": "pnpm -C playgrounds/angular",
     "pg:lit": "pnpm -C playgrounds/lit"
   },
-  "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
+  "author": "gadhikari(https://github.com/GeetaKrishna65/auto-angular-story-generator)",
   "license": "ISC",
   "packageManager": "pnpm@9.12.2",
   "engines": {
