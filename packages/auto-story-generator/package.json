@@ -53,7 +53,7 @@
     "lint:fix": "eslint . --fix",
     "lint:type-check": "tsc --noEmit",
     "release": "rlse",
-    "release:test": "rlse -l patch --dry-run"
+    "release:test": "rlse -l patch -k config -k commit-changes -k create-release-branch --dry-run"
   },
   "dependencies": {
     "consola": "^3.2.3",
