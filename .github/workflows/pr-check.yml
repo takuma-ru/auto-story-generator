@@ -105,6 +105,17 @@ jobs:
         run: pnpm p:core build
 
   publish-check:
+    permissions:
+      contents: write
+      packages: write
+      actions: write
+      checks: write
+      deployments: write
+      pull-requests: write
+      repository-projects: write
+      security-events: write
+      statuses: write
+      id-token: write
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [init, build-check]
