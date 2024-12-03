@@ -3,24 +3,27 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "asg": "pnpm -F \"@takuma-ru/auto-story-generator\"",
-    "doc": "pnpm -F \"docs\"",
-    "d:react": "pnpm -F \"react\"",
-    "d:next": "pnpm -F \"next\"",
-    "d:lit": "pnpm -F \"lit\"",
-    "d:remix": "pnpm -F \"remix\""
+    "p:core": "pnpm -C packages/auto-story-generator",
+    "doc": "pnpm -C docs",
+    "cfg": "pnpm -C config",
+    "pg:react": "pnpm -C playgrounds/react",
+    "pg:next": "pnpm -C playgrounds/next",
+    "pg:remix": "pnpm -C playgrounds/remix",
+    "pg:vue": "pnpm -C playgrounds/vue",
+    "pg:angular": "pnpm -C playgrounds/angular",
+    "pg:lit": "pnpm -C playgrounds/lit"
   },
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
   "license": "ISC",
-  "packageManager": "pnpm@8.14.1",
+  "packageManager": "pnpm@9.12.2",
   "engines": {
     "npm": "use pnpm please!",
     "yarn": "use pnpm please!",
-    "pnpm": ">=8.14.1"
+    "pnpm": ">=9.12.2"
   },
   "volta": {
-    "node": "20.11.0",
-    "pnpm": "8.14.1"
+    "node": "22.10.0",
+    "pnpm": "9.12.2"
   },
   "devDependencies": {
     "semver": "^7.6.0"
