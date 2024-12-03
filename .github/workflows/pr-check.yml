@@ -72,7 +72,7 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-pnpm-store-${{ needs.init.outputs.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: Type check
-        run: pnpm asg lint:type-check
+        run: pnpm p:core lint:type-check
 
   eslint-check:
     runs-on: ubuntu-latest
@@ -87,7 +87,7 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-pnpm-store-${{ needs.init.outputs.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: ESlint check
-        run: pnpm asg lint
+        run: pnpm p:core lint
 
   build-check:
     runs-on: ubuntu-latest
@@ -102,7 +102,7 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-pnpm-store-${{ needs.init.outputs.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: Build check
-        run: pnpm asg build
+        run: pnpm p:core build
 
   publish-check:
     runs-on: ubuntu-latest
@@ -117,6 +117,6 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-pnpm-store-${{ needs.init.outputs.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: Build check
-        run: pnpm asg build
+        run: pnpm p:core build
       - name: Publish check
-        run: pnpm asg publish --dry-run --no-git-checks
+        run: pnpm p:core publish --dry-run --no-git-checks
