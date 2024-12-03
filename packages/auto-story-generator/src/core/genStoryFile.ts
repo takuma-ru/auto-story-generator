@@ -13,6 +13,7 @@ import { Project, SyntaxKind } from "ts-morph";
 import { getComponentInfo } from "~/src/core/getComponentInfo";
 import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
 import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
+import { genAngularStoryFile } from "~/src/presets/angular/genAngularStoryFile";
 import { throwErr } from "~/src/utils/throwError";
 
 export async function genStoryFile({
@@ -118,8 +119,16 @@ export async function genStoryFile({
       }
 
       case "angular": {
-        throwErr({
-          errorCode: "EC01",
+        genStoryFileOptions = await genAngularStoryFile({
+          componentName: componentName,
+          fileBase: fileBase,
+          fileName: fileName,
+          path: id,
+          fileExt: fileExt,
+          filePrefixExt: filePrefixExt,
+          relativeSourceFilePath: relativeSourceFilePath,
+          sourceFile: sourceFile,
+          prettierConfigPath: options.prettierConfigPath,
         });
 
         break;
