@@ -1,23 +1,23 @@
-import path from 'node:path'
+import type { Options } from "~/src/types/Options";
 
-import { cwd } from 'node:process'
-import { consola } from 'consola'
-import { globSync } from 'glob'
-import { from, mergeMap } from 'rxjs'
-import { createUnplugin } from 'unplugin'
+import path from "node:path";
+import { cwd } from "node:process";
+import { consola } from "consola";
+import { globSync } from "glob";
+import { from, mergeMap } from "rxjs";
 
-import { genStoryFile } from '~/src/core/genStoryFile'
-import type { Options } from '~/src/types/Options'
-import { getAllFilePaths } from '~/src/utils/getAllFilePaths'
+import { createUnplugin } from "unplugin";
+import { genStoryFile } from "~/src/core/genStoryFile";
+import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
 
-const PLUGIN_NAME = 'auto-story-generator'
+const PLUGIN_NAME = "auto-story-generator";
 
-let isExecuted: boolean = false
+let isExecuted: boolean = false;
 
 const unplugin = createUnplugin((options: Options, meta) => {
-  consola.info('ASG is running in', meta.framework)
+  consola.info("ASG is running in", meta.framework);
 
-  const projectRootDir = cwd().replace(/\\/g, '/')
+  const projectRootDir = cwd().replace(/\\/g, "/");
 
   return {
     name: PLUGIN_NAME,
@@ -25,34 +25,34 @@ const unplugin = createUnplugin((options: Options, meta) => {
     buildStart() {
       if (!isExecuted) {
         if (!options.isGenerateStoriesFileAtBuild) {
-          isExecuted = true
+          isExecuted = true;
 
-          return
+          return;
         }
 
-        const allFiles = globSync(path.join(cwd(), '**').replace(/\\/g, '/'))
+        const allFiles = globSync(path.join(cwd(), "**").replace(/\\/g, "/"));
 
         from(allFiles)
           .pipe(
             mergeMap(async (filePath) => {
               await genStoryFile({
                 options,
-                id: filePath.replace(/\\/g, '/'),
+                id: filePath.replace(/\\/g, "/"),
                 projectRootDir,
-              })
+              });
             }),
           )
-          .subscribe()
+          .subscribe();
 
-        isExecuted = true
+        isExecuted = true;
       }
     },
 
     async watchChange(this, id, change) {
-      if (change.event === 'delete')
-        return
+      if (change.event === "delete")
+        return;
 
-      await genStoryFile({ options, id, projectRootDir })
+      await genStoryFile({ options, id, projectRootDir });
     },
 
     webpack: (compiler) => {
@@ -62,18 +62,18 @@ const unplugin = createUnplugin((options: Options, meta) => {
             const allFilePaths = getAllFilePaths({
               pattern: importDir,
               projectRootDir,
-            })
+            });
 
             allFilePaths.forEach((filePath) => {
-              compilation.fileDependencies.add(path.join(filePath))
-            })
-          })
-        })
+              compilation.fileDependencies.add(path.join(filePath));
+            });
+          });
+        });
 
-        callback()
-      })
+        callback();
+      });
     },
-  }
-})
+  };
+});
 
-export default unplugin
+export default unplugin;

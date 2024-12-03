@@ -1,8 +1,8 @@
-import { pascalCase } from 'scule'
+import type { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 
-import { getReactPropTypes } from '~/src/presets/react/getReactPropTypes'
-import type { GenStoryFileOptions } from '~/src/types/GenStoryFileType'
-import { throwErr } from '~/src/utils/throwError'
+import { pascalCase } from "scule";
+import { getReactPropTypes } from "~/src/presets/react/getReactPropTypes";
+import { throwErr } from "~/src/utils/throwError";
 
 export async function genReactStoryFile({
   componentName,
@@ -14,45 +14,45 @@ export async function genReactStoryFile({
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
-}: GenStoryFileOptions['fileOptions']): Promise<
+}: GenStoryFileOptions["fileOptions"]): Promise<
   GenStoryFileOptions | undefined
-> {
+  > {
   if (!componentName || !fileBase) {
     throwErr({
-      errorCode: 'EC03',
-    })
+      errorCode: "EC03",
+    });
 
-    return
+    return;
   }
 
   const { propTypes } = getReactPropTypes({
     sourceFile,
     componentName,
-  })
-  const pascalComponentName = pascalCase(componentName)
+  });
+  const pascalComponentName = pascalCase(componentName);
 
   if (!propTypes) {
     throwErr({
-      errorCode: 'EC04',
-    })
+      errorCode: "EC04",
+    });
 
-    return
+    return;
   }
 
-  const defaultExportDeclaration = sourceFile.getExportedDeclarations()
+  const defaultExportDeclaration = sourceFile.getExportedDeclarations();
 
-  let isDefaultExportComponent: boolean = false
+  let isDefaultExportComponent: boolean = false;
   defaultExportDeclaration.forEach((declaration, exportName) => {
-    if (exportName === 'default') {
-      const defaultExportName = declaration[0].getSymbol()?.getName()
-      isDefaultExportComponent = defaultExportName === pascalComponentName
+    if (exportName === "default") {
+      const defaultExportName = declaration[0].getSymbol()?.getName();
+      isDefaultExportComponent = defaultExportName === pascalComponentName;
     }
-  })
+  });
 
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}${filePrefixExt || ''}";` : `import { ${pascalComponentName} } from "./${fileName}${filePrefixExt || ''}";`}
+${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}${filePrefixExt || ""}";` : `import { ${pascalComponentName} } from "./${fileName}${filePrefixExt || ""}";`}
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",
@@ -66,61 +66,61 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {};
-`
+`;
 
-  const componentCode = `${pascalComponentName}`
+  const componentCode = `${pascalComponentName}`;
 
-  const args: GenStoryFileOptions['generateOptions']['meta']['args'] = {}
+  const args: GenStoryFileOptions["generateOptions"]["meta"]["args"] = {};
 
   propTypes.forEach((prop) => {
     if (prop.isOptional)
-      return (args[prop.name] = 'undefined')
+      return (args[prop.name] = "undefined");
 
     let value: string | boolean | undefined
-      = prop.value.length > 0 ? `"${prop.value[0]}"` : 'undefined'
+      = prop.value.length > 0 ? `"${prop.value[0]}"` : "undefined";
 
-    if (prop.type.includes('boolean'))
-      value = true
+    if (prop.type.includes("boolean"))
+      value = true;
 
-    args[prop.name] = value
-  })
+    args[prop.name] = value;
+  });
 
-  const argTypes: GenStoryFileOptions['generateOptions']['meta']['argTypes']
-    = {}
+  const argTypes: GenStoryFileOptions["generateOptions"]["meta"]["argTypes"]
+    = {};
 
   propTypes.forEach((prop) => {
-    if (prop.type[0] === 'boolean') {
+    if (prop.type[0] === "boolean") {
       return (argTypes[prop.name] = {
-        control: 'boolean',
-      })
+        control: "boolean",
+      });
     }
 
-    if (prop.type[0] === 'object') {
+    if (prop.type[0] === "object") {
       return (argTypes[prop.name] = {
-        control: 'object',
-      })
+        control: "object",
+      });
     }
 
     if (prop.value.length > 1) {
       return (argTypes[prop.name] = {
-        control: 'select',
+        control: "select",
         options: prop.value,
-      })
+      });
     }
     else {
-      if (prop.type[0] === 'string') {
+      if (prop.type[0] === "string") {
         return (argTypes[prop.name] = {
-          control: 'text',
-        })
+          control: "text",
+        });
       }
 
-      if (prop.type[0] === 'number') {
+      if (prop.type[0] === "number") {
         return (argTypes[prop.name] = {
-          control: 'number',
-        })
+          control: "number",
+        });
       }
     }
-  })
+  });
 
   return {
     fileOptions: {
@@ -135,7 +135,7 @@ export const Primary: Story = {};
       prettierConfigPath,
     },
     generateOptions: {
-      fileExt: '.stories.tsx',
+      fileExt: ".stories.tsx",
       initialCode,
       meta: {
         component: componentCode,
@@ -143,5 +143,5 @@ export const Primary: Story = {};
         argTypes,
       },
     },
-  }
+  };
 }

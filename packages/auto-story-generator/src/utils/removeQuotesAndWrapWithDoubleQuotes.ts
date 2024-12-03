@@ -4,6 +4,6 @@
  * @returns string
  */
 export function removeQuotesAndWrapWithDoubleQuotes(str: string): string {
-  const quoteRemovedStr = str.replace(/"/g, '').replace(/'/g, '')
-  return quoteRemovedStr
+  const quoteRemovedStr = str.replace(/"/g, "").replace(/'/g, "");
+  return quoteRemovedStr;
 }
