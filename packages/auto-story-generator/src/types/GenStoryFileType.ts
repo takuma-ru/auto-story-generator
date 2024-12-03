@@ -1,7 +1,8 @@
 import { SourceFile } from "ts-morph";
 
-import { GetComponentInfoReturnType } from "~/src/types/GetComponentInfo";
-import { Options } from "~/src/types/Options";
+import { GetComponentInfoReturnType } from "./GetComponentInfo";
+// types/GetComponentInfo";
+import { Options } from "./Options";
 
 export type GenStoryFileOptions = {
   fileOptions: {

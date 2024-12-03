@@ -5,9 +5,9 @@ import { globSync } from "glob";
 import { from, mergeMap } from "rxjs";
 import { createUnplugin } from "unplugin";
 
-import { genStoryFile } from "~/src/core/genStoryFile";
-import { Options } from "~/src/types/Options";
-import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
+import { genStoryFile } from "./core/genStoryFile";
+import { Options } from "./types/Options";
+import { getAllFilePaths } from "./utils/getAllFilePaths";
 
 const PLUGIN_NAME = "auto-story-generator";
 
