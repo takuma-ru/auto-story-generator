@@ -14,27 +14,27 @@
     },
     {
       "name": "🧪 react",
-      "path": "demo/react",
+      "path": "playgrounds/react",
     },
     {
       "name": "🧪 next",
-      "path": "demo/next",
+      "path": "playgrounds/next",
     },
     {
       "name": "🧪 remix",
-      "path": "demo/remix",
+      "path": "playgrounds/remix",
     },
     {
       "name": "🧪 vue",
-      "path": "demo/vue",
+      "path": "playgrounds/vue",
     },
     {
       "name": "🧪 lit",
-      "path": "demo/lit",
+      "path": "playgrounds/lit",
     },
     {
       "name": "🧪 svelte",
-      "path": "demo/svelte",
+      "path": "playgrounds/svelte",
     },
   ],
   "settings": {
