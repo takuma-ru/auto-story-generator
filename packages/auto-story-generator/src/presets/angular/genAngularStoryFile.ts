@@ -1,8 +1,6 @@
-import { consola } from "consola";
-import { pascalCase } from "scule";
-import { getAngularPropTypes } from "~/src/presets/angular/getAngularPropTypes";
+import type { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 
-import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
+import { pascalCase } from "scule";
 
 export const genAngularStoryFile = async ({
   componentName,
@@ -17,22 +15,22 @@ export const genAngularStoryFile = async ({
 }: GenStoryFileOptions["fileOptions"]): Promise<
   GenStoryFileOptions | undefined
 > => {
-  // const { propTypes } = 
+  // const { propTypes } =
   // getAngularPropTypes({
   //   sourceFile,
   //   componentName,
   // });
-  const pascalComponentName = pascalCase(componentName + 'Component');
+  const pascalComponentName = pascalCase(`${componentName}Component`);
   //   if (!propTypes) return consola.error("Could not find argTypes");
-  
+
   // Angular doesn't need file with extension
-  let file = fileName.split('.');
+  const file = fileName.split(".");
   file.pop();
 
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/angular";
 
-import { ${pascalComponentName} } from "./${file.join('.')}";
+import { ${pascalComponentName} } from "./${file.join(".")}";
 
 const meta: Meta<${pascalComponentName}> = {
   title: "components/${pascalComponentName}",
@@ -51,7 +49,7 @@ type Story = StoryObj<${pascalComponentName}>;
 export const Primary: Story = {};
 `;
 
-  const componentCode = `${pascalComponentName}`;
+  const _componentCode = `${pascalComponentName}`;
 
   //   const args: GenStoryFileOptions["generateOptions"]["meta"]["args"] = {};
 
@@ -106,7 +104,7 @@ export const Primary: Story = {};
   //     }
   //   });
 
-    return {
+  return {
     fileOptions: {
       componentName,
       fileBase,

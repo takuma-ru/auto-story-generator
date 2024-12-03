@@ -1,25 +1,20 @@
+import type { SourceFile } from "ts-morph";
 import { pascalCase } from "scule";
-import { TypeFlags, ts, Symbol, SourceFile } from "ts-morph";
 
-import {
-  GenReactPropTypesOptions,
-  GenReactPropTypesReturn,
-} from "~/src/types/GenPropTypeType";
+// const getTypeFlagsName = (flags: TypeFlags) => {
+//   // Get all the keys of TypeFlags
+//   const keys = Object.keys(TypeFlags) as (keyof typeof TypeFlags)[];
 
-const getTypeFlagsName = (flags: TypeFlags) => {
-  // Get all the keys of TypeFlags
-  const keys = Object.keys(TypeFlags) as (keyof typeof TypeFlags)[];
+//   // Filter the keys where the flag is set
+//   const setFlags = keys.find(key => flags === TypeFlags[key]);
 
-  // Filter the keys where the flag is set
-  const setFlags = keys.find((key) => flags === TypeFlags[key]);
-
-  return setFlags || "err";
-};
+//   return setFlags || "err";
+// };
 
 // Didn't understnd the Props yet, will add this after proper understanding is reached.
-export const getAngularPropTypes = ({sourceFile, componentName}: { sourceFile: SourceFile; componentName: string; })=> {
-  const pascalComponentName = pascalCase(componentName);
-}
+export const getAngularPropTypes = ({ sourceFile: _sourceFile, componentName }: { sourceFile: SourceFile; componentName: string }) => {
+  const _pascalComponentName = pascalCase(componentName);
+};
 
 // export const getAngularPropTypes = ({
 //   sourceFile,
@@ -29,7 +24,6 @@ export const getAngularPropTypes = ({sourceFile, componentName}: { sourceFile: S
 //   propTypes: GenReactPropTypesReturn;
 // } => {
 //   let propsPattern: "component-props" | "props" | "inline" = "component-props";
-
 
 //   const props =
 //     propsType?.getType() ||
