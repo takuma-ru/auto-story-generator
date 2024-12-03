@@ -1,12 +1,13 @@
-import path from "path";
+import type { Options } from "~/src/types/Options";
 
+import path from "node:path";
+import { cwd } from "node:process";
 import { consola } from "consola";
 import { globSync } from "glob";
 import { from, mergeMap } from "rxjs";
-import { createUnplugin } from "unplugin";
 
+import { createUnplugin } from "unplugin";
 import { genStoryFile } from "~/src/core/genStoryFile";
-import { Options } from "~/src/types/Options";
 import { getAllFilePaths } from "~/src/utils/getAllFilePaths";
 
 const PLUGIN_NAME = "auto-story-generator";
@@ -16,7 +17,7 @@ let isExecuted: boolean = false;
 const unplugin = createUnplugin((options: Options, meta) => {
   consola.info("ASG is running in", meta.framework);
 
-  const projectRootDir = process.cwd().replace(/\\/g, "/");
+  const projectRootDir = cwd().replace(/\\/g, "/");
 
   return {
     name: PLUGIN_NAME,
@@ -29,9 +30,7 @@ const unplugin = createUnplugin((options: Options, meta) => {
           return;
         }
 
-        const allFiles = globSync(
-          path.join(process.cwd(), "**").replace(/\\/g, "/"),
-        );
+        const allFiles = globSync(path.join(cwd(), "**").replace(/\\/g, "/"));
 
         from(allFiles)
           .pipe(
@@ -50,7 +49,8 @@ const unplugin = createUnplugin((options: Options, meta) => {
     },
 
     async watchChange(this, id, change) {
-      if (change.event === "delete") return;
+      if (change.event === "delete")
+        return;
 
       await genStoryFile({ options, id, projectRootDir });
     },

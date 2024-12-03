@@ -1,9 +1,9 @@
-import { SourceFile } from "ts-morph";
+import type { SourceFile } from "ts-morph";
 
-import { GetComponentInfoReturnType } from "~/src/types/GetComponentInfo";
-import { Options } from "~/src/types/Options";
+import type { GetComponentInfoReturnType } from "~/src/types/GetComponentInfo";
+import type { Options } from "~/src/types/Options";
 
-export type GenStoryFileOptions = {
+export interface GenStoryFileOptions {
   fileOptions: {
     path: string;
     sourceFile: SourceFile;
@@ -24,4 +24,4 @@ export type GenStoryFileOptions = {
       };
     };
   };
-};
+}

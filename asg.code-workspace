@@ -38,23 +38,87 @@
     },
   ],
   "settings": {
-    "cSpell.words": [
-      "consola",
-      "magicast",
-      "satoshi",
-      "scule",
-      "vitepress",
-      "vumdoc",
-    ],
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.tabSize": 2,
+    "prettier.enable": false,
+    "biome.enabled": false,
+    "stylelint.enable": false,
+
+    "editor.formatOnSave": false,
+
+    // Auto fix
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit",
-      "source.addMissingImports": "explicit",
+      "source.organizeImports": "never"
     },
-    "files.eol": "\n",
+
+    "[javascript]": {
+      "editor.codeActionsOnSave": {
+        "source.addMissingImports": "explicit",
+      }
+    },
+    "[typescript]": {
+      "editor.codeActionsOnSave": {
+        "source.addMissingImports": "explicit",
+      }
+    },
+    "[vue]": {
+      "editor.codeActionsOnSave": {
+        "source.addMissingImports": "explicit",
+      }
+    },
+
+    "eslint.options": {
+      "flags": ["unstable_ts_config"]
+    },
+
+    "eslint.runtime": "node",
+
+    // Silent the stylistic rules in you IDE, but still auto fix them
+    "eslint.rules.customizations": [
+      { "rule": "style/*", "severity": "off", "fixable": true },
+      { "rule": "*-indent", "severity": "off", "fixable": true },
+      { "rule": "*-spacing", "severity": "off", "fixable": true },
+      { "rule": "*-spaces", "severity": "off", "fixable": true },
+      { "rule": "*-order", "severity": "off", "fixable": true },
+      { "rule": "*-dangle", "severity": "off", "fixable": true },
+      { "rule": "*-newline", "severity": "off", "fixable": true },
+      { "rule": "*quotes", "severity": "off", "fixable": true },
+      { "rule": "*semi", "severity": "off", "fixable": true }
+    ],
+
+    // Enable eslint for all supported languages
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "vue",
+      "html",
+      "markdown",
+      "json",
+      "jsonc",
+      "yaml",
+      "toml",
+      "xml",
+      "gql",
+      "graphql",
+      "astro",
+      "svelte",
+      "css",
+      "less",
+      "scss",
+      "pcss",
+      "postcss"
+    ],
+
     "typescript.preferences.importModuleSpecifier": "non-relative",
+    "javascript.preferences.importModuleSpecifier": "non-relative",
+    "emmet.triggerExpansionOnTab": true,
+
+    "cSpell.words": [
+      "antfu"
+    ],
+
+    "terminal.integrated.cwd": "${workspaceFolder}"
   },
   "extensions": {},
 }

@@ -1,29 +1,30 @@
-import { pascalCase } from "scule";
-import { TypeFlags, ts, Symbol } from "ts-morph";
-
-import {
+import type { Symbol } from "ts-morph";
+import type {
   GenReactPropTypesOptions,
   GenReactPropTypesReturn,
 } from "~/src/types/GenPropTypeType";
+import { pascalCase } from "scule";
+
+import { ts, TypeFlags } from "ts-morph";
 import { removeQuotesAndWrapWithDoubleQuotes } from "~/src/utils/removeQuotesAndWrapWithDoubleQuotes";
 
-const getTypeFlagsName = (flags: TypeFlags) => {
+function getTypeFlagsName(flags: TypeFlags) {
   // Get all the keys of TypeFlags
   const keys = Object.keys(TypeFlags) as (keyof typeof TypeFlags)[];
 
   // Filter the keys where the flag is set
-  const setFlags = keys.find((key) => flags === TypeFlags[key]);
+  const setFlags = keys.find(key => flags === TypeFlags[key]);
 
   return setFlags || "err";
-};
+}
 
-export const getReactPropTypes = ({
+export function getReactPropTypes({
   sourceFile,
   componentName,
 }: GenReactPropTypesOptions): {
-  propsPattern?: "component-props" | "props" | "inline";
-  propTypes: GenReactPropTypesReturn;
-} => {
+    propsPattern?: "component-props" | "props" | "inline";
+    propTypes: GenReactPropTypesReturn;
+  } {
   if (!componentName) {
     return {
       propTypes: undefined,
@@ -42,12 +43,12 @@ export const getReactPropTypes = ({
     .getVariableDeclaration(pascalComponentName)
     ?.getInitializerIfKindOrThrow(ts.SyntaxKind.ArrowFunction);
 
-  const props =
-    propsType?.getType() ||
-    propsInterface?.getType() ||
-    propsOnlyType?.getType() ||
-    propsOnlyInterface?.getType() ||
-    propsInline?.getParameters()[0]?.getType();
+  const props
+    = propsType?.getType()
+    || propsInterface?.getType()
+    || propsOnlyType?.getType()
+    || propsOnlyInterface?.getType()
+    || propsInline?.getParameters()[0]?.getType();
 
   if (!props) {
     return {
@@ -55,7 +56,6 @@ export const getReactPropTypes = ({
     };
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   let propsProperties: Symbol[] = [];
   const isPropsIntersection = props.isIntersection();
   if (isPropsIntersection) {
@@ -66,23 +66,21 @@ export const getReactPropTypes = ({
     intersectionTypes.forEach((intersectionType) => {
       const intersectionTypeText = intersectionType.getText();
 
-      if (intersectionTypeText.includes("HTMLAttributes")) {
+      if (intersectionTypeText.includes("HTMLAttributes"))
         return;
-      }
 
       return propsProperties.push(...intersectionType.getProperties());
     });
-  } else {
+  }
+  else {
     propsProperties = props.getProperties();
   }
 
-  if (propsOnlyType || propsOnlyInterface) {
+  if (propsOnlyType || propsOnlyInterface)
     propsPattern = "props";
-  }
 
-  if (propsInline) {
+  if (propsInline)
     propsPattern = "inline";
-  }
 
   const propTypes = propsProperties.map((prop) => {
     const propName = prop.getName();
@@ -102,7 +100,7 @@ export const getReactPropTypes = ({
 
       const type = Array.from(
         new Set(
-          unionTypes.map((union) =>
+          unionTypes.map(union =>
             getTypeFlagsName(union.getFlags().valueOf()),
           ),
         ),
@@ -112,7 +110,7 @@ export const getReactPropTypes = ({
         name: propName,
         type,
         isOptional: prop.isOptional(),
-        value: unionTypes.map((union) =>
+        value: unionTypes.map(union =>
           removeQuotesAndWrapWithDoubleQuotes(union.getText()),
         ),
       };
@@ -130,4 +128,4 @@ export const getReactPropTypes = ({
     propsPattern,
     propTypes,
   };
-};
+}

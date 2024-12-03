@@ -1,4 +1,4 @@
-export type Options = {
+export interface Options {
   preset: "lit" | "react" | "vue" | "angular" | "custom";
 
   /**
@@ -51,4 +51,4 @@ export type Options = {
    * Automatic generation for all component files only once at build time (`run dev`, `run build`)
    */
   isGenerateStoriesFileAtBuild?: boolean;
-};
+}

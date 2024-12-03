@@ -1,50 +1,52 @@
-import fs from "fs";
+import type { cwd } from "node:process";
 
+import type { UnpluginOptions } from "unplugin";
+import type { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
+import type { Options } from "~/src/types/Options";
+import fs from "node:fs";
 import consola from "consola";
 import { loadFile } from "magicast";
 import { minimatch } from "minimatch";
+
 import * as prettier from "prettier";
 import { Project, SyntaxKind } from "ts-morph";
-import { UnpluginOptions } from "unplugin";
-
 import { getComponentInfo } from "~/src/core/getComponentInfo";
 import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
 import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
-import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
-import { Options } from "~/src/types/Options";
 import { throwErr } from "~/src/utils/throwError";
 
-export const genStoryFile = async ({
+export async function genStoryFile({
   options,
   id,
   projectRootDir,
 }: {
   options: Options;
   id: Parameters<NonNullable<UnpluginOptions["watchChange"]>>[0];
-  projectRootDir: ReturnType<typeof process.cwd>;
-}) => {
-  if (id.includes(".stories")) return;
+  projectRootDir: ReturnType<typeof cwd>;
+}) {
+  if (id.includes(".stories"))
+    return;
 
   const hasGenFile = () => {
     let relativeSourceFilePath = id.replace(projectRootDir, "");
 
     if (
-      relativeSourceFilePath.startsWith("/") ||
-      relativeSourceFilePath.startsWith("\\")
+      relativeSourceFilePath.startsWith("/")
+      || relativeSourceFilePath.startsWith("\\")
     ) {
       relativeSourceFilePath = id.replace(projectRootDir, "").slice(1);
     }
 
     const isMatchImports = options.imports
-      ? options.imports.some((importDir) =>
-          minimatch(relativeSourceFilePath, importDir),
-        )
+      ? options.imports.some(importDir =>
+        minimatch(relativeSourceFilePath, importDir),
+      )
       : true;
 
     const isMatchIgnores = options.ignores
-      ? options.ignores.some((ignorePath) =>
-          minimatch(relativeSourceFilePath, ignorePath),
-        )
+      ? options.ignores.some(ignorePath =>
+        minimatch(relativeSourceFilePath, ignorePath),
+      )
       : false;
 
     return isMatchImports && !isMatchIgnores;
@@ -53,7 +55,8 @@ export const genStoryFile = async ({
 
   consola.info(`isGenFile: ${isGenFile}`);
 
-  if (!isGenFile) return;
+  if (!isGenFile)
+    return;
 
   const {
     fileBase,
@@ -71,19 +74,19 @@ export const genStoryFile = async ({
 
     consola.start(`${componentName} Story file is being generated ....`);
 
-    let genStoryFileOptions: GenStoryFileOptions | undefined = undefined;
+    let genStoryFileOptions: GenStoryFileOptions | undefined;
 
     switch (options.preset) {
       case "lit": {
         genStoryFileOptions = await genLitStoryFile({
-          componentName: componentName,
-          fileBase: fileBase,
-          fileName: fileName,
+          componentName,
+          fileBase,
+          fileName,
           path: id,
-          fileExt: fileExt,
-          filePrefixExt: filePrefixExt,
-          relativeSourceFilePath: relativeSourceFilePath,
-          sourceFile: sourceFile,
+          fileExt,
+          filePrefixExt,
+          relativeSourceFilePath,
+          sourceFile,
           prettierConfigPath: options.prettierConfigPath,
         });
 
@@ -92,14 +95,14 @@ export const genStoryFile = async ({
 
       case "react": {
         genStoryFileOptions = await genReactStoryFile({
-          componentName: componentName,
-          fileBase: fileBase,
-          fileName: fileName,
+          componentName,
+          fileBase,
+          fileName,
           path: id,
-          fileExt: fileExt,
-          filePrefixExt: filePrefixExt,
-          relativeSourceFilePath: relativeSourceFilePath,
-          sourceFile: sourceFile,
+          fileExt,
+          filePrefixExt,
+          relativeSourceFilePath,
+          sourceFile,
           prettierConfigPath: options.prettierConfigPath,
         });
 
@@ -149,7 +152,7 @@ export const genStoryFile = async ({
     const storiesFilePath = genStoryFileOptions.fileOptions.path.replace(
       genStoryFileOptions.fileOptions.filePrefixExt
         ? genStoryFileOptions.fileOptions.filePrefixExt
-        : "" + genStoryFileOptions.fileOptions.fileExt,
+        : `${genStoryFileOptions.fileOptions.fileExt}`,
       genStoryFileOptions.generateOptions.fileExt,
     );
 
@@ -174,15 +177,15 @@ export const genStoryFile = async ({
       const storiesProject = new Project();
 
       // ファイルを読み込む
-      const storiesSourceFile =
-        storiesProject.addSourceFileAtPath(storiesFilePath);
+      const storiesSourceFile
+        = storiesProject.addSourceFileAtPath(storiesFilePath);
 
       // stories.ts内のmetaを取得する
       const meta = storiesSourceFile.getVariableDeclaration("meta");
 
       if (
-        !meta ||
-        !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
+        !meta
+        || !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
       ) {
         throwErr({
           errorCode: "EC05",
@@ -285,7 +288,7 @@ export const genStoryFile = async ({
         const argText = Object.entries(
           genStoryFileOptions.generateOptions.meta.args,
         )
-          .map((x) => x.join(":"))
+          .map(x => x.join(":"))
           .join(", ");
 
         argsProperty.set({
@@ -344,10 +347,11 @@ export const genStoryFile = async ({
           }
 
           const config: prettier.Options | null = genStoryFileOptions
-            .fileOptions.prettierConfigPath
+            .fileOptions
+            .prettierConfigPath
             ? await prettier.resolveConfig(
-                genStoryFileOptions.fileOptions.prettierConfigPath,
-              )
+              genStoryFileOptions.fileOptions.prettierConfigPath,
+            )
             : {
                 semi: true,
                 trailingComma: "all",
@@ -373,11 +377,10 @@ export const genStoryFile = async ({
           });
         });
     });
-  } catch (err) {
+  }
+  catch {
     throwErr({
       errorCode: "EC11",
     });
-
-    return;
   }
-};
+}

@@ -1,10 +1,10 @@
-import { pascalCase } from "scule";
+import type { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 
+import { pascalCase } from "scule";
 import { getReactPropTypes } from "~/src/presets/react/getReactPropTypes";
-import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { throwErr } from "~/src/utils/throwError";
 
-export const genReactStoryFile = async ({
+export async function genReactStoryFile({
   componentName,
   fileBase,
   fileName,
@@ -16,7 +16,7 @@ export const genReactStoryFile = async ({
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]): Promise<
   GenStoryFileOptions | undefined
-> => {
+  > {
   if (!componentName || !fileBase) {
     throwErr({
       errorCode: "EC03",
@@ -46,14 +46,13 @@ export const genReactStoryFile = async ({
     if (exportName === "default") {
       const defaultExportName = declaration[0].getSymbol()?.getName();
       isDefaultExportComponent = defaultExportName === pascalComponentName;
-      return;
     }
   });
 
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}${filePrefixExt ? filePrefixExt : ""}";` : `import { ${pascalComponentName} } from "./${fileName}${filePrefixExt ? filePrefixExt : ""}";`}
+${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}${filePrefixExt || ""}";` : `import { ${pascalComponentName} } from "./${fileName}${filePrefixExt || ""}";`}
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",
@@ -74,22 +73,20 @@ export const Primary: Story = {};
   const args: GenStoryFileOptions["generateOptions"]["meta"]["args"] = {};
 
   propTypes.forEach((prop) => {
-    if (prop.isOptional) {
+    if (prop.isOptional)
       return (args[prop.name] = "undefined");
-    }
 
-    let value: string | boolean | undefined =
-      prop.value.length > 0 ? `"${prop.value[0]}"` : "undefined";
+    let value: string | boolean | undefined
+      = prop.value.length > 0 ? `"${prop.value[0]}"` : "undefined";
 
-    if (prop.type.includes("boolean")) {
+    if (prop.type.includes("boolean"))
       value = true;
-    }
 
     args[prop.name] = value;
   });
 
-  const argTypes: GenStoryFileOptions["generateOptions"]["meta"]["argTypes"] =
-    {};
+  const argTypes: GenStoryFileOptions["generateOptions"]["meta"]["argTypes"]
+    = {};
 
   propTypes.forEach((prop) => {
     if (prop.type[0] === "boolean") {
@@ -109,7 +106,8 @@ export const Primary: Story = {};
         control: "select",
         options: prop.value,
       });
-    } else {
+    }
+    else {
       if (prop.type[0] === "string") {
         return (argTypes[prop.name] = {
           control: "text",
@@ -146,4 +144,4 @@ export const Primary: Story = {};
       },
     },
   };
-};
+}

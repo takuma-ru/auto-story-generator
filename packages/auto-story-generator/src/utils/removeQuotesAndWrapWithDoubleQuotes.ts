@@ -3,7 +3,7 @@
  * @param str - string
  * @returns string
  */
-export const removeQuotesAndWrapWithDoubleQuotes = (str: string): string => {
+export function removeQuotesAndWrapWithDoubleQuotes(str: string): string {
   const quoteRemovedStr = str.replace(/"/g, "").replace(/'/g, "");
   return quoteRemovedStr;
-};
+}

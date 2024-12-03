@@ -1,10 +1,10 @@
-import { kebabCase, pascalCase } from "scule";
+import type { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 
+import { kebabCase, pascalCase } from "scule";
 import { getLitPropTypes } from "~/src/presets/lit/getLitPropTypes";
-import { GenStoryFileOptions } from "~/src/types/GenStoryFileType";
 import { throwErr } from "~/src/utils/throwError";
 
-export const genLitStoryFile = async ({
+export async function genLitStoryFile({
   componentName,
   fileBase,
   fileName,
@@ -16,7 +16,7 @@ export const genLitStoryFile = async ({
   prettierConfigPath,
 }: GenStoryFileOptions["fileOptions"]): Promise<
   GenStoryFileOptions | undefined
-> => {
+  > {
   if (!componentName || !fileBase) {
     throwErr({
       errorCode: "EC03",
@@ -44,7 +44,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import {
   ${pascalComponentName},
   ${pascalComponentName}Props,
-} from "./${fileName}${filePrefixExt ? filePrefixExt : ""}";
+} from "./${fileName}${filePrefixExt || ""}";
 
 const meta: Meta<${pascalComponentName}Props> = {
   title: "components/${componentName}",
@@ -70,15 +70,14 @@ export const Primary: ${pascalComponentName}Story = {};
 
   return html\`<${componentName}${propTypes
     ?.map((prop) => {
-      if (prop.name === "styles") return;
+      if (prop.name === "styles")
+        return undefined;
 
-      if (prop.type[0] === "boolean") {
+      if (prop.type[0] === "boolean")
         return ` ?${kebabCase(prop.name.substring(2))}=\${args.${prop.name}}`;
-      }
 
-      if (prop.type[0] === "object") {
+      if (prop.type[0] === "object")
         return ` .${kebabCase(prop.name)}="\${args.${prop.name}}"`;
-      }
 
       return ` ${kebabCase(prop.name)}="\${args.${prop.name}}"`;
     })
@@ -88,27 +87,27 @@ export const Primary: ${pascalComponentName}Story = {};
   const args: GenStoryFileOptions["generateOptions"]["meta"]["args"] = {};
 
   propTypes.forEach((prop) => {
-    if (prop.name === "styles") return;
+    if (prop.name === "styles")
+      return;
 
-    if (prop.isOptional) {
+    if (prop.isOptional)
       return (args[prop.name] = "undefined");
-    }
 
-    let value: string | boolean | undefined =
-      prop.value.length > 0 ? `"${prop.value[0]}"` : "undefined";
+    let value: string | boolean | undefined
+      = prop.value.length > 0 ? `"${prop.value[0]}"` : "undefined";
 
-    if (prop.type.includes("boolean")) {
+    if (prop.type.includes("boolean"))
       value = true;
-    }
 
     args[prop.name] = value;
   });
 
-  const argTypes: GenStoryFileOptions["generateOptions"]["meta"]["argTypes"] =
-    {};
+  const argTypes: GenStoryFileOptions["generateOptions"]["meta"]["argTypes"]
+    = {};
 
   propTypes.forEach((prop) => {
-    if (prop.name === "styles") return;
+    if (prop.name === "styles")
+      return;
 
     if (prop.type[0] === "boolean") {
       return (argTypes[prop.name] = {
@@ -127,7 +126,8 @@ export const Primary: ${pascalComponentName}Story = {};
         control: "select",
         options: prop.value,
       });
-    } else {
+    }
+    else {
       if (prop.type[0] === "string") {
         return (argTypes[prop.name] = {
           control: "text",
@@ -164,4 +164,4 @@ export const Primary: ${pascalComponentName}Story = {};
       },
     },
   };
-};
+}

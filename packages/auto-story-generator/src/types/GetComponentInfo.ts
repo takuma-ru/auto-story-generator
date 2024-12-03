@@ -1,6 +1,6 @@
-import path from "path";
+import type path from "node:path";
 
-export type GetComponentInfoReturnType = {
+export interface GetComponentInfoReturnType {
   /**
    * The name of the file
    *
@@ -29,7 +29,7 @@ export type GetComponentInfoReturnType = {
    * `ComponentName.tsx`→ undefined
    * `ComponentName.vue`→ undefined
    * `ComponentName.ce.ts`→`.ce`
-   **/
+   */
   filePrefixExt?: `.${string}`;
   /**
    * The name of the component file
@@ -54,4 +54,4 @@ export type GetComponentInfoReturnType = {
    * `src/components/ComponentName/ComponentName.tsx`
    */
   relativeSourceFilePath: string;
-};
+}

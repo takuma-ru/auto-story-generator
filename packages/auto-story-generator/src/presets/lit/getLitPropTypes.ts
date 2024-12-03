@@ -1,19 +1,18 @@
-import { pascalCase } from "scule";
-
-import {
+import type {
   GenReactPropTypesOptions,
   GenReactPropTypesReturn,
 } from "~/src/types/GenPropTypeType";
+
+import { pascalCase } from "scule";
 import { removeQuotesAndWrapWithDoubleQuotes } from "~/src/utils/removeQuotesAndWrapWithDoubleQuotes";
 import { throwErr } from "~/src/utils/throwError";
 
-export const getLitPropTypes = ({
+export function getLitPropTypes({
   sourceFile,
   componentName,
-}: GenReactPropTypesOptions): GenReactPropTypesReturn => {
-  if (!componentName) {
+}: GenReactPropTypesOptions): GenReactPropTypesReturn {
+  if (!componentName)
     return;
-  }
 
   const pascalComponentName = pascalCase(componentName);
 
@@ -246,9 +245,9 @@ export const getLitPropTypes = ({
 
         return {
           name: prop.getName(),
-          type: Array.from(new Set(unions.map((union) => union?.type))),
+          type: Array.from(new Set(unions.map(union => union?.type))),
           isOptional: prop.hasQuestionToken(),
-          value: unions.map((union) => union?.value),
+          value: unions.map(union => union?.value),
         };
       }
       default: {
@@ -263,4 +262,4 @@ export const getLitPropTypes = ({
   });
 
   return argTypes;
-};
+}

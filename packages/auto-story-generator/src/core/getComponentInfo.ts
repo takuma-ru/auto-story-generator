@@ -1,15 +1,16 @@
-import path from "path";
+import type { GetComponentInfoReturnType } from "~/src/types/GetComponentInfo";
+import path from "node:path";
 
-import { GetComponentInfoReturnType } from "~/src/types/GetComponentInfo";
+import { cwd } from "node:process";
 
 /**
  * Returns the file information needed to generate the story file
  * @param componentDir
  */
-export const getComponentInfo = (
+export function getComponentInfo(
   componentDir: string,
-): GetComponentInfoReturnType => {
-  const projectRootDir = process.cwd();
+): GetComponentInfoReturnType {
+  const projectRootDir = cwd();
 
   const fileParseInfo = path.parse(componentDir);
 
@@ -20,14 +21,14 @@ export const getComponentInfo = (
 
   const fileName = fileParseInfo.name.replace(prefixExt || "", "");
 
-  const componentName =
-    fileName === "index" ? fileParseInfo.dir.split("/").pop() : fileName;
+  const componentName
+    = fileName === "index" ? fileParseInfo.dir.split("/").pop() : fileName;
 
   let relativeSourceFilePath = componentDir.replace(projectRootDir, "");
 
   if (
-    relativeSourceFilePath.startsWith("/") ||
-    relativeSourceFilePath.startsWith("\\")
+    relativeSourceFilePath.startsWith("/")
+    || relativeSourceFilePath.startsWith("\\")
   ) {
     relativeSourceFilePath = componentDir.replace(projectRootDir, "").slice(1);
   }
@@ -35,9 +36,9 @@ export const getComponentInfo = (
   return {
     fileBase: fileParseInfo.base,
     fileExt: fileParseInfo.ext as unknown as `.${path.ParsedPath["ext"]}`,
-    fileName: fileName,
+    fileName,
     filePrefixExt: prefixExt as unknown as `.${string}` | undefined,
     componentName,
     relativeSourceFilePath,
   } as const;
-};
+}
