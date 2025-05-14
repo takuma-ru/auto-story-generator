@@ -54,4 +54,12 @@ export interface GetComponentInfoReturnType {
    * `src/components/ComponentName/ComponentName.tsx`
    */
   relativeSourceFilePath: string;
+
+  /**
+   * Stories Folder
+   *
+   * @example
+   * `__stories__`
+   */
+  storiesFolder?: string;
 }

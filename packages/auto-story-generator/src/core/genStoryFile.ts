@@ -102,6 +102,7 @@ export async function genStoryFile({
           relativeSourceFilePath,
           sourceFile,
           prettierConfigPath: options.prettierConfigPath,
+          storiesFolder: options.storiesFolder,
         });
 
         break;

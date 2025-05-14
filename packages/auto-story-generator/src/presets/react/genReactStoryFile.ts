@@ -14,6 +14,7 @@ export async function genReactStoryFile({
   relativeSourceFilePath,
   sourceFile,
   prettierConfigPath,
+  storiesFolder,
 }: GenStoryFileOptions["fileOptions"]): Promise<
   GenStoryFileOptions | undefined
 > {
@@ -49,10 +50,12 @@ export async function genReactStoryFile({
     }
   });
 
+  const pathToComponent = storiesFolder ? "../" : "./";
+
   const initialCode = `
 import type { Meta, StoryObj } from "@storybook/react";
 
-${isDefaultExportComponent ? `import ${pascalComponentName} from "./${fileName}${filePrefixExt || ""}";` : `import { ${pascalComponentName} } from "./${fileName}${filePrefixExt || ""}";`}
+${isDefaultExportComponent ? `import ${pascalComponentName} from "${pathToComponent}${fileName}${filePrefixExt || ""}";` : `import { ${pascalComponentName} } from "${pathToComponent}${fileName}${filePrefixExt || ""}";`}
 
 const meta: Meta<typeof ${pascalComponentName}> = {
   title: "components/${pascalComponentName}",
