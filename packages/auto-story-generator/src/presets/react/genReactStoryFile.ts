@@ -122,10 +122,6 @@ export const Primary: Story = {};
     }
   });
 
-  console.warn("fileName", fileName);
-  console.warn("path", path);
-  console.warn("relativeSourceFilePath", relativeSourceFilePath);
-
   return {
     fileOptions: {
       componentName,
