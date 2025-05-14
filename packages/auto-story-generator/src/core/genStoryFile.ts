@@ -154,19 +154,28 @@ export async function genStoryFile({
       genStoryFileOptions.generateOptions.fileExt,
     );
 
-    const split = storiesFilePath.split("/");
+    let storiesFolderPath = "";
+    let storiesFilePathWithStoriesFolder = "";
 
-    const fileNameWithStoriesFolder = `__stories__/${split[split.length - 1]}`;
+    if (options.storiesFolder) {
+      const splitStoriesFilePath = storiesFilePath.split("/");
 
-    const storiesFilePathFinal = storiesFilePath.replace(
-      `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
-      fileNameWithStoriesFolder,
-    );
+      const fileNameWithStoriesFolder = `${options.storiesFolder}/${splitStoriesFilePath[splitStoriesFilePath.length - 1]}`;
 
-    const storiesFolderPath = storiesFilePath.replace(
-      `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
-      "__stories__",
-    );
+      storiesFilePathWithStoriesFolder = storiesFilePath.replace(
+        `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
+        fileNameWithStoriesFolder,
+      );
+
+      storiesFolderPath = storiesFilePath.replace(
+        `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
+        options.storiesFolder || "",
+      );
+    }
+
+    const storiesFilePathFinal = options.storiesFolder
+      ? storiesFilePathWithStoriesFolder
+      : storiesFilePath;
 
     fs.open(storiesFilePathFinal, "r", async (err) => {
       if (!genStoryFileOptions) {
@@ -179,7 +188,9 @@ export async function genStoryFile({
 
       // ファイルを開けなかったらファイルを作成する
       if (err) {
-        fs.mkdirSync(storiesFolderPath);
+        if (options.storiesFolder) {
+          fs.mkdirSync(storiesFolderPath);
+        }
 
         // 同期処理でファイルを作成する
         fs.writeFileSync(
