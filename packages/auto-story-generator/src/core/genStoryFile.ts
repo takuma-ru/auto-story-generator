@@ -24,29 +24,28 @@ export async function genStoryFile({
   id: Parameters<NonNullable<UnpluginOptions["watchChange"]>>[0];
   projectRootDir: ReturnType<typeof cwd>;
 }) {
-  if (id.includes(".stories"))
-    return;
+  if (id.includes(".stories")) return;
 
   const hasGenFile = () => {
     let relativeSourceFilePath = id.replace(projectRootDir, "");
 
     if (
-      relativeSourceFilePath.startsWith("/")
-      || relativeSourceFilePath.startsWith("\\")
+      relativeSourceFilePath.startsWith("/") ||
+      relativeSourceFilePath.startsWith("\\")
     ) {
       relativeSourceFilePath = id.replace(projectRootDir, "").slice(1);
     }
 
     const isMatchImports = options.imports
-      ? options.imports.some(importDir =>
-        minimatch(relativeSourceFilePath, importDir),
-      )
+      ? options.imports.some((importDir) =>
+          minimatch(relativeSourceFilePath, importDir),
+        )
       : true;
 
     const isMatchIgnores = options.ignores
-      ? options.ignores.some(ignorePath =>
-        minimatch(relativeSourceFilePath, ignorePath),
-      )
+      ? options.ignores.some((ignorePath) =>
+          minimatch(relativeSourceFilePath, ignorePath),
+        )
       : false;
 
     return isMatchImports && !isMatchIgnores;
@@ -55,8 +54,7 @@ export async function genStoryFile({
 
   consola.info(`isGenFile: ${isGenFile}`);
 
-  if (!isGenFile)
-    return;
+  if (!isGenFile) return;
 
   const {
     fileBase,
@@ -156,7 +154,21 @@ export async function genStoryFile({
       genStoryFileOptions.generateOptions.fileExt,
     );
 
-    fs.open(storiesFilePath, "r", async (err) => {
+    const split = storiesFilePath.split("/");
+
+    const fileNameWithStoriesFolder = `__stories__/${split[split.length - 1]}`;
+
+    const storiesFilePathFinal = storiesFilePath.replace(
+      `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
+      fileNameWithStoriesFolder,
+    );
+
+    const storiesFolderPath = storiesFilePath.replace(
+      `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
+      "__stories__",
+    );
+
+    fs.open(storiesFilePathFinal, "r", async (err) => {
       if (!genStoryFileOptions) {
         throwErr({
           errorCode: "EC03",
@@ -167,9 +179,11 @@ export async function genStoryFile({
 
       // ファイルを開けなかったらファイルを作成する
       if (err) {
+        fs.mkdirSync(storiesFolderPath);
+
         // 同期処理でファイルを作成する
         fs.writeFileSync(
-          storiesFilePath,
+          storiesFilePathFinal,
           genStoryFileOptions.generateOptions.initialCode,
         );
       }
@@ -177,15 +191,15 @@ export async function genStoryFile({
       const storiesProject = new Project();
 
       // ファイルを読み込む
-      const storiesSourceFile
-        = storiesProject.addSourceFileAtPath(storiesFilePath);
+      const storiesSourceFile =
+        storiesProject.addSourceFileAtPath(storiesFilePathFinal);
 
       // stories.ts内のmetaを取得する
       const meta = storiesSourceFile.getVariableDeclaration("meta");
 
       if (
-        !meta
-        || !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
+        !meta ||
+        !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
       ) {
         throwErr({
           errorCode: "EC05",
@@ -288,7 +302,7 @@ export async function genStoryFile({
         const argText = Object.entries(
           genStoryFileOptions.generateOptions.meta.args,
         )
-          .map(x => x.join(":"))
+          .map((x) => x.join(":"))
           .join(", ");
 
         argsProperty.set({
@@ -336,7 +350,7 @@ export async function genStoryFile({
             `Successfully updated args in ${storiesSourceFile.getFilePath()}`,
           );
 
-          const fileContent = fs.readFileSync(storiesFilePath, "utf-8");
+          const fileContent = fs.readFileSync(storiesFilePathFinal, "utf-8");
 
           if (!genStoryFileOptions) {
             throwErr({
@@ -347,11 +361,10 @@ export async function genStoryFile({
           }
 
           const config: prettier.Options | null = genStoryFileOptions
-            .fileOptions
-            .prettierConfigPath
+            .fileOptions.prettierConfigPath
             ? await prettier.resolveConfig(
-              genStoryFileOptions.fileOptions.prettierConfigPath,
-            )
+                genStoryFileOptions.fileOptions.prettierConfigPath,
+              )
             : {
                 semi: true,
                 trailingComma: "all",
@@ -368,7 +381,7 @@ export async function genStoryFile({
           });
 
           // Write the formatted content back to the file
-          fs.writeFileSync(storiesFilePath, formattedContent);
+          fs.writeFileSync(storiesFilePathFinal, formattedContent);
         })
         .catch((err) => {
           throwErr({
@@ -377,8 +390,7 @@ export async function genStoryFile({
           });
         });
     });
-  }
-  catch {
+  } catch {
     throwErr({
       errorCode: "EC11",
     });
