@@ -59,10 +59,14 @@ export default config;
 | Custom    | 📝        |
 
 ## Contributors
+
 ### Main contributor
-[![](https://avatars.githubusercontent.com/u/49429291?v=4&size=32)](https://github.com/takuma-ru)
+
+[![](https://avatars.githubusercontent.com/u/49429291?v=4&size=32)](https://github.com/takuma-ru)<br>
+
 takuma-ru : Core API, React presets more...
 
 ### Special thanks
+
 <!-- TODO: Add GeetaKrishna65 Profile image -->
 <!-- GeetaKrishna65 : Create Angular presets -->

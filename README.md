@@ -48,6 +48,6 @@ export default config;
 | React     | ✅         |
 | Vue       | 🚧         |
 | Lit       | ✅         |
-| Angular   | 🚧         |
+| Angular   | ✅         |
 | Svelte    | 📝         |
 | Custom    | 📝         |

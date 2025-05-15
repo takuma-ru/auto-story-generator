@@ -36,6 +36,10 @@
       "name": "🧪 svelte",
       "path": "playgrounds/svelte",
     },
+    {
+      "name": "🧪 angular",
+      "path": "playgrounds/angular",
+    },
   ],
   "settings": {
     "prettier.enable": false,

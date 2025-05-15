@@ -11,6 +11,7 @@ import { minimatch } from "minimatch";
 import * as prettier from "prettier";
 import { Project, SyntaxKind } from "ts-morph";
 import { getComponentInfo } from "~/src/core/getComponentInfo";
+import { genAngularStoryFile } from "~/src/presets/angular/genAngularStoryFile";
 import { genLitStoryFile } from "~/src/presets/lit/genLitStoryFile";
 import { genReactStoryFile } from "~/src/presets/react/genReactStoryFile";
 import { throwErr } from "~/src/utils/throwError";
@@ -118,8 +119,16 @@ export async function genStoryFile({
       }
 
       case "angular": {
-        throwErr({
-          errorCode: "EC01",
+        genStoryFileOptions = await genAngularStoryFile({
+          componentName,
+          fileBase,
+          fileName,
+          path: id,
+          fileExt,
+          filePrefixExt,
+          relativeSourceFilePath,
+          sourceFile,
+          prettierConfigPath: options.prettierConfigPath,
         });
 
         break;
