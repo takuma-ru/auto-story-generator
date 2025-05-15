@@ -104,6 +104,7 @@ export async function genStoryFile({
           relativeSourceFilePath,
           sourceFile,
           prettierConfigPath: options.prettierConfigPath,
+          storiesFolder: options.storiesFolder,
         });
 
         break;
@@ -156,7 +157,30 @@ export async function genStoryFile({
       genStoryFileOptions.generateOptions.fileExt,
     );
 
-    fs.open(storiesFilePath, "r", async (err) => {
+    let storiesFolderPath = "";
+    let storiesFilePathWithStoriesFolder = "";
+
+    if (options.storiesFolder) {
+      const splitStoriesFilePath = storiesFilePath.split("/");
+
+      const fileNameWithStoriesFolder = `${options.storiesFolder}/${splitStoriesFilePath[splitStoriesFilePath.length - 1]}`;
+
+      storiesFilePathWithStoriesFolder = storiesFilePath.replace(
+        `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
+        fileNameWithStoriesFolder,
+      );
+
+      storiesFolderPath = storiesFilePath.replace(
+        `${genStoryFileOptions.fileOptions.fileName}${genStoryFileOptions.generateOptions.fileExt}`,
+        options.storiesFolder || "",
+      );
+    }
+
+    const storiesFilePathFinal = options.storiesFolder
+      ? storiesFilePathWithStoriesFolder
+      : storiesFilePath;
+
+    fs.open(storiesFilePathFinal, "r", async (err) => {
       if (!genStoryFileOptions) {
         throwErr({
           errorCode: "EC03",
@@ -167,9 +191,13 @@ export async function genStoryFile({
 
       // ファイルを開けなかったらファイルを作成する
       if (err) {
+        if (options.storiesFolder) {
+          fs.mkdirSync(storiesFolderPath);
+        }
+
         // 同期処理でファイルを作成する
         fs.writeFileSync(
-          storiesFilePath,
+          storiesFilePathFinal,
           genStoryFileOptions.generateOptions.initialCode,
         );
       }
@@ -178,7 +206,7 @@ export async function genStoryFile({
 
       // ファイルを読み込む
       const storiesSourceFile
-        = storiesProject.addSourceFileAtPath(storiesFilePath);
+        = storiesProject.addSourceFileAtPath(storiesFilePathFinal);
 
       // stories.ts内のmetaを取得する
       const meta = storiesSourceFile.getVariableDeclaration("meta");
@@ -336,7 +364,7 @@ export async function genStoryFile({
             `Successfully updated args in ${storiesSourceFile.getFilePath()}`,
           );
 
-          const fileContent = fs.readFileSync(storiesFilePath, "utf-8");
+          const fileContent = fs.readFileSync(storiesFilePathFinal, "utf-8");
 
           if (!genStoryFileOptions) {
             throwErr({
@@ -368,7 +396,7 @@ export async function genStoryFile({
           });
 
           // Write the formatted content back to the file
-          fs.writeFileSync(storiesFilePath, formattedContent);
+          fs.writeFileSync(storiesFilePathFinal, formattedContent);
         })
         .catch((err) => {
           throwErr({
