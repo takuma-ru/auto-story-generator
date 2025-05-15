@@ -24,28 +24,29 @@ export async function genStoryFile({
   id: Parameters<NonNullable<UnpluginOptions["watchChange"]>>[0];
   projectRootDir: ReturnType<typeof cwd>;
 }) {
-  if (id.includes(".stories")) return;
+  if (id.includes(".stories"))
+    return;
 
   const hasGenFile = () => {
     let relativeSourceFilePath = id.replace(projectRootDir, "");
 
     if (
-      relativeSourceFilePath.startsWith("/") ||
-      relativeSourceFilePath.startsWith("\\")
+      relativeSourceFilePath.startsWith("/")
+      || relativeSourceFilePath.startsWith("\\")
     ) {
       relativeSourceFilePath = id.replace(projectRootDir, "").slice(1);
     }
 
     const isMatchImports = options.imports
-      ? options.imports.some((importDir) =>
-          minimatch(relativeSourceFilePath, importDir),
-        )
+      ? options.imports.some(importDir =>
+        minimatch(relativeSourceFilePath, importDir),
+      )
       : true;
 
     const isMatchIgnores = options.ignores
-      ? options.ignores.some((ignorePath) =>
-          minimatch(relativeSourceFilePath, ignorePath),
-        )
+      ? options.ignores.some(ignorePath =>
+        minimatch(relativeSourceFilePath, ignorePath),
+      )
       : false;
 
     return isMatchImports && !isMatchIgnores;
@@ -54,7 +55,8 @@ export async function genStoryFile({
 
   consola.info(`isGenFile: ${isGenFile}`);
 
-  if (!isGenFile) return;
+  if (!isGenFile)
+    return;
 
   const {
     fileBase,
@@ -203,15 +205,15 @@ export async function genStoryFile({
       const storiesProject = new Project();
 
       // ファイルを読み込む
-      const storiesSourceFile =
-        storiesProject.addSourceFileAtPath(storiesFilePathFinal);
+      const storiesSourceFile
+        = storiesProject.addSourceFileAtPath(storiesFilePathFinal);
 
       // stories.ts内のmetaを取得する
       const meta = storiesSourceFile.getVariableDeclaration("meta");
 
       if (
-        !meta ||
-        !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
+        !meta
+        || !meta.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression)
       ) {
         throwErr({
           errorCode: "EC05",
@@ -314,7 +316,7 @@ export async function genStoryFile({
         const argText = Object.entries(
           genStoryFileOptions.generateOptions.meta.args,
         )
-          .map((x) => x.join(":"))
+          .map(x => x.join(":"))
           .join(", ");
 
         argsProperty.set({
@@ -373,10 +375,11 @@ export async function genStoryFile({
           }
 
           const config: prettier.Options | null = genStoryFileOptions
-            .fileOptions.prettierConfigPath
+            .fileOptions
+            .prettierConfigPath
             ? await prettier.resolveConfig(
-                genStoryFileOptions.fileOptions.prettierConfigPath,
-              )
+              genStoryFileOptions.fileOptions.prettierConfigPath,
+            )
             : {
                 semi: true,
                 trailingComma: "all",
@@ -402,7 +405,8 @@ export async function genStoryFile({
           });
         });
     });
-  } catch {
+  }
+  catch {
     throwErr({
       errorCode: "EC11",
     });
