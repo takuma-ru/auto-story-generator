@@ -51,4 +51,16 @@ export interface Options {
    * Automatic generation for all component files only once at build time (`run dev`, `run build`)
    */
   isGenerateStoriesFileAtBuild?: boolean;
+
+  /**
+   * @default undefined
+   *
+   * @description
+   *
+   * Generate the stories in specified folder.
+   *
+   * @example
+   * __stories__
+   */
+  storiesFolder?: string;
 }
