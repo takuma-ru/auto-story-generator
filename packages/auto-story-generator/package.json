@@ -1,7 +1,7 @@
 {
   "name": "@takuma-ru/auto-story-generator",
   "type": "module",
-  "version": "0.2.11",
+  "version": "0.4.0",
   "private": false,
   "description": "Automatic real-time story file generation from React, Vue, Angular and Lit component files",
   "author": "takuma-ru <kcattdev@gmail.com> (https://github.com/takuma-ru/)",
